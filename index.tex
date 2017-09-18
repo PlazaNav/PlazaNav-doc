@@ -1,0 +1,24 @@
+\input{config/configuration}
+\input{config/commands}
+\input{config/standardtexts}
+ 
+\begin{document}
+
+\include{start/titlepage}
+
+\include{start/abstract}
+\include{start/managementsummary}
+
+
+\addcontentsline{toc}{chapter}{Table of Contents}
+\tableofcontents
+
+
+\nocite{*}
+\bibliographystyle{IEEEtran}
+\bibliography{PlazaNav}
+
+\input{appendix/abbreviations}
+
+
+\end{document}
