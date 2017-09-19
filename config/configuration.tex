@@ -34,7 +34,6 @@
 		% \begin{acronym})
 		
 \usepackage{pdfpages} % include PDFs (\includepdf)
-\usepackage{listings} % codelistings (\lstnewenvironment)
 \usepackage{float} % own floating objects (\newfloat, \floatname)
 
 \usepackage{hyperref} % linking to refs and URLs (\ref, \url, \autoref,
@@ -51,61 +50,18 @@
   \renewcommand{\subsectionautorefname}{Subsection}% 
 }
 
-\usepackage{scrhack} % \lstlistoflistings uses deprecated \float@listhead,
-    % scrhack fixes this warning (redefines macros from other packages so they
-    % work better with KOMAscript)
-
-
 % global formatting
 \onehalfspacing % 1.5x line spacing
 
 \usepackage{color}
 
-% colors for syntax highlighting
-\definecolor{strings}{RGB}{42,0,255}
-\definecolor{builtInTypes}{RGB}{127,0,85}
-\definecolor{comments}{RGB}{63,127,95}
+%Package for syntax highlighting (needs pygments installed)
+\usepackage{minted}
 
-\lstdefinestyle{CPPeclipse}{
-    basicstyle=\ttfamily,
-    stringstyle=\color{strings},     
-    keywordstyle=\color{builtInTypes} \bfseries,
-    commentstyle=\color{comments},
-    %emph={int,char,double,float,unsigned},
-    %emphstyle={\color{blue}},
-}
+% Default options for python code
+% usage: \begin{pycode}
+% to define additional options, use \begin{pycode*}{key=value}
+\newminted{py}{linenos, frame=leftline, numbersep=8pt, framesep=8pt, tabsize=4}
 
-\definecolor{pblue}{rgb}{0.13,0.13,1}
-\definecolor{pgreen}{rgb}{0,0.5,0}
-\definecolor{pred}{rgb}{0.9,0,0}
-\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
-
-
-\lstdefinestyle{JavaEclipse}{
-    basicstyle=\ttfamily,
-    commentstyle=\color{pgreen},
-    keywordstyle=\color{pblue},
-    stringstyle=\color{pred},
-}
-
-% Standard Listing
-\lstset{
-	aboveskip=1.5\baselineskip,      % space before listing
-	breakatwhitespace=true,          % break only at whitespace
-	breaklines=true,                 % sets automatic line breaking
-	captionpos=b,                    % sets the caption-position to bottom
-	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-	frame=single,                    % adds a frame around the code
-	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-	language=C++,                    % the language of the code, [11] indicates
-	                                 % C++ 11syntax. other possible values:
-	                                 %     ANSI, GNU, VISUAL ISO
-	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
-	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
-	showstringspaces=false,          % underline spaces within strings only
-	showtabs=false,                  % show tabs within strings adding particular underscores
-	tabsize=3,                       % sets default tabsize in spaces
-	style=CPPeclipse
-}
-% change the name from 'List of Listings' to something else
-% \renewcommand{\lstlistlistingname}{Listingverzeichnis}
+% bigger line numbers for code blocks
+\renewcommand{\theFancyVerbLine}{\sffamily {\small \oldstylenums{\arabic{FancyVerbLine}}}}
