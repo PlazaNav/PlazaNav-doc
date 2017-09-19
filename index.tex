@@ -1,0 +1,32 @@
+\input{config/configuration}
+\input{config/commands}
+\input{config/standardtexts}
+ 
+\begin{document}
+\setromanfont[BoldFont={Gentium Basic Bold},ItalicFont={Gentium Basic Italic}]{Gentium Basic}
+
+\include{start/titlepage}
+
+\include{start/abstract}
+\include{start/managementsummary}
+\include{start/acknowledgements}
+
+
+\addcontentsline{toc}{chapter}{Inhaltsverzeichnis}
+\tableofcontents
+
+\include{technicalreport/index}
+
+\include{mainpart/index}
+
+\nocite{*}
+\cleardoublepage % https://tex.stackexchange.com/a/98995
+\phantomsection
+\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+\bibliographystyle{IEEEtran}
+\bibliography{PlazaNav}
+
+\input{appendix/abbreviations}
+\input{appendix/cdcontent}
+
+\end{document}
