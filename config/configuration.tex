@@ -27,6 +27,10 @@
 \usepackage{threeparttable} % table with notes (\tnote, \begin{tablenotes})
 \usepackage{longtable}
 
+% Redefine space before and after chapter title
+\RedeclareSectionCommand[beforeskip=12pt,
+afterskip=12pt]{chapter}
+
 \usepackage[printonlyused, % show only used acronyms
 		% withpage, % show pagenumber of first usage
 	] % longform in footnote (instead of shortform)
