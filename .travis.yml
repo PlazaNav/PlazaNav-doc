@@ -1,2 +1,3 @@
+language: python
 before_install: ./build/install-dependencies.sh
 script: ./build/build_travis.sh
