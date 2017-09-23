@@ -2,7 +2,7 @@
 DATE=`date +"%y%m%d"`
 JOBNAME="PlazaNav-$DATE"
 # Shell escape is needed for pygments syntax highlighting
-xelatex -shell-escape -jobname=$JOBNAME index.tex
+xelatex -shell-escape -jobname=$JOBNAME  -interaction=nonstopmode index.tex
 # build bibliography
 bibtex $JOBNAME.aux
 # build again with bibliography

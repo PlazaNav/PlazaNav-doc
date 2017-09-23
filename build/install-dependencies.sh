@@ -6,4 +6,4 @@ sudo apt-get install -y --no-install-recommends \
     python-pygments
 
 #install additional LaTeX dependencies
-tlmgr install placeins
+sudo tlmgr install placeins
