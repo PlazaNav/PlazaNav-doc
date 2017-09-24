@@ -3,7 +3,7 @@ LATEXCMD="xelatex -shell-escape -interaction=nonstopmode"
 # Shell escape is needed for pygments syntax highlighting
 $LATEXCMD index.tex
 # build bibliography
-bibtex $JOBNAME.aux
+bibtex index.aux
 # build again with bibliography
 $LATEXCMD index.tex
 # build a third time to fix potential numbering changes
