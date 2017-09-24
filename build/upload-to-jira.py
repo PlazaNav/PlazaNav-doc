@@ -4,7 +4,6 @@ import requests
 import re
 import os
 import sys
-from subprocess import check_output
 
 base_url = "https://jira.robinsuter.ch"
 api_url = "/rest/api/2/issue/{}/attachments"
@@ -12,17 +11,11 @@ headers = {"X-Atlassian-Token": "nocheck"}
 jira_user = os.environ.get("JIRA_USER")
 jira_pw = os.environ.get("JIRA_PW")
 jira_prefix = "PZ"
-
-
-def get_current_branch():
-    current_branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
-    print("current branch: " + current_branch)
-    return str.strip(current_branch)  # remove newline
+branch = os.environ("TRAVIS_BRANCH")
 
 
 def get_issue_key():
     prefix_re = str.format(r'.*({}-\d+).*', jira_prefix)
-    branch = get_current_branch()
     m = re.match(prefix_re, branch, re.I)
     if m is None:
         print(str.format("Issue key of branch {} not found", branch))
