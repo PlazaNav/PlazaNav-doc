@@ -16,6 +16,7 @@ jira_prefix = "PZ"
 
 def get_current_branch():
     current_branch = check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+    print("current branch: " + current_branch)
     return str.strip(current_branch)  # remove newline
 
 
@@ -24,7 +25,7 @@ def get_issue_key():
     branch = get_current_branch()
     m = re.match(prefix_re, branch, re.I)
     if m is None:
-        print(str.format("Issue key of branch {} not found"))
+        print(str.format("Issue key of branch {} not found", branch))
         exit(1)
     return m.group(1)
 
