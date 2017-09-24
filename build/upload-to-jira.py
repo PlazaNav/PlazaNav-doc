@@ -41,4 +41,4 @@ req = requests.post(request_url, auth=(jira_user, jira_pw), files=files, headers
 if (req.status_code == 200):
     print(str.format('upload of {} to issue {} successful', filename, issue_key))
 else:
-    print(str.format('Upload to travis failed: {}', req.text))
+    print(str.format('Upload to JIRA failed: {}', req.text))
