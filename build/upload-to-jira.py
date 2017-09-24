@@ -11,7 +11,7 @@ headers = {"X-Atlassian-Token": "nocheck"}
 jira_user = os.environ.get("JIRA_USER")
 jira_pw = os.environ.get("JIRA_PW")
 jira_prefix = "PZ"
-branch = os.environ("TRAVIS_BRANCH")
+branch = os.environ.get("TRAVIS_BRANCH")
 
 
 def get_issue_key():
