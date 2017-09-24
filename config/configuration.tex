@@ -27,8 +27,8 @@
 \usepackage{longtable}
 
 % Redefine space before and after chapter title
-\RedeclareSectionCommand[beforeskip=12pt,
-afterskip=12pt]{chapter}
+\renewcommand*{\chapterheadstartvskip}{\vspace*{12pt}}
+\renewcommand*{\chapterheadendvskip}{\vspace*{12pt}}
 
 \usepackage[printonlyused, % show only used acronyms
 		% withpage, % show pagenumber of first usage
