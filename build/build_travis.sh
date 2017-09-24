@@ -1,7 +1,5 @@
 #!/bin/bash
-DATE=`date +"%y%m%d"`
-JOBNAME="PlazaNav-$DATE"
-LATEXCMD="xelatex -shell-escape -jobname=$JOBNAME  -interaction=nonstopmode"
+LATEXCMD="xelatex -shell-escape -interaction=nonstopmode"
 # Shell escape is needed for pygments syntax highlighting
 $LATEXCMD index.tex
 # build bibliography
