@@ -18,9 +18,6 @@ Wie man an in der Abbildung \ref{fig:helvetiaplatz_graphhopper} gut sieht, route
 	\label{fig:helvetiaplatz_graphhopper}
 \end{figure}
 
-Das Problem wurde bereits in einigen Arbeit aufgegriffen. Dabei wird Bezug auf die Arbeit Integrating Open Spaces into OpenStreetMap Routing Graphs for Realistic Crossing Behaviour in Pedestrian Navigation \cite{graser_visibility_graph} und Routing über Flächen mit SpiderWebGraph \cite{dzafic_spider_web_graph} genommen. Diese beiden Ansätze (Visibility-Graph und SpiderWeb-Graph) werden aufgegriffen, in QGIS implementiert und getestet. In den Arbeiten sind offene Probleme aufgelistet, welche aufgegriffen werden. Ziel ist es die optimale Variante, um über offene Flächen den schnellstmöglichen Weg zu finden, zu eruieren. 
-
-
 \subsubsection{eingezeichnete Fussgängerrouten über offene Flächen}
 \label{subsub:eingezeichnete Fussgängerrouten über offene Flächen}
 Wenn man die gleiche Abbildung \ref{fig:helvetiaplatz_graphhopper} nochmals betrachtet, sieht man, dass Mapper bereits einige Fussgängerwege auf dem Platz eingezeichnet haben, um dem Routing-Problem über offene Fläche entgegen zu steuern. Dies kann in einigen Situationen, wie dem Helvetiaplatz kontraproduktiv, aber in anderen wieder von Vorteil sein. Betrachtet man beispielsweise den Central Park in New York in Abbildung \ref{fig:central_park} macht es Sinn, dass das Routing den vorgegeben Wegen folgt. Eine Wiese gilt als offene Fläche, eignet sich aber nicht immer als vorteilhafter Bewegungsuntergrund. Man muss abklären, in welchen Situation man sich auf gemappte Wege über offene Wege verlassen kann und wann sie zu ignorieren sind.
@@ -54,7 +51,7 @@ Berge und Strände sind bekanntermassen schwieriger zu überqueren als normale P
 
 \subsubsection{Routing über offene Flächen}
 \label{subsub:Ziel Routing über offene Flächen}
-Das Problem \ref{subsub:Routing über offene Flächen} wurde bereits in einigen Arbeit aufgegriffen. Dabei wird Bezug auf die Arbeit Integrating Open Spaces into OpenStreetMap Routing Graphs for Realistic Crossing Behaviour in Pedestrian Navigation \cite{graser_visibility_graph} und Routing über Flächen mit SpiderWebGraph \cite{dzafic_spider_web_graph} genommen. Diese beiden Ansätze (Visibility-Graph und SpiderWeb-Graph) werden aufgegriffen, in QGIS implementiert und getestet. In den Arbeiten sind offene Probleme aufgelistet, welche aufgegriffen werden. Ziel ist es die optimale Variante, um über offene Flächen den schnellstmöglichen Weg zu finden, zu eruieren. 
+Das Problem \ref{subsub:Routing über offene Flächen} wurde bereits in einigen Arbeiten \cite{graser_visibility_graph}, \cite{dzafic_spider_web_graph}  aufgegriffen, auf welche Bezug genommen wird. Diese beiden Ansätze (Visibility-Graph und SpiderWeb-Graph) werden analysiert, Tests in QGIS implementiert und getestet. Ziel ist es, die optimale Variante, um über offene Flächen den schnellstmöglichen Weg zu finden, zu eruieren. 
 
 \subsubsection{Routing-Engine evaluieren}
 \label{subsub:Ziel Routing-Enginge evaluieren}
