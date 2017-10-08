@@ -1,11 +1,53 @@
 \section{Einführung}
 \label{sec:Einführung}
-TODO
+Diese Arbeit befasst sich grundlegend mit dem Fussgänger-Routing und dem Auffinden der nächsten ÖV-Haltestelle, welche einem an ein weiter gelegenes Ziel führen kann. Ziel ist es von einem gegebenen Punkt die nächste ÖV-Haltestelle, welche zu Fuss erreichbar ist, zu finden. Im folgenden ist die Problemstellung erläutert und es wird eine Abgrenzung gemacht, was Teil dieser Arbeit ist.
 
 \subsection{Problemstellung und Vision}
 \label{sub:Problemstellung und Vision}
-TODO
+%TODO Verweis auf GraphHopper?
+Die heutig gängigen Routing-Engines können effizient über Kanten und Knoten routen und navigieren, um so den schnellstmöglichen Weg finden zu können. Diese wurden stetig für Autofahrer optimiert, da sich diese unter anderem an vorgegebene Regeln halten. Beim nicht-motorisierten Individualverkehr (Fussgänger, Rollstuhlfahrer, Radfahrer, etc.)  ist das nicht immer der Fall. In den folgenden Unterkapiteln werden einige Probleme erläutert, welche immer noch Praxis für den nicht-motorisierten Individualverkehr sind.
 
+\subsubsection{Routing über offene Flächen}
+\label{subsub:Routing über offene Flächen}
+
+Wie man an in der Abbildung \ref{fig:helvetiaplatz_graphhopper} gut sieht, routet die Routing-Engine GraphHopper den Kanten nach um den Platz herum. Dies ist ein natürliches Verhalten für den motorisierten Individualverkehr. Ein Fussgänger hingegen nimmt den direkten Weg über den Platz. Oft handelt es sich nicht nur um einen leeren Platz, sondern es sind darauf Hindernisse, wie Brunnen, Kunstwerke, WCs, etc. stationiert, um welche auf eine natürliche Weise geroutet werden muss. Eine Route, welche direkt auf das Hindernis routet, und dann um das Hindernis herumläuft ist zwar ein Fortschritt zur aktuellen Lösung, entspricht aber keinem normalen Fussgänger-Verhalten. 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\linewidth]{technicalreport/img/helvetiaplatz_graphhopper}
+	\caption[Fussgänger-Routing]{Fussgänger-Routing mit GraphHopper über den Helvetiaplatz, Zürich, Schweiz; Screenshot von openstreetmap.org aufgenommen am 08.10.2017}
+	\label{fig:helvetiaplatz_graphhopper}
+\end{figure}
+
+\subsubsection{eingezeichnete Fussgängerrouten über offene Flächen}
+\label{subsub: eingezeichnete Fussgängerrouten über offene Flächen}
+Wenn man die gleiche Abbildung \ref{fig:helvetiaplatz_graphhopper} nochmals betrachtet, sieht man, dass Mapper bereits einige Fussgängerwege auf dem Platz eingezeichnet haben, um dem Routing-Problem über offene Fläche entgegen zu steuern. Dies kann in einigen Situationen, wie dem Helvetiaplatz kontraproduktiv, aber in anderen wieder von Vorteil sein. Betrachtet man beispielsweise den Central Park in New York in Abbildung \ref{fig:central_park} macht es Sinn, dass das Routing den vorgegeben Wegen folgt. Eine Wiese gilt als offene Fläche, eignet sich aber nicht immer als vorteilhafter Bewegungsuntergrund. Man muss abklären, in welchen Situation man sich auf gemappte Wege über offene Wege verlassen kann und wann sie zu ignorieren sind.
+
+Das Problem wurde bereits in einigen Arbeit aufgegriffen. Dabei wird Bezug auf die Arbeit Integrating Open Spaces into OpenStreetMap Routing Graphs for Realistic Crossing Behaviour in Pedestrian Navigation \cite{graser_visibility_graph} und Routing über Flächen mit SpiderWebGraph \cite{dzafic_spider_web_graph} genommen.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\linewidth]{technicalreport/img/central_park}
+\caption[eingezeichnete Fussgänger-Routen]{Eingezeichnete Fussgänger-Routen auf dem Central Park, New York City, USA; Screenshot von openstreetmap.org aufgenommen am 08.10.2017}
+\label{fig:central_park}
+\end{figure}
+
+
+\subsubsection{topologisch nicht verbundene Wege}
+\label{subsub: topologisch nicht verbundene Wege}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\linewidth]{technicalreport/img/topologisch_nicht_verbundener_graph}
+\caption[topologisch nicht verbundener Graph]{topologisch nicht verbundener Graph}
+\label{fig:topologisch_nicht_verbundener_graph}
+\end{figure}
+
+In Abbildung \ref{fig:topologisch_nicht_verbundener_graph} ist ein topologischer nicht verbundener Graph zu sehen. In OSM kann es vorkommen, dass solche Wege auf eine offene Fläche treffen, mit dieser aber nicht konkret verbunden sind. Eine Routing-Engine muss in der Lage sein, dies zu erkennen und aufzuräumen, so dass vom auftreffenden Weg über die offene Fläche geroutet werden kann.
+
+\subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
+\label{subsub: Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
+	
 \subsection{Ziele und Unterziele}
 \label{sub:Ziele und Unterziele}
 TODO
