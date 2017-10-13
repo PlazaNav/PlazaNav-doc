@@ -1,6 +1,9 @@
 language: python
 before_install: build/install-dependencies.sh
-install: build/texlive-install.sh
+install:
+    - build/texlive-install.sh
+    - export PATH="$PATH:$HOME/texlive/bin/x86_64-linux"
+    - tlmgr install IEEEtran placeins framed threeparttable acronym minted ifplatform bigfoot xstring
 script: build/build_travis.sh
 deploy:
   - provider: script
