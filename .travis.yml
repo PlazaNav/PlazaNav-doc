@@ -3,8 +3,7 @@ before_install: build/install-dependencies.sh
 install:
     - ./build/texlive-install.sh
     - export PATH="$PATH:$HOME/texlive/bin/x86_64-linux"
-    - tlmgr option repository http://mirror.switch.ch/ftp/mirror/tex/systems/texlive/tlnet
-    - tlmgr install IEEEtran placeins framed threeparttable acronym minted
+    - tlmgr install IEEEtran placeins framed threeparttable acronym minted ifplatform bigfoot
 script: build/build_travis.sh
 deploy:
   - provider: script
