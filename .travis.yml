@@ -1,4 +1,5 @@
 language: python
+dist: trusty
 before_install: build/install-dependencies.sh
 script: build/build_travis.sh
 deploy:
