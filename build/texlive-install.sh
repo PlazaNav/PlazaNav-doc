@@ -17,3 +17,7 @@ c
 r
 i
 " | ./install-tl
+
+# install dependencies
+export PATH="$PATH:$HOME/texlive/bin/x86_64-linux"
+tlmgr install IEEEtran placeins framed threeparttable acronym minted ifplatform bigfoot xstring
