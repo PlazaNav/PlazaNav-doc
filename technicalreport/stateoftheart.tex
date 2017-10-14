@@ -35,7 +35,24 @@ Zum Schluss wird ein Variantenvergleich durchgeführt und ein Fazit gezogen. Zie
 
 \paragraph{Visibility Graph}~\\
 
-TODO
+Ein Ansatz zur Verhinderung von Kollisionen auf Flächen wurde in  \cite{lozano-perez_visibilty_graph} als Visibility Graph beschrieben. Dabei wird in einem ersten Schritt für jeden Knotenpunkt einer Fläche eine Verbindung zu jedem anderen Knotenpunkt gezeichnet. Für unsere Zwecke werden dabei alle Knotenpunkte eines Polygons, Hindernisse,  sowie Schnittpunkte mit Strassen und Wegen (Einstiegspunkte) beachtet.
+% TODO: Einheitlicher Begriff für "entry/exit points" evtl. in Begriffe definieren
+
+In einem zweiten Schritt werden alle Verbindungen verworfen, die nicht komplett innerhalb der Fläche liegen oder mit einem Hindernis darauf kollidieren.
+
+\begin{listing}[ht]
+    \inputminted{python}{technicalreport/listing/visibility_graph_pseudocode.py}
+    \caption{Konstruktion eines optimierten Visibility Graphen}
+    \label{visibility_graph_pseudocode}
+\end{listing}
+
+Für die Verwendung im Routing beschreibt \cite{graser_visibility_graph} einen Ansatz, um die Kanten des Visibility Graphen zu reduzieren (siehe Listing \ref{visibility_graph_pseudocode}). Mit dem Visibility Graphen allein gäbe es mit \(n\) Knotenpunkten bis zu \(n(n-1)/2\) Kanten. Für die Reduktion wird für jeden Einstiegspunkt (wie aus Schritt 1 bekannt) jeweils der kürzeste Pfad auf dem Visibility Graphen zu allen anderen Einstiespunkten berechnet. Alle Kanten, die nicht zu einem kürzesten Pfad gehören, werden verworfen. Abbildung  \ref{fig:visibility_graph_comparison} zeigt einen Vergleich zwischen eines Visibility Graphen vor und nach dem Reduktionsverfahren.
+
+\begin{figure}
+    \includegraphics[width=\textwidth,keepaspectratio]{technicalreport/img/visibility_graph_comparison.png}
+    \caption{Visibility Graph über den Helvetiaplatz, Zürich, Schweiz; Links: Unveränderter Visibility Graph; Rechts: Reduziert auf kürzeste Pfade}
+    \label{fig:visibility_graph_comparison}
+\end{figure}
 
 \paragraph{Spider-Web Graph}~\\
 
