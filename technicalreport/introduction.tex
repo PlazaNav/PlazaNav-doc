@@ -68,9 +68,19 @@ Dieses Problem ist der Vollständigkeit halber aufgeführt, wird in dieser Arbei
 \label{target:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 Im Kontext dieser Arbeit wird kurz ein theoretischer Ansatz aufgezeigt, wie man mit einem kostenbasierten Graph den Eigenschaften diesen Unterflächen gerecht werden könnte.
 
-\subsection{nächste ÖV-Haltestelle finden}
+\subsubsection{nächste ÖV-Haltestelle finden}
 \label{target:nächste ÖV-Haltestelle finden}
 Der Fokus der Arbeit liegt auf dem Finden und Erreichen der nächsten ÖV-Haltestelle, welche einem ans gewünschte Ziel führt. So soll eruiert werden, wie von einem bestehenden Startpunkt aus die nächsten ÖV-Haltestellen identifiziert werden, um diese an search.ch für das weitere Routing zu übergeben.
+
+\subsubsection{Prototyp}
+\label{target:Prototyp}
+
+% TODO was kommt in Prototyp, wie sieht er aus
+
+\subsubsection{Deliverables}
+\label{target:Deliverables}
+
+% TODO was wird konkret abgeliefert?
 	
 \subsection{Rahmenbedingungen, Umfeld, Definitionen, Abgrenzungen}
 \label{Rahmenbedingungen, Umfeld, Definitionen, Abgrenzungen}
@@ -93,14 +103,12 @@ Diese Aspekte werden in einem QGIS-Prototyp zusammengeführt.
 
 Im folgenden werden einige theoretische Grundlagen und Begriffe eingeführt, welche im Laufe des Dokuments auftauchen werden.
 
-% TODO was muss alles noch eingeführt werden=
+% TODO was muss alles noch eingeführt werden?
 
 \subsubsection{Fläche}
 \label{Fläche}
 
-Als Fläche werden Plätze, Wiesen, etc. verstanden. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone, welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll.
-
-% TODO wie verlinkt man https://wiki.openstreetmap.org/wiki/DE:Area
+Als Fläche werden Plätze, Wiesen, etc. verstanden. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
 
 \subsubsection{Multipolygon}
 \label{Multipolygon}
