@@ -4,11 +4,11 @@ Diese Arbeit befasst sich grundlegend mit dem Fussgänger-Routing und Auffinden 
 
 \subsection{Problemstellung und Vision}
 \label{Problemstellung und Vision}
-%TODO Verweis auf GraphHopper?
 Die heutig gängigen Routing-Engines können effizient über Kanten und Knoten routen, um so den schnellstmöglichen Weg finden zu können. Diese wurden stetig für Autofahrer optimiert, da sich diese unter anderem an vorgegebene Regeln halten. Beim nicht-motorisierten Individualverkehr (Fussgänger, Rollstuhlfahrer, Radfahrer, etc.)  ist das nicht immer der Fall. In den folgenden Unterkapiteln werden einige Probleme erläutert, welche immer noch Praxis für den nicht-motorisierten Individualverkehr sind.
 
 \subsubsection{Routing über offene Flächen}
 \label{problem:Routing über offene Flächen}
+% TODO Verweis auf GraphHopper?
 Wie man an in der Abbildung \ref{fig:helvetiaplatz_graphhopper} gut sieht, routet die Routing-Engine GraphHopper den Kanten nach um den Platz herum. Dies ist ein natürliches Verhalten für den motorisierten Individualverkehr. Ein Fussgänger hingegen nimmt den direkten Weg über den Platz. Oft handelt es sich nicht nur um einen leeren Platz, sondern es sind darauf Hindernisse wie Brunnen, Kunstwerke, WCs, etc. stationiert, um welche auf eine natürliche Weise geroutet werden muss. Eine Route, welche direkt auf das Hindernis zusteuert, um dieses dann zu umlaufen, ist zwar ein Fortschritt zur aktuellen Lösung, entspricht aber kaum einem normalen Fussgänger-Verhalten. 
 
 \begin{figure}[ht]
@@ -115,7 +115,7 @@ Als Fläche werden Plätze, Wiesen, etc. verstanden. Flächen sind in \ac{OSM} k
 
 TODO
 
-\subsubsection{Hindernisse in Flächen}
+\subsubsection{Hindernisse auf Flächen}
 \label{Hindernisse in Flächen}
 
 TODO % wie sieht Datenstruktur aus
