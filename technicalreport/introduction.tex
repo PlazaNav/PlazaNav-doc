@@ -43,7 +43,19 @@ In Abbildung \ref{fig:topologisch_nicht_verbundener_graph} ist ein topologischer
 
 \subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 \label{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
-Berge und Strände sind bekanntermassen schwieriger zu überqueren als normale Plätze. Sei dies aufgrund der zurückzulegenden Höhendifferenz oder die Unterlage, welche das Fortbewegen mühsamer macht. Zusätzlich zum Problem \ref{subsub:Routing über offene Flächen} kommt hier dazu, dass Umlaufen dieser offenen Flächen (Berge, Strände) effizienter sein kann als das Überqueren.  
+Berge und Strände sind bekanntermassen schwieriger zu überqueren als normale Plätze. Sei dies aufgrund der zurückzulegenden Höhendifferenz oder die Unterlage, welche das Fortbewegen mühsamer macht. Zusätzlich zum Problem \ref{subsub:Routing über offene Flächen} kommt hier dazu, dass Umlaufen dieser offenen Flächen (Berge, Strände) effizienter sein kann als das Überqueren. 
+
+\subsubsection{Start-/Endpunkt auf der Fläche}
+\label{problem:Start-/Endpunkt auf der Fläche}
+Beginnt das Routing oder ist der Zielort auf einer Fläche, so ziehen die aktuellen Routing-Engines, falls keine Wege wie in \ref{problem:eingezeichnete Fussgängerrouten über offene Flächen} beschrieben, eingezeichnet sind, eine rechtwinklige Linie zur nächsten Kante der Fläche und routen von dort weiter. Dies ist gut auf dem Sechseläutenplatz in Abbildung \ref{fig:start_endpoint_on_area} sichtbar. Falls bereits Wege auf der Fläche eingezeichnet sind, wird über diese geroutet.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth]{technicalreport/img/start_endpoint_on_area}
+\caption[Fussgänger-Routing mit Startpunkt auf der Fläche]{Fussgänger-Routing mit GraphHopper über den Helvetiaplatz (links) und Sechseläutenplatz (rechts), Zürich, Schweiz mit Startpunkt auf der Fläche; Screenshot von openstreetmap.org aufgenommen am 14.10.2017}
+\label{fig:start_endpoint_on_area}
+\end{figure}
+
 	
 \subsection{Ziele und Unterziele}
 \label{Ziele und Unterziele}
@@ -68,6 +80,12 @@ Dieses Problem ist der Vollständigkeit halber aufgeführt, wird in dieser Arbei
 \label{target:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 Im Kontext dieser Arbeit wird kurz ein theoretischer Ansatz aufgezeigt, wie man mit einem kostenbasierten Graph den Eigenschaften diesen Unterflächen gerecht werden könnte.
 
+\subsubsection{Start-/Endpunkt auf der Fläche}
+\label{target:Start-/Endpunkt auf der Fläche}
+
+TODO
+% TODO was genau ist hier das Ziel?
+
 \subsubsection{nächste ÖV-Haltestelle finden}
 \label{target:nächste ÖV-Haltestelle finden}
 Der Fokus der Arbeit liegt auf dem Finden und Erreichen der nächsten ÖV-Haltestelle, welche einem ans gewünschte Ziel führt. So soll eruiert werden, wie von einem bestehenden Startpunkt aus die nächsten ÖV-Haltestellen identifiziert werden, um diese an search.ch für das weitere Routing zu übergeben.
@@ -76,11 +94,13 @@ Der Fokus der Arbeit liegt auf dem Finden und Erreichen der nächsten ÖV-Haltes
 \label{target:Prototyp}
 
 % TODO was kommt in Prototyp, wie sieht er aus
+TODO
 
 \subsubsection{Deliverables}
 \label{target:Deliverables}
 
 % TODO was wird konkret abgeliefert?
+TODO
 	
 \subsection{Rahmenbedingungen, Umfeld, Definitionen, Abgrenzungen}
 \label{Rahmenbedingungen, Umfeld, Definitionen, Abgrenzungen}
@@ -94,7 +114,11 @@ Die Studienarbeit nimmt sich zu erst dem Problem des Fussgänger-Routing über F
 
 In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an die API von search.ch übergeben zu können. Aufgabe von search.ch ist es, für n-Startpunkte die ÖV-Route zu genieren. So ist es möglich, denn schnellstmöglichen Weg für eine Route in Kombination von Fussweg und öffentlichem Weg zu ermitteln.
 
-Diese Aspekte werden in einem QGIS-Prototyp zusammengeführt.
+Die vorhin aufgeführten Aspekte werden im Kapitel \ref{chap:Technischer Bericht} behandelt.
+
+In einem zweiten Teil werden die im Teil 1 erarbeiteten Artefakte zusammengeführt. Es wird in QGIS ein Prototyp implementiert.
+% TODO wie sieht Prototyp genau aus
+
 
 % TODO Grafik mit Epics und einigen Unterpunkten was dazu gehört
 
@@ -104,7 +128,7 @@ Diese Aspekte werden in einem QGIS-Prototyp zusammengeführt.
 Im folgenden werden einige theoretische Grundlagen und Begriffe eingeführt, welche im Laufe des Dokuments auftauchen werden.
 
 % TODO was muss alles noch eingeführt werden?
-% Entry Points? 
+
 
 \subsubsection{Fläche}
 \label{Fläche}
