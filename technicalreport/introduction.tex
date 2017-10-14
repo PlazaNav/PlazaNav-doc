@@ -104,11 +104,19 @@ Diese Aspekte werden in einem QGIS-Prototyp zusammengeführt.
 Im folgenden werden einige theoretische Grundlagen und Begriffe eingeführt, welche im Laufe des Dokuments auftauchen werden.
 
 % TODO was muss alles noch eingeführt werden?
+% Entry Points? 
 
 \subsubsection{Fläche}
 \label{Fläche}
 
 Als Fläche werden Plätze, Wiesen, etc. verstanden. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
+
+\subsubsection{nicht-motorisierter Individualverkehr}
+\label{nicht-motorisierter Individualverkehr}
+
+Zum nicht-motorisierten Individualverkehr gehören unter anderem Fussgänger, Rollstuhlfahrer und Radfahrer.
+
+Zur besseren Lesbarkeit und der Einfachheit halber, wird in der Arbeit nur noch von Fussgänger gesprochen.
 
 \subsubsection{Multipolygon}
 \label{Multipolygon}
