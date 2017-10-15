@@ -145,7 +145,7 @@ Im folgenden werden einige theoretische Grundlagen und Begriffe eingeführt, wel
 \subsubsection{Fläche}
 \label{Fläche}
 
-Als Fläche werden Plätze, Wiesen, etc. verstanden. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
+Als Fläche werden für diesen Zweck Plätze, Wiesen, etc. verstanden, die von Fussgänger frei begehbar sind. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
 
 \subsubsection{nicht-motorisierter Individualverkehr}
 \label{nicht-motorisierter Individualverkehr}
@@ -157,7 +157,8 @@ Zur besseren Lesbarkeit und der Einfachheit halber, wird in der Arbeit nur noch 
 \subsubsection{Multipolygon}
 \label{Multipolygon}
 
-TODO
+Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen geschlossenen Pfad beschreiben. Jedes Polygon kann entweder als einen äusseren oder inneren Ring dienen. So kann ein innerer Ring eine Teilfläche eines äusseren Rings ausschneiden. Polygone in einem Multipolygon können aber auch disjunkt sein.\cite{osm_wiki_multipolygon}
+
 
 \subsubsection{Hindernisse auf Flächen}
 \label{Hindernisse in Flächen}
