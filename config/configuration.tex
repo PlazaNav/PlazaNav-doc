@@ -1,7 +1,8 @@
 \documentclass[a4paper, % A4
 	parskip, % Absätze durch Abstand statt Einrückung gekennzeichnet
 	%draft, % überlange Zeilen werden nicht%markiert
-	ngerman] % english, hyphenation etc.
+	ngerman, % english, hyphenation etc.
+    numbers=noenddot] % no trailing period after headings
 	{scrreprt} % Report (KOMA-Script)
 
 \usepackage{fontspec}
@@ -55,6 +56,9 @@
 
 \setcounter{secnumdepth}{3}
 
+% Roman numerals for chapter
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{section}}
 % global formatting
 \onehalfspacing % 1.5x line spacing
 
