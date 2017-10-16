@@ -20,7 +20,7 @@ Wie man an in der Abbildung \ref{fig:helvetiaplatz_graphhopper} gut sieht, route
 
 \subsubsection{eingezeichnete Fussgängerrouten über offene Flächen}
 \label{problem:eingezeichnete Fussgängerrouten über offene Flächen}
-Wenn man die gleiche Abbildung \ref{fig:helvetiaplatz_graphhopper} nochmals betrachtet, sieht man, dass Mapper bereits einige Fussgängerwege auf dem Platz eingezeichnet haben, um dem Routing-Problem über offene Fläche entgegen zu steuern. Dies kann in einigen Situationen, wie dem Helvetiaplatz kontraproduktiv, aber in anderen wieder von Vorteil sein. Betrachtet man beispielsweise den Central Park in New York in Abbildung \ref{fig:central_park} macht es Sinn, dass das Routing den vorgegeben Wegen folgt. Eine Wiese gilt als offene Fläche, eignet sich aber nicht immer als vorteilhafter Bewegungsuntergrund. Man muss abklären, in welchen Situation man sich auf vorhandene Wege über offene Flächen verlassen kann und wann sie zu ignorieren sind. Es gilt zu prüfen, ob diese Abgrenzung mit den gegebenen Informationen überhaupt möglich ist.
+Wenn man die gleiche Abbildung \ref{fig:helvetiaplatz_graphhopper} nochmals betrachtet, sieht man, dass Mapper bereits einige Fussgängerwege auf dem Platz eingezeichnet haben, um dem Routing-Problem über offene Fläche entgegen zu steuern. Dies kann in einigen Situationen wie dem Helvetiaplatz kontraproduktiv, aber in anderen wieder von Vorteil sein. Betrachtet man beispielsweise den Central Park in New York in Abbildung \ref{fig:central_park} macht es Sinn, dass das Routing den vorgegeben Wegen folgt. Eine Wiese gilt als offene Fläche, eignet sich aber nicht immer als vorteilhafter Bewegungsuntergrund. Man muss abklären, in welchen Situation man sich auf vorhandene Wege über offene Flächen verlassen kann und wann sie zu ignorieren sind. Es gilt zu prüfen, ob diese Abgrenzung mit den gegebenen Informationen überhaupt möglich ist.
 
 \begin{figure}[ht]
 \centering
@@ -39,19 +39,19 @@ Wenn man die gleiche Abbildung \ref{fig:helvetiaplatz_graphhopper} nochmals betr
 \label{fig:topologisch_nicht_verbundener_graph}
 \end{figure}
 
-In Abbildung \ref{fig:topologisch_nicht_verbundener_graph} ist ein topologischer nicht verbundener Graph zu sehen. In \ac{OSM} kann es vorkommen, dass solche Wege auf eine offene Fläche treffen, mit dieser aber nicht konkret verbunden sind. Eine Routing-Engine muss in der Lage sein, dies zu erkennen und aufzuräumen, so dass vom auftreffenden Weg über die offene Fläche geroutet werden kann.
+In Abbildung \ref{fig:topologisch_nicht_verbundener_graph} ist ein topologisch nicht verbundener Graph zu sehen. In \ac{OSM} kann es vorkommen, dass solche Wege auf eine offene Fläche treffen, mit dieser aber nicht topologisch verbunden sind. Eine Routing-Engine muss in der Lage sein, dies zu erkennen und aufzuräumen, so dass vom auftreffenden Weg über die offene Fläche geroutet werden kann.
 
 \subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 \label{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
-Berge und Strände sind bekanntermassen schwieriger zu überqueren als normale Plätze. Sei dies aufgrund der zurückzulegenden Höhendifferenz oder die Unterlage, welche das Fortbewegen mühsamer macht. Zusätzlich zum Problem \ref{problem:Routing über offene Flächen} kommt hier dazu, dass Umlaufen dieser offenen Flächen (Berge, Strände) effizienter sein kann als das Überqueren. 
+Berge und Strände sind bekanntermassen schwieriger zu überqueren als normale Plätze. Sei dies aufgrund der zurückzulegenden Höhendifferenz oder die Unterlage, welche das Fortbewegen mühsamer macht. Zusätzlich zum Problem \ref{problem:Routing über offene Flächen} kommt hier dazu, dass Umlaufen dieser offenen Flächen (Berge, Strände) effizienter sein kann als das Überqueren.
 
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{problem:Start-/Endpunkt auf der Fläche}
-Beginnt das Routing oder ist der Zielort auf einer Fläche, so ziehen die aktuellen Routing-Engines, falls keine Wege wie in \ref{problem:eingezeichnete Fussgängerrouten über offene Flächen} beschrieben, eingezeichnet sind, eine rechtwinklige Linie zur nächsten Kante der Fläche und routen von dort weiter. Dies ist gut auf dem Sechseläutenplatz in Abbildung \ref{fig:start_endpoint_on_area} sichtbar. Falls bereits Wege auf der Fläche eingezeichnet sind, wird über diese geroutet.
+Beginnt das Routing oder ist der Zielort auf einer Fläche, so ziehen die aktuellen Routing-Engines, falls keine Wege wie in \ref{problem:eingezeichnete Fussgängerrouten über offene Flächen} beschrieben eingezeichnet sind, eine rechtwinklige Linie zur nächsten Kante der Fläche und routen von dort weiter. Dies ist gut auf dem Sechseläutenplatz in Abbildung \ref{fig:start_endpoint_on_area} sichtbar. Falls bereits Wege auf der Fläche eingezeichnet sind, wird über diese geroutet.
 
 \subsubsection{Routing bei zwei benachbarten Flächen}
 \label{problem:Routing bei zwei benachbarten Flächen}
-Es kann vorkommen, dass zwei Flächen unmittelbar nebeneinanderliegen. 
+Es kann vorkommen, dass zwei Flächen unmittelbar nebeneinander liegen. 
 % TODO Beispiel dazu finden und aktuelles Verhalten weiter beschreiben
 
 \begin{figure}[ht]
@@ -67,11 +67,11 @@ Es kann vorkommen, dass zwei Flächen unmittelbar nebeneinanderliegen.
 
 \subsubsection{Routing über offene Flächen}
 \label{target:Routing über offene Flächen}
-Das Problem wie in \ref{problem:Routing über offene Flächen} beschrieben wurde bereits in einigen Arbeiten   aufgegriffen \cite{graser_visibility_graph}, \cite{dzafic_spider_web_graph}. Diese beiden Ansätze (Visibility-Graph und SpiderWeb-Graph) werden analysiert, Tests in QGIS implementiert und getestet. Ziel ist es, die optimale Variante zu eruieren, um über offene Flächen den schnellstmöglichen Weg zu finden.
+Das Problem wie in \ref{problem:Routing über offene Flächen} beschrieben wurde bereits in einigen Arbeiten aufgegriffen \cite{graser_visibility_graph}, \cite{dzafic_spider_web_graph}. Diese beiden Ansätze (Visibility-Graph und SpiderWeb-Graph) werden analysiert, Tests in QGIS implementiert und getestet. Ziel ist es, die optimale Variante zu eruieren, um über offene Flächen den schnellstmöglichen Weg zu finden.
 
 \subsubsection{Routing-Engine evaluieren}
 \label{target:Routing-Enginge evaluieren}
-Die zahlreichen Routing-Engines sollen analysiert und festgehalten werden, welche sich für den Hauptzweck dieser Arbeit am besten eignet. Zusätzlich wird geprüft, wie die Datenvorverarbeitung (Einzeichnen der Routen für Routing über offene Flächen) in die bestehenden Routing-Engines eingehängt werden kann. 
+Die zahlreichen Routing-Engines sollen analysiert und festgehalten werden, welche sich für den Hauptzweck dieser Arbeit am besten eignet. Zusätzlich wird geprüft, wie die Datenvorverarbeitung (Einzeichnen der Routen für Routing über offene Flächen) in die bestehenden Routing-Engines eingehängt werden kann.
 
 \subsubsection{eingezeichnete Fussgängerrouten über offene Flächen}
 \label{target:eingezeichnete Fussgängerrouten über offene Flächen}
@@ -80,6 +80,7 @@ Es soll eruiert werden, ob für den Platz die eingezeichneten Fussgängerrouten 
 \subsubsection{topologisch nicht verbundene Wege}
 \label{target:topologisch nicht verbundene Wege}
 Dieses Problem ist der Vollständigkeit halber aufgeführt, wird in dieser Arbeit aber nicht weiter verfolgt.
+%TODO bereits Teil der Routing-Engines
 
 \subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 \label{target:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
@@ -121,9 +122,9 @@ Grundsätzlich befasst sich die Arbeit mit Flächen im urbanen Raum. Berge, Str�
 
 \subsection{Vorgehen und Aufbau der Arbeit}
 \label{Vorgehen und Aufbau der Arbeit}
-Die Studienarbeit nimmt sich zu erst dem Problem des Fussgänger-Routing über Flächen im urbanen Raum an. Sprich es wird geklärt, wie momentan die Thematik gehandhabt wird und welche Vorarbeiten und Lösungen in diesem Bereich existieren. Bestehende Lösungsvorschläge werden mit der Hilfe von QGIS in Python implementiert, um so die bestmögliche Variante zu eruieren. Das gleiche Vorgehen wird für das Fussgänger-Routing über Strassen gewählt. Sobald die bestmöglichen Lösungsvarianten identifiziert sind, muss geklärt werden, wie die Vorverarbeitung der Daten (beispielsweise, das Einzeichnen von möglichen Routen über Flächen) an eine bestehende Routing-Engine übergeben werden kann. Damit dies möglich ist, ist zu prüfen, welche Engine die Anforderungen bestmöglich abdecken.
+Die Studienarbeit nimmt sich zu erst dem Problem des Fussgänger-Routing über Flächen im urbanen Raum an. Es wird geklärt, wie momentan die Thematik gehandhabt wird und welche Vorarbeiten und Lösungen in diesem Bereich existieren. Bestehende Lösungsvorschläge werden mit der Hilfe von QGIS in Python implementiert, um so die bestmögliche Variante zu eruieren. Das gleiche Vorgehen wird für das Fussgänger-Routing über Strassen gewählt. Sobald die bestmöglichen Lösungsvarianten identifiziert sind, muss geklärt werden, wie die Vorverarbeitung der Daten (beispielsweise, das Einzeichnen von möglichen Routen über Flächen) an eine bestehende Routing-Engine übergeben werden kann. Damit dies möglich ist, ist zu prüfen, welche Engine die Anforderungen bestmöglich abdecken.
 
-In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an die API von search.ch übergeben zu können. Aufgabe von search.ch ist es, für n-Startpunkte die ÖV-Route zu genieren. So ist es möglich, denn schnellstmöglichen Weg für eine Route in Kombination von Fussweg und öffentlichem Weg zu ermitteln.
+In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an die API von search.ch übergeben zu können. Aufgabe von search.ch ist es, für n Startpunkte die ÖV-Route zu genieren. So ist es möglich, denn schnellstmöglichen Weg für eine Route in Kombination von Fussweg und öffentlichem Weg zu ermitteln.
 
 Die vorhin aufgeführten Aspekte werden im Kapitel \ref{chap:Technischer Bericht} behandelt.
 
@@ -146,19 +147,20 @@ Im folgenden werden einige theoretische Grundlagen und Begriffe eingeführt, wel
 \label{Fläche}
 
 Als Fläche werden für diesen Zweck Plätze, Wiesen, etc. verstanden, die von Fussgänger frei begehbar sind. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
+% TODO: Wie genau filtern wir nach Flächen? Area=yes UND highway=pedestrian?
 
 \subsubsection{nicht-motorisierter Individualverkehr}
 \label{nicht-motorisierter Individualverkehr}
 
 Zum nicht-motorisierten Individualverkehr gehören unter anderem Fussgänger, Rollstuhlfahrer und Radfahrer.
 
-Zur besseren Lesbarkeit und der Einfachheit halber, wird in der Arbeit nur noch von Fussgänger gesprochen.
+Zur besseren Lesbarkeit und der Einfachheit halber wird in der Arbeit nur noch von Fussgänger gesprochen.
 
 \subsubsection{Multipolygon}
 \label{Multipolygon}
 
-Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen geschlossenen Pfad beschreiben. Jedes Polygon kann entweder als einen äusseren oder inneren Ring dienen. So kann ein innerer Ring eine Teilfläche eines äusseren Rings ausschneiden. Polygone in einem Multipolygon können aber auch disjunkt sein.\cite{osm_wiki_multipolygon}
-
+Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen geschlossenen Pfad beschreiben. Jedes Polygon kann entweder als einen äusseren oder inneren Ring dienen. So kann ein innerer Ring eine Teilfläche eines äusseren Rings ausschneiden. Polygone in einem Multipolygon können auch disjunkt sein.\cite{osm_wiki_multipolygon}
+% TODO: Bild aus wiki (wie referenzieren?)
 
 \subsubsection{Hindernisse auf Flächen}
 \label{Hindernisse in Flächen}
