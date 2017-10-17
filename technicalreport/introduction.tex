@@ -160,7 +160,15 @@ Zur besseren Lesbarkeit und der Einfachheit halber wird in der Arbeit nur noch v
 \label{Multipolygon}
 
 Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen geschlossenen Pfad beschreiben. Jedes Polygon kann entweder als einen äusseren oder inneren Ring dienen. So kann ein innerer Ring eine Teilfläche eines äusseren Rings ausschneiden. Polygone in einem Multipolygon können auch disjunkt sein.\cite{osm_wiki_multipolygon}
-% TODO: Bild aus wiki (wie referenzieren?)
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=0.5\linewidth]{technicalreport/img/multipolygon_osm_example.png}
+\caption[Multipolygon OSM Example]{Beispiel eines Multipolygons in \ac{OSM} mit einem äusseren und zwei inneren Ringen. \cite{osm_wiki_multipolygon}}
+\label{fig:multipolygon_osm_example}
+\end{figure}
+
+In GIS hingegen ist ein Multipolygon definiert als mehrere sich nicht überschneidende Polygone. Jedes Polygon wird durch ein oder mehrere geschlossene Pfade beschrieben. Dabei ist der erste Pfad der äussere Rand, alle weiteren Pfade beschreiben innere Ringe. \cite{opengis_simple_features}
 
 \subsubsection{Hindernisse auf Flächen}
 \label{Hindernisse in Flächen}
