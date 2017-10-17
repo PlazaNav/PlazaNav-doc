@@ -1,7 +1,8 @@
 \documentclass[a4paper, % A4
 	parskip, % Absätze durch Abstand statt Einrückung gekennzeichnet
 	%draft, % überlange Zeilen werden nicht%markiert
-	ngerman] % english, hyphenation etc.
+	ngerman, % english, hyphenation etc.
+    numbers=noenddot] % no trailing period after headings
 	{scrreprt} % Report (KOMA-Script)
 
 \usepackage{fontspec}
@@ -56,18 +57,24 @@
   \renewcommand{\subsectionautorefname}{Subsection}% 
 }
 
+\setcounter{secnumdepth}{3}
+
+% Roman numerals for chapter
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{section}}
 % global formatting
 \onehalfspacing % 1.5x line spacing
 
 \usepackage{color}
 
-%Package for syntax highlighting (needs pygments installed)
-\usepackage{minted}
+%Package for syntax highlighting (needs pygments installed): https://tex.stackexchange.com/a/256796
+\usepackage{caption}
+\usepackage[chapter]{minted}
+\captionsetup[listing]{}
+\captionsetup{labelfont=bf}
 
 % Default options for python code
-% usage: \begin{pycode}
-% to define additional options, use \begin{pycode*}{key=value}
-\newminted{py}{linenos, frame=leftline, numbersep=8pt, framesep=8pt, tabsize=4}
+\setminted[python]{linenos, frame=leftline, numbersep=8pt, framesep=8pt, tabsize=4}
 
 % bigger line numbers for code blocks
 \renewcommand{\theFancyVerbLine}{\sffamily {\small \oldstylenums{\arabic{FancyVerbLine}}}}
