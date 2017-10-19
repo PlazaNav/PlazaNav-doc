@@ -3,12 +3,12 @@ def get_public_transport_stops(south, west, north, east):
 
     bbox = parse_bounding_box(south, west, north, east)
 
-    query_str = """
-        [bbox:{0}];
+    query_str = """f
+        [bbox:{bbox}];
         (
           node["public_transport"="stop_position"];
         );
         out body;
-        """.format(bbox)
+        """
 
     return api.query(query_str)
