@@ -1,12 +1,104 @@
 \section{Bewertung}
 \label{sec:Bewertung}
-TODO
+Im folgenden sind Komponente aufgelistet, welche im Kontext des Kapitels \ref{sec:Stand der Technik} erarbeitet wurden und einen Variantenentscheid mit sich bringen. Dazu werden messbare Kriterien definiert, gewichtet und die einzelnen Varianten daran gemessen.
 
-\subsection{Kriterien}
+Den Varianten wird eine Punktzahl von 1 bis 3 zugewiesen, wobei 3 das Beste ist. Bis und mit dem angegebenen Maximalwert erhält man die volle Punktzahl. Liegt man 20\% über dem Wert wird der Variante 2 Punkte zugewiesen. Alles darüber ergibt 1 Punkt.
+
+\subsection{Routing über offene Flächen}
+\label{eval:Routing über offene Flächen}
+
+Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen hervorgebracht. Namentlich \nameref{solution:Visibility Graph} und \nameref{solution:Spider-Web Graph}, welche im folgenden analysiert werden.
+
+\subsubsection{Kriterien}
 \label{sub:Kriterien}
-% Wie wird bewertet?
-TODO
 
-\subsection{Schlussfolgerungen und eigener Lösungsansatz}
+\paragraph{Verarbeitungszeit}\label{criteria:Verarbeitungszeit}~\\
+Der aktuelle Import der \ac{OSM}-Daten der Schweiz ins System Tourpl \cite{hsr_tourpl}, ein Produkt des Geometa Lab der HSR \cite{geometa_lab_hsr}, dauert 2 Stunden. Die Verarbeitung der Plätze der Schweiz soll somit nicht länger als 5\%, sprich maximal 6 Minuten, der Importzeit dauern. 
+
+
+\paragraph{zusätzliche Datenmenge}\label{criteria:zusätzliche Datenmenge}~\\
+Die Algorithmen generieren zusätzliche Geometrien. Dabei sollen die zusätzlich erstellten Geometrien nicht mehr als 0.1\% der Datenmenge der \ac{OSM}-Datei der Schweiz \cite{osm_data_switzerland} betragen. Mit Stand 20.10.2017 haben die \ac{OSM}-Daten der Schweiz (switzerland-exact.osm.pbf) eine Grösse 277MB in PBF und 6400MB als \ac{OSM}. Somit beträgt die maximal zusätzliche Datenmenge, bezogen auf die \ac{OSM}-Datei 6.4MB.
+
+
+\paragraph{Natürlichkeit}\label{criteria:Natürlichkeit}~\\
+% TODO Begriff definieren und zu jedem Punkt: Messbarkeit definieren
+% TODO Verweis auf Definition in Graser-Paper
+Für die Natürlichkeit einer Route ist es schwer messbare Kriterien zu definieren. Als eine natürliche Route versteht man, wenn man auf direktem Weg über den Platz geht und keine Umwege macht. Treten Hindernisse auf dem Platz auf, widerspricht es einem natürlichen Fussgänger-Verhalten, wenn man direkt aufs Hindernis zu läuft und dieses am Rande umgeht. Um trotzdem ein Fazit ziehen zu können, werden 3 Plätze (Helvetiaplatz in Zürich, Fischmarktplatz in Rapperswil-Jona und der Europaplatz in Luzern) untersucht. Dabei wird eine Route jeder Variante auf dem Platz dargestellt und Probanden präsentiert. Die Probanden haben die Möglichkeit, die Route nach der vorhin definierten Natürlichkeit mit Punkten von 1-3 zu bewerten. Als massgeblicher Vergleichswert wird der Durchschnitt der Bewertungen aller Probanden genommen.
+
+
+\subsubsection{Schlussfolgerungen und eigener Lösungsansatz}
 \label{sub:Schlussfolgerungen und eigener Lösungsansatz}
-TODO
+% TODO auf welcher Rechnerkonfiguration wurde Test durchgeführt
+Die Vorverarbeitung wurde auf einem Rechner mit [TODO: Rechnerkonfiguration beschreiben, auf welchem Test durchgeführt wurde analog zu ParaProg Übungen]. 
+
+\paragraph{Verarbeitungszeit}\label{result:Verarbeitungszeit}~\\
+TODO Tabelle mit Vergleich der Algorithmen
+\begin{table}[ht]
+    \centering
+    \caption{Resultat: Verarbeitungszeit}
+    \label{Resultat: Verarbeitungszeit}
+    \begin{tabular}{lll}
+        & \textbf{Visiblity Graph} & \textbf{Spiderweb Graph} \\
+        \textbf{Verarbeitungszeit} & x min                    & y min                   
+    \end{tabular}
+\end{table}
+
+
+\paragraph{zusätzliche Datenmenge}\label{result:zusätzliche Datenmenge}~\\
+TODO Tabelle mit Vergleich der Algorithmen
+\begin{table}[ht]
+    \centering
+    \caption{Resultat: zusätzliche Datenmenge}
+    \label{Resultat: zusätzliche Datenmenge}
+    \begin{tabular}{lll}
+        & \textbf{Visiblity Graph} & \textbf{Spiderweb Graph} \\
+        \textbf{zusätzliche Datenmenge} & xMB                    & yMB                   
+    \end{tabular}
+\end{table}
+
+\paragraph{Natürlichkeit}\label{result:Natürlichkeit}~\\
+TODO Plätze mit ihren Routen abbilden und die jeweiligen Bewertungen der Probanden
+\begin{table}[ht]
+    \centering
+    \caption{Resultat: Natürlichkeit}
+    \label{Resultat: Natürlichkeit}
+    \begin{tabular}{lll}
+        & \textbf{Visiblity Graph} & \textbf{Spiderweb Graph} \\
+        \textbf{Helvetiaplatz}   &                          &                          \\
+        Proband 1                & 1                        & 1                        \\
+        Proband 2                & 1                        & 1                        \\
+        Proband 3                & 1                        & 1                        \\
+        Proband 4                & 1                        & 1                        \\
+        Proband 5                & 1                        & 1                        \\
+        \textbf{Fischmarktplatz} &                          &                          \\
+        Proband 1                & 1                        & 1                        \\
+        Proband 2                & 1                        & 1                        \\
+        Proband 3                & 1                        & 1                        \\
+        Proband 4                & 1                        & 1                        \\
+        Proband 5                & 1                        & 1                        \\
+        \textbf{Europaplatz}     &                          & 1                        \\
+        Proband 1                & 1                        & 1                        \\
+        Proband 2                & 1                        & 1                        \\
+        Proband 3                & 1                        & 1                        \\
+        Proband 4                & 1                        & 1                        \\
+        Proband 5                & 1                        & 1                        \\
+        \textbf{Resultat}        & \textbf{x}               & \textbf{y}                       
+    \end{tabular}
+\end{table}
+
+\paragraph{Resultat und Schlussfolgerung}\label{result:Resultat und Schlussfolgerung}~\\
+\begin{table}[ht]
+    \centering
+    \caption{Evaluationskriterien Flächen-Algorithmus}
+    \label{Evaluationskriterien Flächen-Algorithmus}
+    \begin{tabular}{lllll}
+            \hline
+            \textbf{ID} & \textbf{Titel}         & \textbf{\begin{tabular}[c]{@{}l@{}}Relatives Gewicht \\ (0-1)\end{tabular}} & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\ \hline
+            1           & \nameref{criteria:Verarbeitungszeit}      & 0.5                                                                         & 5 / 2.5                   & 1 / 0.5                  \\
+            2           & \nameref{criteria:zusätzliche Datenmenge} & 0.4                                                                         & 4 / 1.6                   & 2 / 0.8                  \\
+            3           & \nameref{criteria:Natürlichkeit}          & 0.7                                                                         & 2 / 1.4                   & 4 / 2.8                  \\ \hline
+            \multicolumn{3}{l}{\textbf{Total}}                                                                                 & \textbf{11 / 5.5}         & \textbf{7 / 4.1}        
+     \end{tabular}               
+\end{table}
+
+TODO Werte nach Durchführung anpassen
