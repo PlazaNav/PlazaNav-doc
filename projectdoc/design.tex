@@ -9,10 +9,19 @@
 \subsubsection{Vorverarbeitung der Daten}
 \label{architektur:Vorverarbeitung der Daten}
 
+Für unser optimiertes Routing wird in regelmässigen Abständen der neueste \ac{OSM}-Datensatz\cite{osm_data_switzerland} der Schweiz geladen. Bevor die Daten einer Routing-Engine zur Verarbeitung in einen Routing-Graph übergeben werden, sollen zuerst unsere optimierten Pfade als Wege in die Flächen eingepflegt werden. Abbildung \ref{fig:workflow_vorverarbeitung} zeigt diesen Ablauf schematisch auf. Im Folgenden werden die einzelnen Komponenten der Vorverarbeitung besprochen.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth]{projectdoc/img/workflow_vorverarbeitung.png}
+\caption[Ablauf Vorverbeitung]{Ablauf der Vorverarbeitung der \ac{OSM}-Daten bis zur Übergabe an den Router; Grafik erstellt mit \emph{draw.io}}
+\label{fig:workflow_vorverarbeitung}
+\end{figure}
+
 \paragraph{OSM Import}~\\
 Die \acs{OSM}-Import Komponente liest das komplette für uns relevante Kartenmaterial (z.B. die Schweiz) als \ac{PBF} ein und sucht dabei nach Flächen, die wir bearbeiten wollen.
 
-Dazu werden \emph{Osmium} und die dazugehörigen Python-Bindings \emph{pyOsmium} verwendet. \emph{Osmium} erkennt automatisch Flächen aus \ac{OSM} Multipolygone oder Relationen. Mit einem eigenen Handler können wir dabei gleich das Einlesen des Files auf die für uns interessanten Flächen beschränken, wie in Listing \ref{osmium_import_code} gezeigt wird.
+Dazu werden \emph{Osmium} und die dazugehörigen Python-Bindings \emph{pyOsmium}\cite{pyosmium} verwendet. Osmium erkennt automatisch Flächen aus \ac{OSM} Multipolygone oder Relationen. Mit einem eigenen Handler können wir dabei gleich das Einlesen des Files auf die für uns interessanten Flächen beschränken, wie in Listing \ref{osmium_import_code} gezeigt wird.
 
 \begin{listing}[ht]
     \inputminted{python}{projectdoc/listing/osmium_handler.py}
@@ -20,10 +29,10 @@ Dazu werden \emph{Osmium} und die dazugehörigen Python-Bindings \emph{pyOsmium}
     \label{osmium_import_code}
 \end{listing}
 
-\paragraph{OSM Verarbeitung}~\\
-Die mit \emph{Osmium} importierten \ac{OSM} Daten sind noch reine \ac{OSM}-Objekte, auf denen keine Geometrie-Berechnungen angewendet werden können. Dazu wird die Python-Library \emph{Shapely} verwendet. \emph{Shapely} kann mit Geometrien umgehen und Algorithmen von \ac{GEOS} wie \code{intersection} und \code{contains} darauf anwenden.
+\paragraph{Vorverarbeitung der Flächen}\label{par:Vorverarbeitung der Flächen}~\\
+Die mit Osmium importierten \ac{OSM} Daten sind noch reine \ac{OSM}-Objekte, auf denen keine Geometrie-Berechnungen angewendet werden können. Dazu wird die Python-Library \emph{Shapely}\cite{shapely} verwendet. Shapely kann mit Geometrien umgehen und Algorithmen von \ac{GEOS} wie \code{intersection} und \code{contains} darauf anwenden.
 
-Um die mit \emph{Osmium} importierten Objekte in \emph{Shapely} zu verwenden, werden diese ins \ac{WKB} Format übersetzt und \emph{Shapely} übergeben, wie in Listing \ref{shapely_import_code} gezeigt.
+Um die mit Osmium importierten Objekte in Shapely zu verwenden, werden diese ins \ac{WKB} Format übersetzt und Shapely übergeben, wie in Listing \ref{shapely_import_code} gezeigt.
 
 \begin{listing}[ht]
     \inputminted{python}{projectdoc/listing/shapely_import.py}
@@ -31,6 +40,10 @@ Um die mit \emph{Osmium} importierten Objekte in \emph{Shapely} zu verwenden, we
     \label{shapely_import_code}
 \end{listing}
 
+\paragraph{OSM Export}~\\
+Die durch unseren Algorithmus erzeugten Wege durch Flächen (in Shapely Datenstrukturen) sollen nun wieder zurück ins \ac{OSM}-Format geschrieben werden. Die bisher erwähnten Libraries bieten eine solche Funktion leider nicht an. Auch sonst ist zum Zeitpunkt dieser Arbeit keine stabile Library dafür auffindbar. Die Erklärung dafür liegt wohl darin, dass beim Extrahieren der Geometrie (siehe Absatz \nameref{par:Vorverarbeitung der Flächen}) alle Meta-Daten (z.B. Tags) von \ac{OSM} verloren gehen. Bei der umgekehrten Konvertierung (Geometrie zu \ac{OSM}) müssen also wieder Meta-Daten hinzugefügt werden. Diese Problematik kann ein generisches Konvertierungs-Tool nicht ohne weiteres lösen.
+
+Für diese Komponente wird daher eine eigene Implementation geschrieben, die jediglich Wege aus Geometrien in ein \ac{OSM}-Format schreibt und mit den für uns relevanten Meta-Daten versieht.
 
 \subsubsection{nächste ÖV-Haltestellen finden}
 \label{architection:nächste ÖV-Haltestellen finden}
