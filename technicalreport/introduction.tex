@@ -49,18 +49,23 @@ Berge und Strände sind bekanntermassen schwieriger zu überqueren als normale P
 \label{problem:Start-/Endpunkt auf der Fläche}
 Beginnt das Routing oder ist der Zielort auf einer Fläche, so ziehen die aktuellen Routing-Engines, falls keine Wege wie in \ref{problem:eingezeichnete Fussgängerrouten über offene Flächen} beschrieben eingezeichnet sind, eine rechtwinklige Linie zur nächsten Kante der Fläche und routen von dort weiter. Dies ist gut auf dem Sechseläutenplatz in Abbildung \ref{fig:start_endpoint_on_area} sichtbar. Falls bereits Wege auf der Fläche eingezeichnet sind, wird über diese geroutet.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{technicalreport/img/start_endpoint_on_area}
+    \caption[Fussgänger-Routing mit Startpunkt auf der Fläche]{Fussgänger-Routing mit GraphHopper über den Helvetiaplatz (links) und Sechseläutenplatz (rechts), Zürich, Schweiz mit Startpunkt auf der Fläche; Screenshot von openstreetmap.org aufgenommen am 14.10.2017}
+    \label{fig:start_endpoint_on_area}
+\end{figure}
+
 \subsubsection{Routing bei zwei benachbarten Flächen}
 \label{problem:Routing bei zwei benachbarten Flächen}
-Es kann vorkommen, dass zwei Flächen unmittelbar nebeneinander liegen. 
-% TODO Beispiel dazu finden und aktuelles Verhalten weiter beschreiben
+Es kann vorkommen, dass zwei Flächen unmittelbar nebeneinander liegen. Dies ist beim Bundesplatz in Bern, Schweiz der Fall, welcher direkt an den Bärenplatz grenzt. Dies ist in Abbildung \ref{fig:bundesplatz_baerenplatz} sichtbar. Das erschwert das Routing über Flächen, da nicht direkt Entry-Points eines Polygons genutzt werden können.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=1\linewidth]{technicalreport/img/start_endpoint_on_area}
-\caption[Fussgänger-Routing mit Startpunkt auf der Fläche]{Fussgänger-Routing mit GraphHopper über den Helvetiaplatz (links) und Sechseläutenplatz (rechts), Zürich, Schweiz mit Startpunkt auf der Fläche; Screenshot von openstreetmap.org aufgenommen am 14.10.2017}
-\label{fig:start_endpoint_on_area}
+\includegraphics[width=0.5\linewidth]{technicalreport/img/bundesplatz_baerenplatz}
+\caption[Zwei benachbarte Flächen]{Zwei benachbarte Flächen (Bundesplatz, Bärenplatz) in Bern, Schweiz; Screenshot von overpass-turbo.eu aufgenommen am 18.10.2017}
+\label{fig:bundesplatz_baerenplatz}
 \end{figure}
-
 	
 \subsection{Ziele und Unterziele}
 \label{Ziele und Unterziele}
@@ -88,18 +93,14 @@ Im Kontext dieser Arbeit wird kurz ein theoretischer Ansatz aufgezeigt, wie man 
 
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{target:Start-/Endpunkt auf der Fläche}
-
-TODO
-% TODO was genau ist hier das Ziel?
+Der Start des Fussgänger-Routing ist von überall möglich. Somit soll es möglich sein, dass das Routing auf einer Fläche beginnen kann und man nicht wie in \ref{problem:Start-/Endpunkt auf der Fläche} beschrieben, zur nächstgelegenen Polygonkante geroutet wird. Es soll geklärt werden, ob die Vorverarbeitung der Flächen, wie es in \ref{target:Routing über offene Flächen} vorgesehen ist, ausreicht, oder ob zu einem späteren Zeitpunkt ein Echtzeit-Verarbeitung der Fläche vom aktuellen Standort aus in Betracht gezogen werden muss.
 
 \subsubsection{Routing bei zwei benachbarten Flächen}
 \label{target:Routing bei zwei benachbarten Flächen}
+Dieses Problem ist der Vollständigkeit halber aufgeführt, wird in dieser Arbeit aber nicht weiter verfolgt.
 
-TODO
-% TODO was genau ist hier das Ziel?
-
-\subsubsection{nächste ÖV-Haltestelle finden}
-\label{target:nächste ÖV-Haltestelle finden}
+\subsubsection{nächste ÖV-Haltestellen finden}
+\label{target:nächste ÖV-Haltestellen finden}
 Der Fokus der Arbeit liegt auf dem Finden und Erreichen der nächsten ÖV-Haltestelle, welche einem ans gewünschte Ziel führt. So soll eruiert werden, wie von einem bestehenden Startpunkt aus die nächsten ÖV-Haltestellen identifiziert werden, um diese an search.ch für das weitere Routing zu übergeben.
 
 \subsubsection{Prototyp}
@@ -159,8 +160,16 @@ Zur besseren Lesbarkeit und der Einfachheit halber wird in der Arbeit nur noch v
 \subsubsection{Multipolygon}
 \label{Multipolygon}
 
-Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen geschlossenen Pfad beschreiben. Jedes Polygon kann entweder als einen äusseren oder inneren Ring dienen. So kann ein innerer Ring eine Teilfläche eines äusseren Rings ausschneiden. Polygone in einem Multipolygon können auch disjunkt sein.\cite{osm_wiki_multipolygon}
-% TODO: Bild aus wiki (wie referenzieren?)
+Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen geschlossenen Pfad beschreiben. Jedes Polygon kann entweder als einen äusseren oder inneren Ring dienen. So kann ein innerer Ring eine Teilfläche eines äusseren Rings ausschneiden. Polygone in einem Multipolygon können auch disjunkt sein. \cite{osm_wiki_multipolygon}
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=0.5\linewidth]{technicalreport/img/multipolygon_osm_example.png}
+\caption[Multipolygon OSM Example]{Beispiel eines Multipolygons in \ac{OSM} mit einem äusseren und zwei inneren Ringen. \cite{osm_wiki_multipolygon}}
+\label{fig:multipolygon_osm_example}
+\end{figure}
+
+In GIS hingegen ist ein Multipolygon definiert als mehrere sich nicht überschneidende Polygone. Jedes Polygon wird durch ein oder mehrere geschlossene Pfade beschrieben. Dabei ist der erste Pfad der äussere Rand, alle weiteren Pfade beschreiben innere Ringe. \cite{opengis_simple_features}
 
 \subsubsection{Hindernisse auf Flächen}
 \label{Hindernisse in Flächen}

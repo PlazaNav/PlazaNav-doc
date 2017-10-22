@@ -33,9 +33,9 @@ Diese Arbeit nimmt Bezug auf zwei Lösungsansätze \cite{graser_visibility_graph
 
 Zum Schluss wird ein Variantenvergleich durchgeführt und ein Fazit gezogen. Ziel ist es, einen Flächen-Routing-Algorithmus zu finden, welche für die Vorverarbeitung der Flächen verwendet werden kann.  
 
-\paragraph{Visibility Graph}~\\
+\paragraph{Visibility Graph}\label{solution:Visibility Graph}~\\
 
-Ein Ansatz zur Verhinderung von Kollisionen auf Flächen wurde in  \cite{lozano-perez_visibilty_graph} als Visibility Graph beschrieben. Dabei wird in einem ersten Schritt für jeden Knotenpunkt einer Fläche eine Verbindung zu jedem anderen Knotenpunkt gezeichnet. Für unsere Zwecke werden dabei alle Knotenpunkte eines Polygons, Hindernisse,  sowie Schnittpunkte mit Strassen und Wegen (Einstiegspunkte) beachtet.
+Ein Ansatz zur Verhinderung von Kollisionen auf Flächen wurde in \cite{lozano-perez_visibilty_graph} als Visibility Graph beschrieben. Dabei wird in einem ersten Schritt für jeden Knotenpunkt einer Fläche eine Verbindung zu jedem anderen Knotenpunkt gezeichnet. Für unsere Zwecke werden dabei alle Knotenpunkte eines Polygons, Hindernisse,  sowie Schnittpunkte mit Strassen und Wegen (Einstiegspunkte) beachtet.
 % TODO: Einheitlicher Begriff für "entry/exit points" evtl. in Begriffe definieren
 
 In einem zweiten Schritt werden alle Verbindungen verworfen, die nicht komplett innerhalb der Fläche liegen oder mit einem Hindernis darauf kollidieren.
@@ -50,11 +50,11 @@ Für die Verwendung im Routing beschreibt \cite{graser_visibility_graph} einen A
 
 \begin{figure}
     \includegraphics[width=\textwidth,keepaspectratio]{technicalreport/img/visibility_graph_comparison.png}
-    \caption{Visibility Graph über den Helvetiaplatz, Zürich, Schweiz; Links: Unveränderter Visibility Graph; Rechts: Reduziert auf kürzeste Pfade}
+    \caption[Visibility Graph über Helvetiaplatz]{Visibility Graph über den Helvetiaplatz, Zürich, Schweiz; Links: Unveränderter Visibility Graph; Rechts: Reduziert auf kürzeste Pfade}
     \label{fig:visibility_graph_comparison}
 \end{figure}
 
-\paragraph{Spider-Web Graph}~\\
+\paragraph{Spider-Web Graph}\label{solution:Spider-Web Graph}~\\
 
 
 Die Arbeit \cite{dzafic_spider_web_graph} befasst sich mit dem Flächenrouting für Nutzern von Elektrorollstühlen, indem ein Spinnennetz (siehe Abbildung \ref{fig:spiderweb}) über das Polygon gelegt wird. Dies hat den Vorteil, dass auf dem Polygon, sprich der Fläche zusätzliche Linien und Kanten vorhanden sind, wobei statische Hindernisse berücksichtigt werden, welche für das Routing verwendet werden können. Diese Idee und das Grundprinzip wurde im folgenden übernommen.
@@ -95,10 +95,22 @@ Es wurde ebenfalls geprüft, ob die Rotation des Spinnennetz auf die Gegebenheit
 \begin{figure}[th]
 \centering
 \includegraphics[width=0.7\linewidth]{technicalreport/img/rotation_comparison}
-\caption[Rotation Comparison]{Rotation des Spiderwebs um 45 und 90 Grad im Vergleich mit keiner Rotation}
+\caption[SpiderWeb-Graph Vergleich mit Rotation]{Rotation des Spiderwebs um 45 und 90 Grad im Vergleich mit keiner Rotation}
 \label{fig:rotation_comparison}
 \end{figure}
 
+\paragraph{Straight Skeleton}~\\
+
+Die Methode vom \emph{Straight Skeleton} wurde erstmals in \cite{aichholzer_skeleton} eingeführt. Dabei werden Schritt für Schritt die Kanten des Polygons zur Mitte zusammen geführt, es entstehen Verbindungen mit scharfen Ecken zu den Eckpunkten des Polygons. In Abbildung \ref{fig:skeleton_example} ist beispielhaft ein Graph aufgezeichnet.
+
+Die Andwendung dieser Methode für Flächenrouting wurde bereits in \cite{graser_visibility_graph} diskutiert. Es stellt sich heraus, dass die \emph{Straight Skeleton} Methode keine natürlichen Routen für Fussgänger ergibt, da sie tendenziell zur Mitte der Fläche gehen und sich dabei scharfe Kurven ergeben. Aus diesen Gründen wird dieser Ansatz nicht weiter behandelt.
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=0.7\linewidth]{technicalreport/img/skeleton_example.png}
+\caption[Straight Skeleton Beispiel]{Straight Skeleton eines Multipolygons; Erstellt mit der Software pySkeleton von Ecole Centrale Paris}
+\label{fig:skeleton_example}
+\end{figure}
 
 \paragraph{Einschränkungen}~\\
 

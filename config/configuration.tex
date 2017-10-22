@@ -65,11 +65,16 @@
 % global formatting
 \onehalfspacing % 1.5x line spacing
 
+% count figures and labels continuously
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
 \usepackage{color}
 
 %Package for syntax highlighting (needs pygments installed): https://tex.stackexchange.com/a/256796
 \usepackage{caption}
-\usepackage[chapter]{minted}
+\usepackage{minted}
 \captionsetup[listing]{}
 \captionsetup{labelfont=bf}
 
