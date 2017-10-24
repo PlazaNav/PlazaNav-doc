@@ -1,0 +1,110 @@
+{
+  "type": "Component",
+  "scope": "Plaza Vorverarbeitung",
+  "description": "Komponenten Diagramm für die Plaza Vorverarbeitung",
+  "size": "A5_Landscape",
+
+
+  "elements": [
+    {
+      "type": "Software System",
+      "name": "planet.osm.ch",
+      "description": "OSM Daten",
+      "tags": "",
+      "position": "25,700",
+      "containers": []
+    },
+    {
+      "type": "Software System",
+      "name": "PlazaRoute",
+      "description": "",
+      "tags": "",
+      "containers": [
+        {
+          "type": "Container",
+          "name": "File Storage",
+          "description": "Für OSM Daten",
+          "technology": "",
+          "tags": "",
+          "position": "1610,1160",
+          "components": []
+        },
+        {
+          "type": "Container",
+          "name": "Plaza Vorverarbeitung",
+          "description": "",
+          "technology": "Python",
+          "tags": "",
+          "components": [
+            {
+              "type": "Component",
+              "name": "OSM Importer",
+              "description": "",
+              "technology": "PyOsmium",
+              "tags": "",
+              "position": "850,690"
+            },
+            {
+              "type": "Component",
+              "name": "OSM Merger",
+              "description": "Neue Geometrien ins OSM-Format",
+              "technology": "Python",
+              "tags": "",
+              "position": "1610,450"
+            },
+            {
+              "type": "Component",
+              "name": "Plaza Optimizer",
+              "description": "Geometrien berechnen",
+              "technology": "Shapely",
+              "tags": "",
+              "position": "850,185"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+
+  "relationships": [
+    {
+      "source": "OSM Importer",
+      "description": "Erhält OSM-Rohdaten von",
+      "technology": "",
+      "destination": "planet.osm.ch",
+      "tags": ""
+    },
+    {
+      "source": "OSM Importer",
+      "description": "Legt OSM-Daten ab auf",
+      "technology": "",
+      "destination": "File Storage",
+      "tags": ""
+    },
+    {
+      "source": "OSM Merger",
+      "description": "",
+      "technology": "",
+      "destination": "Plaza Optimizer",
+      "tags": ""
+    },
+    {
+      "source": "OSM Merger",
+      "description": "Liest und schreibt OSM-Daten",
+      "technology": "",
+      "destination": "File Storage",
+      "tags": ""
+    },
+    {
+      "source": "Plaza Optimizer",
+      "description": "",
+      "technology": "",
+      "destination": "OSM Importer",
+      "tags": ""
+    }
+  ],
+
+
+  "styles": []
+}
