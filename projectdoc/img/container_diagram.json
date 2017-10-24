@@ -1,0 +1,111 @@
+{
+  "type": "Container",
+  "scope": "PlazaRoute",
+  "description": "Container Diagramm für PlazaRoute",
+  "size": "A5_Landscape",
+
+
+  "elements": [
+    {
+      "type": "Software System",
+      "name": "Overpass",
+      "description": "",
+      "tags": "",
+      "position": "195,365",
+      "containers": []
+    },
+    {
+      "type": "Software System",
+      "name": "PlazaRoute",
+      "description": "",
+      "tags": "",
+      "containers": [
+        {
+          "type": "Container",
+          "name": "Plaza Routing",
+          "description": "REST Service",
+          "technology": "Python",
+          "tags": "",
+          "position": "1005,625",
+          "components": []
+        },
+        {
+          "type": "Container",
+          "name": "Plaza Vorverarbeitung",
+          "description": "",
+          "technology": "Python",
+          "tags": "",
+          "position": "1005,1030",
+          "components": []
+        },
+        {
+          "type": "Container",
+          "name": "Router",
+          "description": "Fussgänger Routing",
+          "technology": "",
+          "tags": "",
+          "position": "1835,625",
+          "components": []
+        }
+      ]
+    },
+    {
+      "type": "Software System",
+      "name": "QGIS Plugin",
+      "description": "",
+      "tags": "",
+      "position": "1005,100",
+      "containers": []
+    },
+    {
+      "type": "Software System",
+      "name": "search.ch",
+      "description": "ÖV-Routing",
+      "tags": "",
+      "position": "195,930",
+      "containers": []
+    }
+  ],
+
+
+  "relationships": [
+    {
+      "source": "Plaza Routing",
+      "description": "Holt Fussgänger-Routen von",
+      "technology": "HTTPS",
+      "destination": "Router",
+      "tags": ""
+    },
+    {
+      "source": "Plaza Routing",
+      "description": "Holt ÖV-Routing von",
+      "technology": "HTTPS",
+      "destination": "search.ch",
+      "tags": ""
+    },
+    {
+      "source": "Plaza Routing",
+      "description": "Findet Haltestellen mit",
+      "technology": "",
+      "destination": "Overpass",
+      "tags": ""
+    },
+    {
+      "source": "QGIS Plugin",
+      "description": "Fragt nach ÖV Routing",
+      "technology": "HTTPS",
+      "destination": "Plaza Routing",
+      "tags": ""
+    },
+    {
+      "source": "Router",
+      "description": "Erhält OSM-Daten von",
+      "technology": "",
+      "destination": "Plaza Vorverarbeitung",
+      "tags": ""
+    }
+  ],
+
+
+  "styles": []
+}
