@@ -1,20 +1,28 @@
 
-\section{Design}
-\label{sec:Design}
-% Die Architektur soll eine objektorientierte Problemdomain umfassen. Eine allfällig eingesetzte Datenbank darf diese Problemdomain permanent speichern, nicht aber ersetzen.
+\section{Architektur}
+\label{sec:Architektur}
+% Vorgehen nach C4 Modell
 
-\subsection{Architektur}
-\label{sub:Architektur}
+\subsection{Systemkontext}
+\label{architektur:Systemkontext}
+% KOntext Diagramm
 
-\subsubsection{Vorverarbeitung der Daten}
-\label{architektur:Vorverarbeitung der Daten}
+\subsection{Container}
+\label{architektur:Container}
+
+\subsubsection{QGIS Plugin}
+\label{architektur:QGIS Plugin}
+
+
+\subsubsection{Plaza Vorverarbeitung}
+\label{architektur:Plaza Vorverarbeitung}
 
 Für unser optimiertes Routing wird in regelmässigen Abständen der neueste \ac{OSM}-Datensatz\cite{osm_data_switzerland} der Schweiz geladen. Bevor die Daten einer Routing-Engine zur Verarbeitung in einen Routing-Graph übergeben werden, sollen zuerst unsere optimierten Pfade als Wege in die Flächen eingepflegt werden. Abbildung \ref{fig:workflow_vorverarbeitung} zeigt diesen Ablauf schematisch auf. Im Folgenden werden die einzelnen Komponenten der Vorverarbeitung besprochen.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\linewidth]{projectdoc/img/workflow_vorverarbeitung.png}
-\caption[Ablauf Vorverbeitung]{Ablauf der Vorverarbeitung der \ac{OSM}-Daten bis zur Übergabe an den Router; Grafik erstellt mit \emph{draw.io}}
+\caption[Ablauf Vorverarbeitung]{Ablauf der Vorverarbeitung der \ac{OSM}-Daten bis zur Übergabe an den Router; Grafik erstellt mit \emph{draw.io}}
 \label{fig:workflow_vorverarbeitung}
 \end{figure}
 
@@ -45,8 +53,11 @@ Die durch unseren Algorithmus erzeugten Wege durch Flächen (in Shapely Datenstr
 
 Für diese Komponente wird daher eine eigene Implementation geschrieben, die jediglich Wege aus Geometrien in ein \ac{OSM}-Format schreibt und mit den für uns relevanten Meta-Daten versieht.
 
-\subsubsection{nächste ÖV-Haltestellen finden}
-\label{architection:nächste ÖV-Haltestellen finden}
+\subsubsection{Plaza Routing}
+\label{architektur:Plaza Routing}
+
+\paragraph{nächste ÖV-Haltestellen finden}~\\
+\label{architektur:nächste ÖV-Haltestellen finden}
 
 Das grundlegende Ziel ist es von einem Startpunkt aus eine Destination zu Fuss und mit dem öffentlichen Verkehr zu erreichen. Dabei sollen die ÖV-Haltestellen in einem zu Fuss machbaren Umkreis berücksichtigt werden. Von diesen Haltestellen ausgehend wird das ÖV-Routing an die Zieldestination durchgeführt.
 
@@ -66,22 +77,7 @@ In Listing \ref{get_public_transport_stops_overpass} ist zu sehen, wie für eine
 
 Es ist ebenfalls möglich, eine Umkreissuche mit \code{around}  durchzuführen. Dies hat Performance-Nachteile und es gibt keine entscheidenden Gründe, warum es vorteilhafter sein sollte, wenn man einen Kreis statt ein Rechteck um einen Ausgangspunkt zieht.
 
-\subsection{Zusammenspiel Komponenten}
-\label{sub:Zusammenspiel Komponenten}
-%hier ein Sequenzdiagram wie die Komponente zusammenspielen, zum Beispiel Vorverarbeitung, dann in System spielen, dann Plugin, dann search.ch, dann Plugin, etc.
-TODO
-
-\subsection{Klassendiagramme}
-\label{sub:Klassendiagramme}
-
-TODO
-
-\subsection{Sequenzdiagramme}
-\label{sub:Sequenzdiagramme}
-
-TODO
-
-\subsection{UI Design}
-\label{sub:UI Design}
+\subsubsection{Router}
+\label{architektur:Router}
 
 TODO
