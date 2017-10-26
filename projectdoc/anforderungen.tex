@@ -5,35 +5,35 @@
 \subsection{Use Cases}
 \label{sub:Use Cases}
 
-\subsubsection{UC01: schnellstmöglichen Weg}
+\subsubsection{UC01: schnellstmöglicher Weg}
 \label{usecase:UC01}
 
 Als Benutzer möchte ich den schnellstmöglichen Weg mit öffentlichen Verkehrsmitteln und zu Fuss zwischen zwei geografischen Standorten finden.
 
-\subsubsection{UC02: }
+\subsubsection{UC02: QGIS Plugin}
 \label{usecase:UC02}
 
 Als Benutzer möchte ich mithilfe \nameref{usecase:UC01} von QGIS und einem installierten Plugin durchführen können.
 
-\subsubsection{UC03: }
+\subsubsection{UC03: kürzester Pfad über öffentliche Plätze}
 \label{usecase:UC03}
 
 Als Fussgänger möchte ich über öffentliche Plätze den kürzesten Pfad nehmen.
 
-\subsubsection{UC04: }
+\subsubsection{UC04: natürliches Routing über öffentliche Plätze}
 \label{usecase:UC04}
 
 Als Fussgänger möchte ich öffentliche Plätze natürlich (Verweis auf Definition Natürlichkeit) begehen.
 
-\subsubsection{UC05: }
+\subsubsection{UC05: maximale Laufdistanz}
 \label{usecase:UC05}
 
 Als Fussgänger möchte ich maximal 2 Kilometer zur nächsten Haltestelle laufen.
 
-\subsubsection{UC06: }
+\subsubsection{UC06: periodische Aktualisierung der OSM-Daten}
 \label{usecase:UC06}
 
-Als Benutzer möchte ich auf den wöchentlich aktuellsten Kartendaten routen können.
+Als Benutzer möchte ich auf den wöchentlich aktuellsten \ac{OSM}-Daten routen können.
 
 \subsection{System-Sequenzdiagramme}
 \label{sub:System-Sequenzdiagramme}
@@ -53,30 +53,30 @@ TODO
 
 PlazaRoute wird in ein oder mehreren Docker-Images ausgeliefert
 
-\subsubsection{NFA02: }
+\subsubsection{NFA02: austauschbare Routing-Engine}
 \label{NFA:NFA02}
 
 austauschbare Routing Engine
 
-\subsubsection{NFA03: }
+\subsubsection{NFA03: periodische Aktualisierung der OSM-Daten}
 \label{NFA:NFA03}
 
-Die auf Fussgänger optimierten Routing-Graphen werden wöchentlich mit den neuesten Kartendaten vorverarbeitet.
+Die auf Fussgänger optimierten Routing-Graphen werden wöchentlich mit den neuesten \ac{OSM}-Daten vorverarbeitet.
 
-\subsubsection{NFA04: }
+\subsubsection{NFA04: Dauer der Vorverarbeitung}
 \label{NFA:NFA04}
 
-Die Vorverarbeitung der Kartendaten (Optimierung auf öffentliche Fläche) darf maximal 1 Stunde benötigen
+Die Vorverarbeitung der \ac{OSM}-Daten (Optimierung auf öffentliche Fläche) darf maximal 1 Stunde benötigen
 
-\subsubsection{NFA05: }
+\subsubsection{NFA05: zusätzliche Datenmenge}
 \label{NFA:NFA05}
 
 Die zusätzlichen Daten für die Optimierung dürfen nicht mehr als x% des Kartenmaterials
 
-\subsubsection{NFA06: }
+\subsubsection{NFA06: Dauer des Unterbruchs bei OSM-Daten-Integration}
 \label{NFA:NFA06}
 
-Verfügbarkeit: Unterbruch des Services beim Integrieren der neuesten Kartendaten (für Router Neuberechnung) max. 2 Stunden
+Verfügbarkeit: Unterbruch des Services beim Integrieren der neuesten \ac{OSM}-Daten (für Router Neuberechnung) max. 2 Stunden
 
 \subsection{Detailspezifikation}
 \label{sub:Detailspezifikation}
