@@ -23,7 +23,7 @@
         {
           "type": "Container",
           "name": "File Storage",
-          "description": "Für OSM Daten",
+          "description": "Für OSM-Files",
           "technology": "",
           "tags": "",
           "position": "1610,1160",
