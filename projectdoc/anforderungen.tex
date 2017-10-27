@@ -1,39 +1,59 @@
-
 \section{Anforderungsspezifikation}
 \label{sec:Anforderungsspezifikation}
 
 \subsection{Use Cases}
 \label{sub:Use Cases}
+Im folgenden sind die funktionalen Anforderungen an PlazaRoute mit all seinen Komponenten, welche im Kapitel \ref{sec:Architektur} aufgeführt sind, als Use Cases im Brief-Format beschrieben. Zur Übersicht folgt zuerst das Use Case Diagramm in Abbildung \ref{fig:usecase_diagram}.
 
-\subsubsection{UC01: schnellstmöglicher Weg}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth]{projectdoc/img/usecase_diagram}
+\caption[Use Case Diagramm]{Use Case Diagramm}
+\label{fig:usecase_diagram}
+\end{figure}
+
+\subsubsection{Aktoren}
+\label{uc:Aktoren}
+
+\begin{table}[h]
+    \centering
+    \caption{Aktoren}
+    \label{aktoren}
+    \begin{tabular}{ll}
+        \textbf{Aktor} & \textbf{Beschreibung und Interessen}                                                                                                                                                                                     \\
+        \textbf{User}  & \begin{tabular}[c]{@{}l@{}}Ein User ist ein Fussgänger, welcher schnellstmöglich von Punkt A zu Punkt B kommen möchte. \\ Er fungiert in der Komponente QGIS-Plugin.\end{tabular}                                          \\
+        \textbf{Admin} & \begin{tabular}[c]{@{}l@{}}Ein Admin ist daran interessiert, dass aktuelle Daten dem Aktor User zur Verfügung stehen. \\ So möchte er Daten vorverarbeiten und dem Aktor User zur Verfügung stellen können.\end{tabular}
+    \end{tabular}
+\end{table}
+
+\subsubsection{UC01: schnellstmöglicher Weg finden}
 \label{usecase:UC01}
+Aktoren: \emph{User}
 
-Als Benutzer möchte ich den schnellstmöglichen Weg mit öffentlichen Verkehrsmitteln und zu Fuss zwischen zwei geografischen Standorten finden.
+Nachdem der User einen Start- und Endpunkt (geografische Standorte) bekannt gegeben hat, erhält er den schnellstmöglichen Weg, welcher mit öffentlichen Verkehrsmitteln und zu Fuss machbar ist.
+Dabei soll die maximale Laufdistanz zur ersten Haltestelle nicht mehr als 2km betragen.
 
-\subsubsection{UC02: QGIS Plugin}
+
+\subsubsection{UC02: kürzester Pfad über öffentliche Plätze nehmen}
 \label{usecase:UC02}
+Aktoren: \emph{User}
 
-Als Benutzer möchte ich mithilfe \nameref{usecase:UC01} von QGIS und einem installierten Plugin durchführen können.
+Der Fussgänger möchte während dem Laufen, nicht um Plätze herumgeroutet werden, sondern den kürzesten Weg über den öffentlichen Platz nehmen.
 
-\subsubsection{UC03: kürzester Pfad über öffentliche Plätze}
+\subsubsection{UC03: öffentliche Plätze natürlich begehen}
 \label{usecase:UC03}
-
-Als Fussgänger möchte ich über öffentliche Plätze den kürzesten Pfad nehmen.
-
-\subsubsection{UC04: natürliches Routing über öffentliche Plätze}
-\label{usecase:UC04}
+Aktoren: \emph{User}
 
 Als Fussgänger möchte ich öffentliche Plätze natürlich (Verweis auf Definition Natürlichkeit) begehen.
 
-\subsubsection{UC05: maximale Laufdistanz}
-\label{usecase:UC05}
 
-Als Fussgänger möchte ich maximal 2 Kilometer zur nächsten Haltestelle laufen.
-
-\subsubsection{UC06: periodische Aktualisierung der OSM-Daten}
-\label{usecase:UC06}
+\subsubsection{UC04: OSM-Daten periodisch aktualisieren}
+\label{usecase:UC04}
 
 Als Benutzer möchte ich auf den wöchentlich aktuellsten \ac{OSM}-Daten routen können.
+
+\subsubsection{UC05: OSM-Daten vorverarbeiten}
+\label{usecase:UC05}
 
 \subsection{System-Sequenzdiagramme}
 \label{sub:System-Sequenzdiagramme}
