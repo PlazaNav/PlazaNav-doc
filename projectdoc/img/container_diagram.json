@@ -40,7 +40,7 @@
         },
         {
           "type": "Container",
-          "name": "Routing Engine",
+          "name": "Routing-Engine",
           "description": "Fussgänger Routing",
           "technology": "",
           "tags": "",
@@ -73,7 +73,7 @@
       "source": "Plaza Routing",
       "description": "Holt Fussgänger-Routen von",
       "technology": "HTTPS",
-      "destination": "Router",
+      "destination": "Routing-Engine",
       "tags": ""
     },
     {
@@ -98,7 +98,7 @@
       "tags": ""
     },
     {
-      "source": "Routing Engine",
+      "source": "Routing-Engine",
       "description": "Erhält OSM-Daten von",
       "technology": "",
       "destination": "Plaza Vorverarbeitung",
