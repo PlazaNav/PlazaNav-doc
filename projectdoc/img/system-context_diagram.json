@@ -1,0 +1,112 @@
+{
+  "type": "System Context",
+  "scope": "PlazaRoute",
+  "description": "System Kontextdiagramm für PlazaRoute",
+  "size": "A5_Landscape",
+
+
+  "elements": [
+    {
+      "type": "Software System",
+      "name": "Overpass",
+      "description": "",
+      "tags": "",
+      "position": "1760,935",
+      "containers": []
+    },
+    {
+      "type": "Software System",
+      "name": "planet.osm.ch",
+      "description": "OSM Daten",
+      "tags": "",
+      "position": "115,590",
+      "containers": []
+    },
+    {
+      "type": "Software System",
+      "name": "PlazaRoute",
+      "description": "",
+      "tags": "Internal",
+      "position": "920,935",
+      "containers": []
+    },
+    {
+      "type": "Software System",
+      "name": "QGIS",
+      "description": "Mit Plugin",
+      "tags": "",
+      "position": "930,495",
+      "containers": []
+    },
+    {
+      "type": "Software System",
+      "name": "search.ch",
+      "description": "ÖV-Routing",
+      "tags": "",
+      "position": "115,1195",
+      "containers": []
+    },
+    {
+      "type": "Person",
+      "name": "User",
+      "description": "",
+      "tags": "",
+      "position": "950,20"
+    }
+  ],
+
+
+  "relationships": [
+    {
+      "source": "PlazaRoute",
+      "description": "",
+      "technology": "",
+      "destination": "Overpass",
+      "tags": ""
+    },
+    {
+      "source": "PlazaRoute",
+      "description": "",
+      "technology": "",
+      "destination": "planet.osm.ch",
+      "tags": ""
+    },
+    {
+      "source": "PlazaRoute",
+      "description": "",
+      "technology": "",
+      "destination": "search.ch",
+      "tags": ""
+    },
+    {
+      "source": "QGIS",
+      "description": "Fragt Route ab",
+      "technology": "",
+      "destination": "PlazaRoute",
+      "tags": ""
+    },
+    {
+      "source": "User",
+      "description": "",
+      "technology": "",
+      "destination": "QGIS",
+      "tags": ""
+    }
+  ],
+
+
+  "styles": [
+    {
+      "type": "element",
+      "tag": "Person",
+      "width": "",
+      "height": "",
+      "background": "",
+      "color": "",
+      "fontSize": "",
+      "border": "",
+      "opacity": "",
+      "shape": "Person"
+    }
+  ]
+}
