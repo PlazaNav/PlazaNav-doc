@@ -17,7 +17,7 @@ In diesem Kapitel wird die Architektur unserer Applikation und die Schnittstelle
 
 Abbildung \ref{fig:system_context_diagram} zeigt das System PlazaRoute mit den Umsystemen auf.
 
-Der User bedient die QGIS Desktop Applikation mit dem von uns entwickelten Plugin. Dieses leitet die die Eingabe der Start- und Zielkoordinaten an das System PlazaRoute weiter. Als Antwort sendet PlazaRoute eine Routenbeschreibung an das QGIS-Plugin zurück, das es im QGIS dargestellt.
+Der User bedient die QGIS Desktop Applikation mit dem von uns entwickelten Plugin. Dieses leitet die die Eingabe der Start- und Zielkoordinaten an das System PlazaRoute weiter. Als Antwort sendet PlazaRoute eine Routenbeschreibung an das QGIS-Plugin zurück, das es im QGIS darstellt.
 
 \subsection{QGIS Plugin}
 \label{architektur:QGIS Plugin}
@@ -161,7 +161,7 @@ Damit die Komponente Plaza Routing mit der Routing-Engine kommunizieren kann, wi
 \label{architektur:OSM-Daten-Integration}
 Die Komponente \nameref{architektur:Plaza Vorverarbeitung} generiert eigene \ac{OSM}-Daten. Damit das Fussgänger-Routing funktioniert, müssen die vorverarbeiteten \ac{OSM}-Daten der Routing-Engine übergeben werden. 
 
-\emph{Graphhopper} und \emph{Valhalla} können beide beim Starten des HTTP-Backend eine \ac{OSM}-Daten übergeben werden.
+\emph{Graphhopper} und \emph{Valhalla} können beide beim Starten des HTTP-Backend eine \ac{OSM}-Datei übergeben werden.
 
 % TODO: wollen wir noch prüfen, wie die Engines mit Änderungen umgehen können? Sprich muss alles neu importiert werden oder können sie mergen?
 
