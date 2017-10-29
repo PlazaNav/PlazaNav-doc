@@ -106,7 +106,33 @@ In einem weiteren Schritt müssen unsere optimierten Wege in das bestehende Stra
 
 \subsubsection{Plaza Routing}
 \label{architektur:Plaza Routing}
-Das Fussgänger-Routing wird von einer \ac{OSM}-Routing-Engine durchgeführt (siehe Abbildung TODO Referenz auf Container Diagram). Die Komponente Plaza Routing muss somit die Route für einen gewünschten Start- und Endpunkt von der Routing-Engine beziehen können.
+Der Plaza Routing Container (siehe Abbildung \ref{fig:container_diagram}) ist für das Koordinieren und Verabeiten von Routing-Anfragen verantwortlich. Er bietet für das QGIS-Plugin eine API an. Mit Hilfe von search.ch (für ÖV-Routing) und der Routing-Engine (für Fussgänger-Routing) wird eine komplette Route mit Fahrplan erstellt und dem QGIS-Plugin übergeben.
+
+\paragraph{nächste ÖV-Haltestellen finden}\label{architektur:nächste ÖV-Haltestellen finden}~\\
+Das grundlegende Ziel ist es von einem Startpunkt aus eine Destination zu Fuss und mit dem öffentlichen Verkehr zu erreichen. Dabei sollen die ÖV-Haltestellen in einem zu Fuss machbaren Umkreis berücksichtigt werden. Von diesen Haltestellen ausgehend wird das ÖV-Routing an die Zieldestination durchgeführt.
+
+Für die Anforderung \ref{target:nächste ÖV-Haltestellen finden} bietet sich Overpass an. Overpass ermöglicht es über eine umfassende \ac{API} selektiv Daten von \ac{OSM} zu beziehen. Dabei besteht die Option, die Overpass \ac{QL} oder XML-Abfragen zu verwenden. Die Suche lässt sich nach allem einschränken, was der Mapper in den \ac{OSM}-Daten spezifizieren kann. So ist das Filtern nach Objekttyp, Keys, Tags, etc. unbeschränkt möglich und bietet so eine hohe Flexibilität. Overpass liefert die Resultate als JSON-Objekt oder XML. 
+
+Für eine einfache Intergration in Python gibt es Overpass Wrapper. Dabei wurden zwei Libraries berücksichtigt, namentlich overpass-api-python-wrapper und OverPy. Die Libraries haben einen ähnlich häufigen Updatezyklus. Für beide wurde ein Proof of Concept implementiert, welcher die ÖV-Haltestellen im einem kleinen Umkreis vom Stadelhofen, Zürich, Schweiz abfragt.
+
+Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere Dokumentation und dass OverPy Klassen für Nodes, Relations, Way, Area, etc. und Hilfsfunktionen, welche das Ganze übersichtlich halten, anbietet. Bei overpass-api-python-wrapper besteht der Nachteil, dass das JSON-Resultat der Abfrage selber geparsed und verarbeitet werden muss.
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/get_public_transport_stops_overpass.py}
+    \caption{ÖV-Haltestellen von \acs{OSM} mit Overpass beziehen}
+    \label{get_public_transport_stops_overpass}
+\end{listing}
+
+In Listing \ref{get_public_transport_stops_overpass} ist zu sehen, wie für eine Bounding Box, welche im Süden durch den minimalen Breitengrad, im Westen durch den minimalen Längengrad, im Norden durch den maximalen Breitengrad und im Osten durch den maximalen Längengrad begrenzt ist, die ÖV-Haltestellen abgefragt werden. Dabei wird die JSON-Response in Node-Objekte geparsed, welche weiterverwendet werden können. In diesem Beispiel wird für die Abfrage die erwähnte Overpass QL verwendet.
+
+Es ist ebenfalls möglich, eine Umkreissuche mit \code{around} durchzuführen. Dies hat Performance-Nachteile und es gibt keine entscheidenden Gründe, warum es vorteilhafter sein sollte, wenn man einen Kreis statt ein Rechteck um einen Ausgangspunkt zieht.
+
+\paragraph{Search.ch Anbindung}\label{architektur:Search.ch Anbindung}~\\
+
+TODO
+
+\subsubsection{Routing-Engine}
+\label{architektur:Routing-Engine}
 
 \paragraph{Evaluation Routing-Engine}~\\
 \label{architektur:Evaluation Routing-Engine}
@@ -136,10 +162,6 @@ Die Komponente \ref{architektur:Plaza Vorverarbeitung} generiert eigene \ac{OSM}
 
 TODO: wollen wir noch prüfen, wie die Engines mit Änderungen umgehen können? Sprich muss alles neu importiert werden oder können sie mergen?
 
-Der Plaza Routing Container (siehe Abbildung \ref{fig:container_diagram}) ist für das Koordinieren und Verabeiten von Routing-Anfragen verantwortlich. Er bietet für das QGIS-Plugin eine API an. Mit Hilfe von search.ch (für ÖV-Routing) und der Routing-Engine (für Fussgänger-Routing) wird eine komplette Route mit Fahrplan erstellt und dem QGIS-Plugin übergeben.
-
-\paragraph{nächste ÖV-Haltestellen finden}\label{architektur:nächste ÖV-Haltestellen finden}~\\
-
 \subparagraph{Resultat}~\\
 \label{architektur:Resulat}
 Die beiden Engines unterscheiden sich in den oben definierten und analysierten Kriterien nur geringfügig. Die Entscheidung fiel zugunsten von Grahhopper. Ausschlaggebender Punkt war, dass Grahhopper bereits als Docker-Container verfügbar ist, was einen einfachen Aufbau der Infrastruktur ermöglicht.
@@ -151,32 +173,3 @@ TODO wie kann Graphhopper genutzt werden?
 
 TODO konkrete Architektur der Routing Engine unter welchem Untertitel?
 
-
-\paragraph{nächste ÖV-Haltestellen finden}~\\
-\label{architektur:nächste ÖV-Haltestellen finden}
-Das grundlegende Ziel ist es von einem Startpunkt aus eine Destination zu Fuss und mit dem öffentlichen Verkehr zu erreichen. Dabei sollen die ÖV-Haltestellen in einem zu Fuss machbaren Umkreis berücksichtigt werden. Von diesen Haltestellen ausgehend wird das ÖV-Routing an die Zieldestination durchgeführt.
-
-Für die Anforderung \ref{target:nächste ÖV-Haltestellen finden} bietet sich Overpass an. Overpass ermöglicht es über eine umfassende \ac{API} selektiv Daten von \ac{OSM} zu beziehen. Dabei besteht die Option, die Overpass \ac{QL} oder XML-Abfragen zu verwenden. Die Suche lässt sich nach allem einschränken, was der Mapper in den \ac{OSM}-Daten spezifizieren kann. So ist das Filtern nach Objekttyp, Keys, Tags, etc. unbeschränkt möglich und bietet so eine hohe Flexibilität. Overpass liefert die Resultate als JSON-Objekt oder XML. 
-
-Für eine einfache Intergration in Python gibt es Overpass Wrapper. Dabei wurden zwei Libraries berücksichtigt, namentlich overpass-api-python-wrapper und OverPy. Die Libraries haben einen ähnlich häufigen Updatezyklus. Für beide wurde ein Proof of Concept implementiert, welcher die ÖV-Haltestellen im einem kleinen Umkreis vom Stadelhofen, Zürich, Schweiz abfragt.
-
-Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere Dokumentation und dass OverPy Klassen für Nodes, Relations, Way, Area, etc. und Hilfsfunktionen, welche das Ganze übersichtlich halten, anbietet. Bei overpass-api-python-wrapper besteht der Nachteil, dass das JSON-Resultat der Abfrage selber geparsed und verarbeitet werden muss.
-
-\begin{listing}[ht]
-    \inputminted{python}{projectdoc/listing/get_public_transport_stops_overpass.py}
-    \caption{ÖV-Haltestellen von \acs{OSM} mit Overpass beziehen}
-    \label{get_public_transport_stops_overpass}
-\end{listing}
-
-In Listing \ref{get_public_transport_stops_overpass} ist zu sehen, wie für eine Bounding Box, welche im Süden durch den minimalen Breitengrad, im Westen durch den minimalen Längengrad, im Norden durch den maximalen Breitengrad und im Osten durch den maximalen Längengrad begrenzt ist, die ÖV-Haltestellen abgefragt werden. Dabei wird die JSON-Response in Node-Objekte geparsed, welche weiterverwendet werden können. In diesem Beispiel wird für die Abfrage die erwähnte Overpass QL verwendet.
-
-Es ist ebenfalls möglich, eine Umkreissuche mit \code{around} durchzuführen. Dies hat Performance-Nachteile und es gibt keine entscheidenden Gründe, warum es vorteilhafter sein sollte, wenn man einen Kreis statt ein Rechteck um einen Ausgangspunkt zieht.
-
-\paragraph{Search.ch Anbindung}\label{architektur:Search.ch Anbindung}~\\
-
-TODO
-
-\subsubsection{Routing-Engine}
-\label{architektur:Routing-Engine}
-
-TODO
