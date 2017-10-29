@@ -143,32 +143,36 @@ Die beiden Engines werden an folgenden Kriterien gemessen:
 
 \subparagraph{Infrastruktur-Integration}~\\
 \label{architektur:Infrastruktur-Integration}
-Es wird analysiert, wie einfach die Routing-Engine aufgesetzt werden kann. Ziel ist es, dass die Routing-Engine in einem eigenen Docker-Container (siehe Nicht-funktionale Anforderung \ref{nfa:Docker-Container}) auf dem Server laufen kann, mit welcher über HTTPS kommuniziert werden kann.
+Es wird analysiert, wie einfach die Routing-Engine aufgesetzt werden kann. Ziel ist es, dass die Routing-Engine in einem eigenen Docker-Image (siehe \nameref{NFA:NFA01}) auf dem Server läuft.
 
-\emph{Graphhopper} ist bereits als Docker-Container verfügbar und kann somit einfach auf einem beliebigen Server gestartet und verwendet werden.
+\emph{Graphhopper} ist bereits als Docker-Image verfügbar und kann somit einfach auf einem beliebigen Server gestartet und verwendet werden.
 
-\emph{Valhalla} ist als Ubuntu-\ac{PPA} verfügbar und lässt sich somit einfach auf einer Ubuntu-Distribution aufsetzen. Das Valhalla als Docker-Container verfügbar ist, muss noch umgesetzt werden.
+\emph{Valhalla} ist als Ubuntu-\ac{PPA} verfügbar und lässt sich somit einfach auf einer Ubuntu-Distribution aufsetzen. Das Valhalla als Docker-Image verfügbar ist, muss noch umgesetzt werden.
 
 \subparagraph{Applikation-Anbindung}~\\
 \label{architektur:Applikation-Anbindung}
 Damit die Komponente Plaza Routing mit der Routing-Engine kommunizieren kann, wird geprüft, wie einfach die Routing-Engines an eine Applikation angebunden werden können. 
 
-\emph{Graphhopper} und \emph{Valhalla} bieten zusätzlich ein fertiges HTTP-Backend an, welches für das Routing genutzt werden kann [TODO kann man das bei Valhalla so sagen, oder ist es ein Frontend, welches missbraucht wird]. Somit können beide Routing-Engines auf die gleiche Art und Weise eingebunden werden.
+\emph{Graphhopper} und \emph{Valhalla} bieten zusätzlich ein fertiges HTTP-Backend an, welches für das Routing genutzt werden kann. Somit können beide Routing-Engines auf die gleiche Art und Weise eingebunden werden.
+
+% TODO kann man das bei Valhalla so sagen, oder ist es ein Frontend, welches missbraucht wird
 
 \subparagraph{OSM-Daten-Integration}~\\
 \label{architektur:OSM-Daten-Integration}
-Die Komponente \ref{architektur:Plaza Vorverarbeitung} generiert eigene \ac{OSM}-Daten. Damit das Fussgänger-Routing funktioniert, müssen die \ac{OSM}-Daten der Routing-Engine übergeben werden können. 
+Die Komponente \nameref{architektur:Plaza Vorverarbeitung} generiert eigene \ac{OSM}-Daten. Damit das Fussgänger-Routing funktioniert, müssen die vorverarbeiteten \ac{OSM}-Daten der Routing-Engine übergeben werden. 
 
-\emph{Graphhopper} und \emph{Valhalla} können beide beim Starten des HTTP-Backend eine {OSM}-Daten übergeben werden.
+\emph{Graphhopper} und \emph{Valhalla} können beide beim Starten des HTTP-Backend eine \ac{OSM}-Daten übergeben werden.
 
-TODO: wollen wir noch prüfen, wie die Engines mit Änderungen umgehen können? Sprich muss alles neu importiert werden oder können sie mergen?
+% TODO: wollen wir noch prüfen, wie die Engines mit Änderungen umgehen können? Sprich muss alles neu importiert werden oder können sie mergen?
 
 \subparagraph{Resultat}~\\
 \label{architektur:Resulat}
-Die beiden Engines unterscheiden sich in den oben definierten und analysierten Kriterien nur geringfügig. Die Entscheidung fiel zugunsten von Grahhopper. Ausschlaggebender Punkt war, dass Grahhopper bereits als Docker-Container verfügbar ist, was einen einfachen Aufbau der Infrastruktur ermöglicht.
+Die beiden Engines unterscheiden sich in den oben definierten und analysierten Kriterien nur geringfügig. Die Entscheidung fiel zugunsten von Grahhopper. Ausschlaggebender Punkt war, dass Grahhopper bereits als Docker-Image verfügbar ist, was einen einfachen Aufbau der Infrastruktur ermöglicht.
 
 \paragraph{Graphhopper}~\\
 \label{architektur:Graphhopper}
-TODO wie kann Graphhopper genutzt werden?
+% TODO wie kann Graphhopper genutzt werden?
+TODO 
 
-TODO konkrete Architektur der Routing Engine unter welchem Untertitel?
+
+
