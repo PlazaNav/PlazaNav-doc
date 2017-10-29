@@ -1,17 +1,64 @@
-
 \section{Anforderungsspezifikation}
 \label{sec:Anforderungsspezifikation}
 
-
-\subsection{Anforderungen an die Arbeit}
-\label{sub:Anforderungen an die Arbeit}
-
-TODO
-
 \subsection{Use Cases}
 \label{sub:Use Cases}
+Im folgenden sind die funktionalen Anforderungen an PlazaRoute mit all seinen Komponenten, welche im Kapitel \ref{sec:Architektur} aufgeführt sind, als Use Cases im Brief-Format beschrieben. Zur Übersicht folgt zuerst das Use Case Diagramm in Abbildung \ref{fig:usecase_diagram}.
 
-TODO
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth]{projectdoc/img/usecase_diagram}
+\caption[Use Case Diagramm]{Use Case Diagramm}
+\label{fig:usecase_diagram}
+\end{figure}
+
+\subsubsection{Aktoren}
+\label{useccase:Aktoren}
+
+\begin{table}[h]
+    \centering
+    \caption{Aktoren}
+    \label{aktoren}
+    \begin{tabular}{ll}
+        \textbf{Aktor} & \textbf{Beschreibung und Interessen}                                                                                                                                                                                     \\
+        \textbf{User}  & \begin{tabular}[c]{@{}l@{}}Ein User ist ein Fussgänger, welcher schnellstmöglich von Punkt A zu Punkt B kommen möchte. \\ Er fungiert in der Komponente QGIS-Plugin.\end{tabular}                                          \\
+        \textbf{Admin} & \begin{tabular}[c]{@{}l@{}}Ein Admin ist daran interessiert, dass aktuelle Daten dem Aktor User zur Verfügung stehen. \\ So möchte er Daten vorverarbeiten und dem Aktor User diese zur Verfügung stellen können.\end{tabular}
+    \end{tabular}
+\end{table}
+
+\subsubsection{UC01: schnellstmöglicher Weg finden}
+\label{usecase:UC01}
+Aktoren: \emph{User}
+
+Include: \nameref{usecase:UC02}, \nameref{usecase:UC03}
+
+Nachdem der User einen Start- und Endpunkt (geografische Standorte) gegeben hat, erhält er den schnellstmöglichen Weg, welcher mit öffentlichen Verkehrsmitteln und zu Fuss machbar ist.
+
+\subsubsection{UC02: öffentliche Plätze natürlich begehen}
+\label{usecase:UC02}
+Aktoren: \emph{User}
+
+Der User wird beim Fussgänger-Routing über öffentliche Plätze natürlich (Definition im Kapitel \ref{criteria:Natürlichkeit}) geroutet. Dies betrifft insbesondere das Umgehen von Hindernissen. Dabei begeht er den Platz auf direktem Weg.
+
+\subsubsection{UC03: ÖV-Verbindung finden}
+\label{usecase:UC03}
+Aktoren: \emph{User}
+
+Der User wird zu Fuss zur eine ÖV-Station geroutet, welche sich in einem Umkreis von 2km befindet. Falls mehrere ÖV-Stationen verfügbar sind, wird die Station gewählt, welche die kürzeste Reisezeit (Fussweg + ÖV-Weg) hat.
+
+\subsubsection{UC04: OSM-Daten periodisch aktualisieren}
+\label{usecase:UC04}
+Aktoren: \emph{Admin}
+
+Include: \nameref{usecase:UC05}
+
+Der Admin aktualisiert die \ac{OSM}-Daten, auf welche in \nameref{usecase:UC01} geroutet wird, periodisch und integriert sie in die Routing-Engine.
+
+\subsubsection{UC05: OSM-Daten vorverarbeiten}
+\label{usecase:UC05}
+Aktoren: \emph{Admin}
+
+Der Admin führt die Vorverarbeitung der \ac{OSM}-Daten durch. Unter Vorverarbeitung versteht man das Einzeichnen von Wegen auf öffentlichen Plätzen. Diese Daten werden der Routing-Engine übergeben und ermöglicht, dass die Routing-Engine den schnellstmöglichen Weg über öffentliche Plätze finden kann.
 
 \subsection{System-Sequenzdiagramme}
 \label{sub:System-Sequenzdiagramme}
@@ -26,7 +73,35 @@ TODO
 \subsection{Nicht-funktionale Anforderungen}
 \label{sub:Nicht-funktionale Anforderungen}
 
-TODO
+\subsubsection{NFA01: Docker-Images}
+\label{NFA:NFA01}
+
+PlazaRoute wird in Docker-Images ausgeliefert, um eine Verfügbarkeit auf unterschiedlichen System sicherstellen zu können.
+
+\subsubsection{NFA02: austauschbare Routing-Engine}
+\label{NFA:NFA02}
+
+Die Routing-Engine, welche von PlazaRoute verwendet wird, soll austauschbar sein. Dabei soll nur die konkrete Implementation des Services, welche fürs Routing genutzt wird, angepasst werden müssen.
+
+\subsubsection{NFA03: periodische Aktualisierung der OSM-Daten}
+\label{NFA:NFA03}
+
+Die auf Fussgänger optimierten Routing-Graphen werden wöchentlich mit den neuesten \ac{OSM}-Daten vorverarbeitet.
+
+\subsubsection{NFA04: Dauer der Vorverarbeitung}
+\label{NFA:NFA04}
+
+Die Vorverarbeitung der \ac{OSM}-Daten (Optimierung auf öffentliche Fläche) darf maximal 1 Stunde benötigen.
+
+\subsubsection{NFA05: zusätzliche Datenmenge}
+\label{NFA:NFA05}
+
+Die zusätzlichen Daten für die Optimierung (zusätzlich eingezeichnete Wege über öffentliche Plätze) dürfen nicht mehr als 0.01\% des Kartenmaterials betragen.
+
+\subsubsection{NFA06: Dauer des Unterbruchs bei OSM-Daten-Integration}
+\label{NFA:NFA06}
+
+PlazaRoute ist während dem Integrieren der neuesten \ac{OSM}-Daten in die Routing-Engine maximal 2 Stunden nicht verfügbar. Der User wird nicht über den Unterbruch informiert.
 
 \subsection{Detailspezifikation}
 \label{sub:Detailspezifikation}
