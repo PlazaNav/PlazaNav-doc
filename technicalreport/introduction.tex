@@ -66,6 +66,10 @@ Es kann vorkommen, dass zwei Flächen unmittelbar nebeneinander liegen. Dies ist
 \caption[Zwei benachbarte Flächen]{Zwei benachbarte Flächen (Bundesplatz, Bärenplatz) in Bern, Schweiz; Screenshot von overpass-turbo.eu aufgenommen am 18.10.2017}
 \label{fig:bundesplatz_baerenplatz}
 \end{figure}
+
+\subsubsection{mehrere ÖV-Stationen mit dem gleichen Namen}
+\label{problem:mehrere ÖV-Stationen mit dem gleichen Namen}
+In den meisten Fällen gibt es an einem Standort mit einer ÖV-Station zwei Stationen mit dem gleichen Namen, je eine für die jeweilige Fahrtrichtung. In manchen Fällen ist es so, dass diese Stationen ein Stück voneinander entfernt liegen. Die Entscheidung zur welchen ÖV-Station geroutet wird, muss getroffen werden.
 	
 \subsection{Ziele und Unterziele}
 \label{Ziele und Unterziele}
@@ -102,6 +106,10 @@ Dieses Problem ist der Vollständigkeit halber aufgeführt, wird in dieser Arbei
 \subsubsection{nächste ÖV-Haltestellen finden}
 \label{target:nächste ÖV-Haltestellen finden}
 Der Fokus der Arbeit liegt auf dem Finden und Erreichen der nächsten ÖV-Haltestelle, welche einem ans gewünschte Ziel führt. So soll eruiert werden, wie von einem bestehenden Startpunkt aus die nächsten ÖV-Haltestellen identifiziert werden, um diese an search.ch für das weitere Routing zu übergeben.
+
+\subsubsection{mehrere ÖV-Stationen mit dem gleichen Namen}
+\label{target:mehrere ÖV-Stationen mit dem gleichen Namen}
+Wurde die nächste Haltestelle wie in \ref{target:nächste ÖV-Haltestellen finden} beschrieben, eruiert, so gilt es zur ÖV-Station in die richtige Fahrtrichtung zu routen.
 
 \subsubsection{Prototyp und Deliverables}
 \label{target:Prototyp und Deliverables}

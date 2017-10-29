@@ -125,13 +125,32 @@ Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere 
     \label{get_public_transport_stops_overpass}
 \end{listing}
 
-In Listing \ref{get_public_transport_stops_overpass} ist zu sehen, wie für eine Bounding Box, welche im Süden durch den minimalen Breitengrad, im Westen durch den minimalen Längengrad, im Norden durch den maximalen Breitengrad und im Osten durch den maximalen Längengrad begrenzt ist, die ÖV-Haltestellen abgefragt werden. Dabei wird die JSON-Response in Node-Objekte geparsed, welche weiterverwendet werden können. In diesem Beispiel wird für die Abfrage die erwähnte Overpass QL verwendet.
+In Listing \ref{get_public_transport_stops_overpass} ist zu sehen, wie für eine Bounding Box, welcshe im Süden durch den minimalen Breitengrad, im Westen durch den minimalen Längengrad, im Norden durch den maximalen Breitengrad und im Osten durch den maximalen Längengrad begrenzt ist, die ÖV-Haltestellen abgefragt werden. Dabei wird die JSON-Response in Node-Objekte geparsed, welche weiterverwendet werden können. In diesem Beispiel wird für die Abfrage die erwähnte Overpass QL verwendet.
 
 Es ist ebenfalls möglich, eine Umkreissuche mit \code{around} durchzuführen. Dies hat Performance-Nachteile und es gibt keine entscheidenden Gründe, warum es vorteilhafter sein sollte, wenn man einen Kreis statt ein Rechteck um einen Ausgangspunkt zieht.
 
 \paragraph{Search.ch Anbindung}\label{architektur:Search.ch Anbindung}~\\
+Search.ch bietet für Fahrplan-Abfragen eine API\cite{search_ch_route_api} an. So ist es auch eine ÖV-Routensuche möglich. Diese ist zum aktuellen Zeitpunkt über \code{https://timetable.search.ch/api/route.json} verfügbar und nimmt die in Tabelle \ref{serach_ch_route_api_spezfication} spezifizierten und für uns relevanten Parameter entgegen. In einer ersten Version wird nur \emph{from} und \emph{to} verwendet.
 
-TODO
+\begin{table}[ht]
+    \centering
+    \caption{Search.ch Route API Spezifikaiton; Teilauszug von \cite{search_ch_route_api}}
+    \label{serach_ch_route_api_spezfication}
+    \begin{tabular}{lllll}
+        \textbf{Paramter}   & \textbf{Zwingend} & \textbf{Beschreibung}                                                                & \textbf{Beispiel}          & \textbf{Default} \\
+        \emph{from}       & true              & Abfahrtsstation                                                                      & Zürich, Sternen Oerlikon   &                  \\
+        \emph{to}         & true              & Abfahrtsstation                                                                      & Zürich, Hallenbad Oerlikon &                  \\
+        \emph{date}       & false             & Datum                                                                                & 29.10.2017                 & today            \\
+        \emph{time}       & false             & Zeit                                                                                 & 15:00                      & now              \\
+        \emph{time\_type} & false             & \begin{tabular}[c]{@{}l@{}}date/time als Abfahrts-  \\ oder Ankuftszeit\end{tabular} & arrival                    & depart          
+    \end{tabular}
+\end{table}
+
+Also Antwort erhält man ein JSON-Objekt, welches eine Liste an möglichen Verbindungen beinhaltet. In einer zurückgelieferten Verbindung sind alle Teilstrecken definiert. Die erste Teilstrecke bestimmt den Ausgangspunkt der ÖV-Verbindung. Diese ist von besonderer Relevanz. In \ref{problem:mehrere ÖV-Stationen mit dem gleichen Namen} wurde aufgezeigt, dass es normalerweise mehrere ÖV-Stationen mit dem gleichen Namen gibt und nun zur richtigen geroutet werden muss. So kann mithilfe von der \code{stopid}, welche dem \acs{OSM}-Tag \code{uic\_ref} entspricht und \code{terminal} die richtige Station ermittelt werden. Man kann mithilfe von Overpass die ÖV-Linien der Teilstrecke laden. Die letzte Station der Linie muss nun dem Wert in \code{terminal} entsprechen. Dadurch hat man die ÖV-Linie in die richtige Fahrtrichtung ermittelt und kann so die Ausgangstation auf dieser Linie extrahieren. So hat man die Startstation. Das Gleiche trifft natürlich auf die Endstation der Verbindung zu.
+
+
+\subparagraph{Einschränkungen}\label{architektur:search.ch Einschränkungen}~\\
+Die Anzahl täglicher Anfragen ist für den freien Gebrauch auf 1000 beschränkt.
 
 \subsubsection{Routing-Engine}
 \label{architektur:Routing-Engine}
