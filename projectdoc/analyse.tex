@@ -1,6 +1,82 @@
-
 \section{Analyse}
 \label{sec:Analyse}
 % Domain-, Klassen-Modell
 
-TODO
+\subsection{Evaluation Routing-Engine}
+\label{analyse:Evaluation Routing-Engine}
+Eine Evaluation der heutig gängigen \ac{OSM}-Routing-Engines wurde in \cite{eval_routing_engine} ausgiebig durchgeführt. Bei unserer Evaluation beschränken wir uns auf \emph{Valhalla}\cite{valhalla} und \emph{Graphhopper}\cite{graphhopper}. Die Auswahl fiel auf diese zwei, weil \cite{eval_routing_engine} ergeben hat, dass Valhalla extrem schnell ist und Graphhopper Dijkstra und A* anbietet. So können wir zusätzlich analysieren, welcher Shortest-Path-Algorithmus sich für Flächen-Traversierungen besser eignet. Beide Routing-Engines bieten einen schnellen Einstieg und lassen sich in einigen Minuten problemlos aufsetzen.
+
+Die beiden Engines werden an folgenden Kriterien gemessen:
+
+\subsubsection{Infrastruktur-Integration}
+\label{analyse:Infrastruktur-Integration}
+Es wird analysiert, wie einfach die Routing-Engine aufgesetzt werden kann. Ziel ist es, dass die Routing-Engine in einem eigenen Docker-Image (siehe \nameref{NFA:NFA01}) auf dem Server läuft.
+
+\emph{Graphhopper} ist bereits als Docker-Image verfügbar und kann somit einfach auf einem beliebigen Server gestartet und verwendet werden.
+
+\emph{Valhalla} ist als Ubuntu-\ac{PPA} verfügbar und lässt sich somit einfach auf einer Ubuntu-Distribution aufsetzen. Das Valhalla als Docker-Image verfügbar ist, muss noch umgesetzt werden.
+
+\subsubsection{Applikation-Anbindung}
+\label{analyse:Applikation-Anbindung}
+Da mit der Routing-Engine kommunizieren werden muss, wird geprüft, wie einfach die Routing-Engines an eine Applikation angebunden werden können. 
+
+\emph{Graphhopper} und \emph{Valhalla} bieten zusätzlich ein fertiges HTTP-Backend an, welches für das Routing genutzt werden kann. Somit können beide Routing-Engines auf die gleiche Art und Weise eingebunden werden.
+
+% TODO kann man das bei Valhalla so sagen, oder ist es ein Frontend, welches missbraucht wird
+
+\subsubsection{OSM-Daten-Integration}
+\label{analyse:OSM-Daten-Integration}
+Für die Flächentraversierung müssen eigene \ac{OSM}-Daten generiert werden. Diese vorverarbeiteten \ac{OSM}-Daten müssen für das Fussgänger-Routing der Routing-Engine übergeben werden. 
+
+\emph{Graphhopper} und \emph{Valhalla} können beide beim Starten des HTTP-Backend eine \ac{OSM}-Datei übergeben werden.
+
+% TODO: wollen wir noch prüfen, wie die Engines mit Änderungen umgehen können? Sprich muss alles neu importiert werden oder können sie mergen?
+
+\subsubsection{Resultat}
+\label{analyse:Resulat}
+Die beiden Engines unterscheiden sich in den oben definierten und analysierten Kriterien nur geringfügig. Die Entscheidung fiel zugunsten von Grahhopper. Ausschlaggebender Punkt war, dass Grahhopper bereits als Docker-Image verfügbar ist, was einen einfachen Aufbau der Infrastruktur ermöglicht.
+
+\subsection{nächste ÖV-Haltestellen finden}
+\label{analyse:nächste ÖV-Haltestellen finden}
+
+Das grundlegende Ziel ist es von einem Startpunkt aus eine Destination zu Fuss und mit dem öffentlichen Verkehr zu erreichen. Dabei sollen die ÖV-Haltestellen in einem zu Fuss machbaren Umkreis berücksichtigt werden. Von diesen Haltestellen ausgehend wird das ÖV-Routing an die Zieldestination durchgeführt.
+
+Für die Anforderung \ref{target:nächste ÖV-Haltestellen finden} bietet sich Overpass an. Overpass ermöglicht es über eine umfassende \ac{API} selektiv Daten von \ac{OSM} zu beziehen. Dabei besteht die Option, die Overpass \ac{QL} oder XML-Abfragen zu verwenden. Die Suche lässt sich nach allem einschränken, was der Mapper in den \ac{OSM}-Daten spezifizieren kann. So ist das Filtern nach Objekttyp, Keys, Tags, etc. unbeschränkt möglich und bietet so eine hohe Flexibilität. Overpass liefert die Resultate als JSON-Objekt oder XML. 
+
+Für eine einfache Intergration in Python gibt es Overpass Wrapper. Dabei wurden zwei Libraries berücksichtigt, namentlich overpass-api-python-wrapper und OverPy. Die Libraries haben einen ähnlich häufigen Updatezyklus. Für beide wurde ein Proof of Concept implementiert, welcher die ÖV-Haltestellen im einem kleinen Umkreis vom Stadelhofen, Zürich, Schweiz abfragt.
+
+Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere Dokumentation und dass OverPy Klassen für Nodes, Relations, Way, Area, etc. und Hilfsfunktionen, welche das Ganze übersichtlich halten, anbietet. Bei overpass-api-python-wrapper besteht der Nachteil, dass das JSON-Resultat der Abfrage selber geparsed und verarbeitet werden muss.
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/get_public_transport_stops_overpass.py}
+    \caption{ÖV-Haltestellen von \acs{OSM} mit Overpass beziehen}
+    \label{get_public_transport_stops_overpass}
+\end{listing}
+
+In Listing \ref{get_public_transport_stops_overpass} ist zu sehen, wie für eine Bounding Box, welche im Süden durch den minimalen Breitengrad, im Westen durch den minimalen Längengrad, im Norden durch den maximalen Breitengrad und im Osten durch den maximalen Längengrad begrenzt ist, die ÖV-Haltestellen abgefragt werden. Dabei wird die JSON-Response in Node-Objekte geparsed, welche weiterverwendet werden können. In diesem Beispiel wird für die Abfrage die erwähnte Overpass QL verwendet.
+
+Es ist ebenfalls möglich, eine Umkreissuche mit \code{around} durchzuführen. Dies hat Performance-Nachteile und es gibt keine entscheidenden Gründe, warum es vorteilhafter sein sollte, wenn man einen Kreis statt ein Rechteck um einen Ausgangspunkt zieht.
+
+\subsection{Search.ch Anbindung}
+\label{analyse:Search.ch Anbindung}
+Search.ch bietet für Fahrplan-Abfragen eine API\cite{search_ch_route_api} an. So ist es auch eine ÖV-Routensuche möglich. Diese ist zum aktuellen Zeitpunkt über \code{https://timetable.search.ch/api/route.json} verfügbar und nimmt die in Tabelle \ref{serach_ch_route_api_spezfication} spezifizierten und für uns relevanten Parameter entgegen. In einer ersten Version wird nur \emph{from} und \emph{to} verwendet.
+
+\begin{table}[ht]
+    \centering
+    \caption{Search.ch Route API Spezifikaiton; Teilauszug von \cite{search_ch_route_api}}
+    \label{serach_ch_route_api_spezfication}
+    \begin{tabular}{lllll}
+        \textbf{Paramter}   & \textbf{Zwingend} & \textbf{Beschreibung}                                                                & \textbf{Beispiel}          & \textbf{Default} \\
+        \emph{from}       & true              & Abfahrtsstation                                                                      & Zürich, Sternen Oerlikon   &                  \\
+        \emph{to}         & true              & Abfahrtsstation                                                                      & Zürich, Hallenbad Oerlikon &                  \\
+        \emph{date}       & false             & Datum                                                                                & 29.10.2017                 & today            \\
+        \emph{time}       & false             & Zeit                                                                                 & 15:00                      & now              \\
+        \emph{time\_type} & false             & \begin{tabular}[c]{@{}l@{}}date/time als Abfahrts-  \\ oder Ankuftszeit\end{tabular} & arrival                    & depart          
+    \end{tabular}
+\end{table}
+
+Also Antwort erhält man ein JSON-Objekt, welches eine Liste an möglichen Verbindungen beinhaltet. In einer zurückgelieferten Verbindung sind alle Teilstrecken definiert. Die erste Teilstrecke bestimmt den Ausgangspunkt der ÖV-Verbindung. Diese ist von besonderer Relevanz. In \ref{problem:mehrere ÖV-Stationen mit dem gleichen Namen} wurde aufgezeigt, dass es normalerweise mehrere ÖV-Stationen mit dem gleichen Namen gibt und nun zur richtigen geroutet werden muss. So kann mithilfe von der \code{stopid}, welche dem \acs{OSM}-Tag \code{uic\_ref} entspricht und \code{terminal} die richtige Station ermittelt werden. Man kann mithilfe von Overpass die ÖV-Linien der Teilstrecke laden. Die letzte Station der Linie muss nun dem Wert in \code{terminal} entsprechen. Dadurch hat man die ÖV-Linie in die richtige Fahrtrichtung ermittelt und kann so die Ausgangstation auf dieser Linie extrahieren. So hat man die Startstation. Das Gleiche trifft natürlich auf die Endstation der Verbindung zu.
+
+\subsubsection{Einschränkungen}
+\label{analyse:search.ch Einschränkungen}
+Die Anzahl täglicher Anfragen ist für den freien Gebrauch auf 1000 beschränkt.
