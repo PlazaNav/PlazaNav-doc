@@ -46,16 +46,16 @@ In den nachfolgenden Abschnitten werden die drei Container näher beleuchtet.
 Bevor die \nameref{architektur:Routing-Engine} ihre Routing-Funktion ausführen kann, muss diese zuerst aus dem \ac{OSM}-Datensatz einen Routing-Graph generieren. Unsere Hauptaufgabe besteht darin, diesen Routing-Graphen für Fussgänger-Routing über Flächen zu optimieren. Ein Ansatz wäre, den Graphen nach dem Generieren zu verändern. Dies ist aber schwer realisierbar, da die meisten Routing-Engines die Graphen in eigenen (binären) Datenstrukturen ablegen. So wär unsere Implementation auch stark an eine einzelne Routing-Engine gekoppelt.
 
 Ein zweiter Ansatz die Integration unserer Optimierung in die Verarbeitung der Routing-Engines selbst. Auch da wären wir wieder stark an eine spezifische Routing-Engine gekoppelt.
-Wir haben uns stattdessen entschieden, beim Input der \ac{OSM}-Daten anzusetzen. Dazu werden die Rohdaten zuerst eingelesen und nach Fussgänger-Flächen abgesucht (\nameref{par:OSM Importer}). Mit unserem Algorithmus werden neue Fusswege eingetragen (\nameref{par:Plaza Optimizer}). Diese neu erzeugten Kartendaten werden dann wieder mit den ursprünglichen Rohdaten verschmelzt (\nameref{par:OSM Merger}). Erst dann generiert die Routing-Engine daraus den Routing-Graphen. Das Vorgehen ist in Abbildung \ref{fig:workflow_vorverarbeitung} schematisch aufgezeigt.
+Wir haben uns stattdessen entschieden, beim Input der \ac{OSM}-Daten anzusetzen. Dazu werden die Rohdaten zuerst eingelesen und nach Fussgänger-Flächen abgesucht (\nameref{par:OSM Importer}). Mit unserem Algorithmus werden neue Fusswege eingetragen (\nameref{par:Plaza Optimizer}). Diese neu erzeugten Kartendaten werden dann wieder mit den ursprünglichen Rohdaten verschmelzt (\nameref{par:OSM Merger}). Erst dann generiert die Routing-Engine daraus den Routing-Graphen. Das Vorgehen ist in Abbildung \ref{fig:dataflow_vorverarbeitung} schematisch aufgezeigt.
 
 Abbildung \ref{fig:component_diagram_vorverarbeitung} zeigt die einzelnen Komponenten für die Vorverarbeitung der \ac{OSM}-Daten auf.
 
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\linewidth]{projectdoc/img/workflow_vorverarbeitung.pdf}
-    \caption[Ablauf Vorverarbeitung]{Ablauf der Vorverarbeitung der \ac{OSM}-Daten bis zur Übergabe an die Routing-Engine; Grafik erstellt mit \emph{draw.io}}
-    \label{fig:workflow_vorverarbeitung}
+    \includegraphics[width=1\linewidth]{projectdoc/img/dataflow_vorverarbeitung.pdf}
+    \caption[Datenfluss Vorverarbeitung]{Datenfluss-Diagramm der Vorverarbeitung von \ac{OSM}-Daten bis zur Übergabe an die Routing-Engine; Grafik erstellt mit \emph{draw.io}}
+    \label{fig:dataflow_vorverarbeitung}
 \end{figure}
     
 
