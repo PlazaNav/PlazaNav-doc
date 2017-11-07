@@ -43,7 +43,7 @@ In den nachfolgenden Abschnitten werden die drei Container näher beleuchtet.
 \subsubsection{Plaza Vorverarbeitung}
 \label{architektur:Plaza Vorverarbeitung}
 
-Bevor die \nameref{architektur:Routing-Engine} ihre Routing-Funktion ausführen kann, muss diese zuerst aus dem \ac{OSM}-Datensatz einen Routing-Graph generieren. Unsere Hauptaufgabe besteht darin, diesen Routing-Graphen für Fussgänger-Routing über Flächen zu optimieren. Ein Ansatz wäre, den Graphen nach dem Generieren zu verändern. Dies ist aber schwer realisierbar, da die meisten Routing-Engines die Graphen in eigenen (binären) Datenstrukturen ablegen. So wär unsere Implementation auch stark an eine einzelne Routing-Engine gekoppelt.
+Bevor die Routing Engine ihre Routing-Funktion ausführen kann, muss diese zuerst aus dem \ac{OSM}-Datensatz einen Routing-Graph generieren. Unsere Hauptaufgabe besteht darin, diesen Routing-Graphen für Fussgänger-Routing über Flächen zu optimieren. Ein Ansatz wäre, den Graphen nach dem Generieren zu verändern. Dies ist aber schwer realisierbar, da die meisten Routing-Engines die Graphen in eigenen (binären) Datenstrukturen ablegen. So wär unsere Implementation auch stark an eine einzelne Routing-Engine gekoppelt.
 
 Ein zweiter Ansatz die Integration unserer Optimierung in die Verarbeitung der Routing-Engines selbst. Auch da wären wir wieder stark an eine spezifische Routing-Engine gekoppelt.
 Wir haben uns stattdessen entschieden, beim Input der \ac{OSM}-Daten anzusetzen. Dazu werden die Rohdaten zuerst eingelesen und nach Fussgänger-Flächen abgesucht (\nameref{par:OSM Importer}). Mit unserem Algorithmus werden neue Fusswege eingetragen (\nameref{par:Plaza Optimizer}). Diese neu erzeugten Kartendaten werden dann wieder mit den ursprünglichen Rohdaten verschmelzt (\nameref{par:OSM Merger}). Erst dann generiert die Routing-Engine daraus den Routing-Graphen. Das Vorgehen ist in Abbildung \ref{fig:dataflow_vorverarbeitung} schematisch aufgezeigt.
@@ -97,12 +97,12 @@ Um die mit Osmium importierten Objekte in Shapely zu verwenden, werden diese ins
 \paragraph{OSM Merger}\label{par:OSM Merger}~\\
 Der OSM Merger ist dafür verantwortlich, unsere erzeugten Geometrien (Fusswege) wieder in das \ac{OSM}-Kartenmaterial einzupflegen, um es anschliessend der Routing-Engine zur Verarbeitung zum Routing-Graphen zu übergeben.
 
-Die durch unseren Algorithmus erzeugten Wege durch Flächen (in Shapely Datenstrukturen) sollen nun wieder zurück ins \ac{OSM}-Format geschrieben werden. Die bisher erwähnten Libraries bieten eine solche Funktion leider nicht an. Auch sonst ist zum Zeitpunkt dieser Arbeit keine uns bekannte stabile Library dafür vorhanden. Die Erklärung dafür liegt wohl darin, dass beim Extrahieren der Geometrie (siehe Absatz \nameref{par:Plaza Optimizer}) alle Meta-Daten (z.B. Tags) von \ac{OSM} verloren gehen. Bei der umgekehrten Konvertierung (Geometrie zu \ac{OSM}) müssen also wieder Meta-Daten hinzugefügt werden. Diese Problematik kann ein generisches Konvertierungs-Tool nicht ohne weiteres lösen.
+Die durch unseren Algorithmus erzeugten Wege durch Flächen (in Shapely Datenstrukturen) sollen nun wieder zurück ins \ac{OSM}-Format geschrieben werden. Dazu wird wie beim \nameref{par:OSM Importer} Osmium verwendet, mit dem Geometrien in eine OSM-Datei geschrieben werden können
 
-Für diese Komponente wird daher eine eigene Implementation geschrieben, die lediglich Wege aus Geometrien in ein \ac{OSM}-Format schreibt und mit den für uns relevanten Meta-Daten versieht.
-
-In einem weiteren Schritt müssen unsere optimierten Wege in das bestehende Strassennetz eingebunden werden, damit die Routing-Engine diese beachtet. Dazu werden die Ein- und Ausgangspunkte der Wege im Polygon der Fläche referenziert. Dadurch werden sie auch topologisch mit den besthenden Strassen und Wegen verbunden, die das Polygon an diesen Punkten schneiden und einen Eintrittspunkt bilden.
+In einem weiteren Schritt müssen unsere optimierten Wege in das bestehende Strassennetz eingebunden werden, damit die Routing-Engine diese auch beachtet. Dazu werden die Eingangspunkte der von uns erzeugten Fusswege in den bestehenden Strassen und Wegen referenziert, die an diesem Punkt auf die Fläche treffen. Somit werden sie topologisch direkt miteinander verbunden.
 % TODO: Begriff Eintrittspunkt definieren
+
+Als letzten Schritt führen wir die erzeugten Fusswege und die modifizierten Strassen wieder zusammen mit der "grossen" \ac{OSM}-Datei, die ganz am Anfang importiert wurde. Dazu wird das Commandline-Tool Osmosis \cite{osmosis} verwendet.
 
 \subsubsection{Plaza Routing}
 \label{architektur:Plaza Routing}
