@@ -23,50 +23,182 @@ Die Arbeitspakte und Zeit wird mithilfe von Jira verwaltet. Für alle Tätigkeit
 \subsubsection{Phasen / Iterationen und Meilensteine}
 \label{sub:Phasen / Iterationen und Meilensteine}
 
-Die Studienarbeit wird in die \acs{RUP}-Phasen (Inception, Elaboration, Construction, Transition) aufgeteilt. Dabei wird jedoch eine von der gängigen Norm abweichende Aufteilung gewählt. Durch den theoretischen Fokus der Arbeit wird der Elaboration das grösste Zeitbudget zugeordnet. Dies ist auch der Grund warum mit einwöchigen Sprints gearbeitet wird.
+Die Studienarbeit wird in die \ac{RUP}-Phasen (Inception, Elaboration, Construction, Transition) aufgeteilt. Dabei wird jedoch eine von der gängigen Norm abweichende Aufteilung gewählt. Durch den theoretischen Fokus der Arbeit wird der Elaboration das grösste Zeitbudget zugeordnet. Dies ist auch der Grund warum mit einwöchigen Sprints gearbeitet wird. Es wird zusätzlich vom Standard-\ac{RUP}-Prozess abgewichen. Gegen Ende des Projekts wird nochmals eine zusätzliche Elaboration-Phase durchgeführt. Dieser theoretischer Teil wird nicht in der ersten Elaboration gemacht, damit der wichtigste Use Case \textit{Fussgänger-Routing über offene Flächen} so sicher umgesetzt wird und gegen Ende des Projekts bei idealem Projektverlauf noch Zeit für die Aufbereitung von \textit{Stand Fussgänger-Routing über offene Strassen} und \textit{Stand Flächen-Traversierung über Berge/Strände} bleibt.
 
-\begin{table}[]
-	\centering
-	\caption{Phasen / Iterationen und Meilensteine}
-	\begin{tabularx}{\textwidth}{lXXX}
-		% Row 0
-		\toprule
-		\textbf{Sprint}        & \textbf{Sprint 0} & \textbf{Sprint 1} & \textbf{Sprint 2} \\ \midrule
-		\textbf{Phase}         & Inception         & Inception         & Elaboration \\
-		\textbf{Milestones}    & \textit{Aufgabenstellung}  & \textit{Aufgabenstellung}  & \textit{Stand Fussgänger-Routing über offene Flächen} \\
-		\textbf{Zeitbudget}    & 1 Woche           & 1 Woche           & 1 Woche                                 \\
-		\textbf{Arbeitspakete} & \nextitem Aufgabestellung-Brainstorming \nextitem JIRA aufsetzen \nextitem LATEX Doc aufsetzen \nextitem Vorgehen definieren              &  \nextitem Aufgabenstellung finalisieren \nextitem Travis aufsetzen \nextitem Python/Docker Know-How aufbauen \nextitem Einarbeitung QGIS            & \nextitem Visibility-Graph Know-How sammeln \nextitem Visibility-Graph QGIS Test \nextitem Spider-Web-Graph Know-How sammeln                                  \\ \bottomrule
-		% Row 1
-		\toprule
-		\textbf{Sprint}        & \textbf{Sprint 3} & \textbf{Sprint 4} & \textbf{Sprint 5} \\ \midrule
-		\textbf{Phase}         & Elaboration         & Elaboration         & Elaboration \\
-		\textbf{Milestones}    & \textit{Stand Fussgänger-Routing über offene Flächen}  & \textit{Stand Fussgänger-Routing über offene Flächen}  & \textit{Stand Fussgänger-Routing über offene Flächen} \\
-		\textbf{Zeitbudget}    & 1 Woche           & 1 Woche           & 1 Woche                                 \\
-		\textbf{Arbeitspakete} & \nextitem Spider-Web-Graph QGIS Test \nextitem Skeleton-Graph Know-How sammeln \nextitem Skeleton-Graph QGIS Test              & TODO              & TODO                                    \\ \bottomrule
-		% Row 2
-		\toprule
-		\textbf{Sprint}        & \textbf{Sprint 6} & \textbf{Sprint 7} & \textbf{Sprint 8} \\ \midrule
-		\textbf{Phase}         & Elaboration         & Elaboration         & Elaboration \\
-		\textbf{Milestones}    & \textit{Stand Fussgänger-Routing über offene Flächen}  & \textit{Stand Fussgänger-Routing über Strassen}  & \textit{Stand Fussgänger-Routing über Strassen} \\
-		\textbf{Zeitbudget}    & 1 Woche           & 1 Woche           & 1 Woche                                 \\
-		\textbf{Arbeitspakete} & TODO              & TODO              & TODO                                    \\ \bottomrule
-		% Row 3
-		\toprule
-		\textbf{Sprint}        & \textbf{Sprint 9} & \textbf{Sprint 10} & \textbf{Sprint 11} \\ \midrule
-		\textbf{Phase}         & Construction         & Construction         & Construction \\
-		\textbf{Milestones}    & \textit{Prototyp Backend}  & \textit{Prototyp Backend}  & \textit{Prototyp Frontend} \\
-		\textbf{Zeitbudget}    & 1 Woche           & 1 Woche           & 1 Woche                                 \\
-		\textbf{Arbeitspakete} & TODO              & TODO              & TODO                                    \\ \bottomrule
-		% Row 4
-		\toprule
-		\textbf{Sprint}        & \textbf{Sprint 12} & \textbf{Sprint 13} & \textbf{Sprint 13} \\ \midrule
-		\textbf{Phase}         & Construction         & Transition         & Transition \\
-		\textbf{Milestones}    & \textit{Prototyp Frontend}  & \textit{Abgabe SA}  & \textit{Abgabe SA} \\
-		\textbf{Zeitbudget}    & 1 Woche           & 1 Woche           & 1 Woche                                 \\
-		\textbf{Arbeitspakete} & TODO             & TODO              & TODO                                    \\ \bottomrule
-	\end{tabularx}
-\end{table}
+\begin{landscape}
+\begin{longtable}{l p{5.5cm} p{5.5cm} p{5.5cm}} 
+        \toprule
+        \textbf{Sprint}
+                                & \textbf{Sprint 0}
+                                & \textbf{Sprint 1}
+                                & \textbf{Sprint 2} \\
+        
+        \midrule
+        \textbf{Phase}
+                                & Inception
+                                & Inception
+                                & Elaboration \\
+        
+        \textbf{Milestones} 	
+                                & \textit{Aufgabenstellung}
+                                & \textit{Aufgabenstellung}
+                                & \textit{Stand Fussgänger-Routing über offene Flächen}  \\
+        
+        \textbf{Arbeitspakete}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Aufgabestellung-Brainstorming
+                                    \item JIRA aufsetzen
+                                    \item LATEX Doc aufsetzen
+                                    \item Vorgehen definieren
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Aufgabenstellung finalisieren
+                                    \item Travis aufsetzen
+                                    \item Python/Docker Know-How aufbauen
+                                    \item Einarbeitung QGIS
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Visibility-Graph Know-How sammeln
+                                    \item Visibility-Graph QGIS Test
+                                    \item Spider-Web-Graph Know-How sammeln
+                                \end{enumerate}  \\
+        
+        \pagebreak
+        \toprule
+        \textbf{Sprint}
+                                & \textbf{Sprint 3}
+                                & \textbf{Sprint 4}
+                                & \textbf{Sprint 5} \\
+        
+        \midrule
+        \textbf{Phase}
+                                & Elaboration
+                                & Elaboration
+                                & Elaboration \\
+        
+        \textbf{Milestones}
+                                & \textit{Stand Fussgänger-Routing über offene Flächen}
+                                & \textit{Backend Prototype}
+                                & \textit{Backend Prototype}  \\
+        
+        \textbf{Arbeitspakete}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Visibility-Graph QGIS Test
+                                    \item Spider-Web-Graph QGIS Test
+                                    \item Skeleton-Graph Know-How sammeln
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Evaluation Routing Engines
+                                    \item Evaluation Overpass Anbindung
+                                    \item Konzept Platz-Vorverarbeitung erstellen
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Architektur Backend
+                                    \item Evaluation Search.ch Anbindung
+                                    \item Platz-Vorverarbeitung umsetzen
+                                \end{enumerate}  \\
+        
+        
+        \toprule
+        \textbf{Sprint}
+                                & \textbf{Sprint 6}
+                                & \textbf{Sprint 7}
+                                & \textbf{Sprint 8} \\
+        
+        \midrule
+        \textbf{Phase}
+                                & Construction
+                                & Construction
+                                & Construction \\
+        
+        \textbf{Milestones}
+                                & \textit{Backend Prototype}
+                                & \textit{Backend Prototype}
+                                & \textit{Backend/Frontend Prototype}  \\
+        
+        \textbf{Arbeitspakete}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Anbindung Fremdsysteme
+                                    \item Platz-Vorverarbeitung umsetzen
+                                    \item API definieren
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Kommunikation mit Fremdsystemen koordinieren
+                                    \item QGIS-Plugin Grundstruktur
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Vergleich Flächentraversierungsvarianten durchführen
+                                    \item QGIS-Plugin Eingabemaske
+                                    \item Stand Start-/Endpunkt auf Flächen
+                                \end{enumerate} \\
+        
+        
+        \pagebreak
+        \toprule
+        \textbf{Sprint}
+                                & \textbf{Sprint 9}
+                                & \textbf{Sprint 10}
+                                & \textbf{Sprint 11} \\
+        
+        \midrule
+        \textbf{Phase}
+                                & Construction
+                                & Elaboration
+                                & Elaboration \\
+        
+        \textbf{Milestones}
+                                & \textit{Prototyp Frontend}
+                                & \textit{Stand Fussgänger-Routing über offene Strassen}
+                                & \textit{Stand Flächen-Traversierung über Berge/Strände}  \\
+        
+        \textbf{Arbeitspakete}
+                                & \begin{enumerate}[noitemsep]
+                                    \item QGIS-Plugin beste Route anzeigen
+                                    \item Stand Flächentraversierung bei zwei benachbarten Polygonen
 
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Stand Fussgänger-Routing über offene Strassen Recherche
+                                    \item Überführung in Docker-Container
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Stand Flächen-Traversierung über Berge/Strände Recherche
+                                \end{enumerate} \\
+                                
+        
+        \toprule
+        \textbf{Sprint}
+                                & \textbf{Sprint 12}
+                                & \textbf{Sprint 13}
+                                & \\
+        
+        \midrule
+        \textbf{Phase}
+                                & Transition
+                                & Transition
+                                & \\
+        
+        \textbf{Milestones}
+                                & \textit{Abgabe SA}
+                                & \textit{Abgabe SA}
+                                & \\
+        
+        \textbf{Arbeitspakete}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Restarbeiten
+                                    \item Doku aufräumen
+                                    \item Abgabe vorbereiten
+                                \end{enumerate}
+                                & \begin{enumerate}[noitemsep]
+                                    \item Abgabe SA
+                                \end{enumerate}
+                                & \\
+        
+        \bottomrule
+    \caption{Phasen / Iterationen und Meilensteine}
+    \label{table:Phasen / Iterationen und Meilensteine}
+\end{longtable}
+\end{landscape}
 
 \subsection{Risiken}
 \label{sub:Risiken}
