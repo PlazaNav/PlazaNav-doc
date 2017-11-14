@@ -4,37 +4,58 @@
 
 \subsection{Evaluation Routing-Engine}
 \label{analyse:Evaluation Routing-Engine}
-Eine Evaluation der heutig gängigen \ac{OSM}-Routing-Engines wurde in \cite{eval_routing_engine} ausgiebig durchgeführt. Bei unserer Evaluation beschränken wir uns auf \emph{Valhalla}\cite{valhalla} und \emph{Graphhopper}\cite{graphhopper}. Die Auswahl fiel auf diese zwei, weil \cite{eval_routing_engine} ergeben hat, dass Valhalla extrem schnell ist und Graphhopper Dijkstra und A* anbietet. So können wir zusätzlich analysieren, welcher Shortest-Path-Algorithmus sich für Flächen-Traversierungen besser eignet. Beide Routing-Engines bieten einen schnellen Einstieg und lassen sich in einigen Minuten problemlos aufsetzen.
+Eine Evaluation der gängigen \ac{OSM}-Routing-Engines wurde in \cite{eval_routing_engine} ausgiebig durchgeführt. Bei unserer Evaluation beschränken wir uns auf die drei "grössten" Routing-Engines \emph{OSRM}\cite{osrm}, \emph{Valhalla}\cite{valhalla} und \emph{Graphhopper}\cite{graphhopper}. Die Auswahl fiel auf diese drei, weil sie von den in \cite{eval_routing_engine} evaluierten Routing-Engines anhand der Github-Metriken mit Abstand die grösste Verbreitung haben.
 
-Die beiden Engines werden an folgenden Kriterien gemessen:
+% TODO Ref auf Doku, wo wir negative IDs begründen
+Bei einem Test mit einer von uns vorverarbeiteten OSM-Datei gab es bei \emph{Valhalla} sofort Probleme, weil wir negative OSM IDs verwenden, um Konflikte mit bestehenden Daten zu vermeiden. Für die weitere Evaluation beschränken wir uns daher auf die beiden Routing-Engines \emph{Graphhopper} und \emph{OSRM}.
+
+Die Engines werden an folgenden Kriterien gemessen:
 
 \subsubsection{Infrastruktur-Integration}
 \label{analyse:Infrastruktur-Integration}
 Es wird analysiert, wie einfach die Routing-Engine aufgesetzt werden kann. Ziel ist es, dass die Routing-Engine in einem eigenen Docker-Image (siehe \nameref{NFA:NFA01}) auf dem Server läuft.
 
-\emph{Graphhopper} ist bereits als Docker-Image verfügbar und kann somit einfach auf einem beliebigen Server gestartet und verwendet werden.
+\emph{Graphhopper} und \emph{OSRM} sind bereits als Docker-Image verfügbar und können somit einfach auf einem beliebigen Server gestartet und verwendet werden.
 
-\emph{Valhalla} ist als Ubuntu-\ac{PPA} verfügbar und lässt sich somit einfach auf einer Ubuntu-Distribution aufsetzen. Das Valhalla als Docker-Image verfügbar ist, muss noch umgesetzt werden.
 
 \subsubsection{Applikation-Anbindung}
 \label{analyse:Applikation-Anbindung}
-Da mit der Routing-Engine kommunizieren werden muss, wird geprüft, wie einfach die Routing-Engines an eine Applikation angebunden werden können. 
+Da mit der Routing-Engine kommunizieren werden muss, wird geprüft, wie einfach die Routing-Engines an eine Applikation angebunden werden können.
 
-\emph{Graphhopper} und \emph{Valhalla} bieten zusätzlich ein fertiges HTTP-Backend an, welches für das Routing genutzt werden kann. Somit können beide Routing-Engines auf die gleiche Art und Weise eingebunden werden.
+Beide Routing-Engines bieten zusätzlich ein fertiges HTTP-Backend an, welches für das Routing genutzt werden kann. Somit können beide Routing-Engines auf die gleiche Art und Weise eingebunden werden.
 
 % TODO kann man das bei Valhalla so sagen, oder ist es ein Frontend, welches missbraucht wird
 
 \subsubsection{OSM-Daten-Integration}
 \label{analyse:OSM-Daten-Integration}
-Für die Flächentraversierung müssen eigene \ac{OSM}-Daten generiert werden. Diese vorverarbeiteten \ac{OSM}-Daten müssen für das Fussgänger-Routing der Routing-Engine übergeben werden. 
+Für die Flächentraversierung müssen eigene \ac{OSM}-Daten generiert werden. Diese vorverarbeiteten \ac{OSM}-Daten müssen für das Fussgänger-Routing der Routing-Engine übergeben werden.
 
-\emph{Graphhopper} und \emph{Valhalla} können beide beim Starten des HTTP-Backend eine \ac{OSM}-Datei übergeben werden.
+Sowohl \emph{OSRM} als auch \emph{Graphhopper} können beim Starten Graphen-Aufbereitung eine \ac{OSM}-Datei übergeben werden.
 
 % TODO: wollen wir noch prüfen, wie die Engines mit Änderungen umgehen können? Sprich muss alles neu importiert werden oder können sie mergen?
 
+\subsubsection{Geschwindigkeit der Vorverarbeitung}
+\label{analyse:Geschwindigkeit der Vorverarbeitung}
+Die von uns erzeugte OSM-Datei wird der Routing-Engine zur Vorverarbeitung übergeben, um daraus einen Routing-Graphen zu generieren. Da dieser Prozess für jeden Durchlauf unserer Plaza-Vorverarbeitung aufs Neue geschehen muss, soll dies möglichst schnell sein.
+
+Bei einem Test mit einer von uns vorverarbeiteten OSM-Datei brauchte \emph{Graphhopper} nur wenige Minuten, während \emph{OSRM} über 30 Minuten für die Verarbeitung beanspruchte.
+
+\subsubsection{Konfigurationsmöglichkeiten}
+\label{analyse:Konfigurationsmöglichkeiten}
+Für unsere Zwecke ist es sinnvoll, wenn wir die Routing-Engines auf das Fussgänger-Routing konfigurieren können. So sind z.B. Contraction Hierarchies nicht notwendig, da wir keine grossen Routen berechnen.
+
+\emph{Graphhopper} bietet die meisten Konfigurationsmöglichkeiten. Contraction Hierarchies können deaktiviert werden und für die Shortest-Path-Berechnung werden die A*- und Dijkstra-Algorithmen unterstützt. \emph{OSRM} bietet ebenfalls einen Modus ohne Contraction Hierarchies, allerdings nur mit dem Dijkstra-Algorithmus.
+
+\subsubsection{Fussgänger-Profil}
+\label{analyse:Fussgänger-Profil}
+Für das Routing werden bestimmte Profile verwendet, um das Routing auf verschiedene Transportarten wie Auto oder Fussgänger zu optimieren. Für uns ist es von Vorteil, wenn eine Routing-Engine bereits ein vorkonfiguriertes Profil für Fussgänger mitbringt.
+
+\emph{Graphhopper} und \emph{OSRM} bringen beide bereits ein vorkonfiguriertes Fussgänger-Profil mit.
+
 \subsubsection{Resultat}
 \label{analyse:Resulat}
-Die beiden Engines unterscheiden sich in den oben definierten und analysierten Kriterien nur geringfügig. Die Entscheidung fiel zugunsten von Grahhopper. Ausschlaggebender Punkt war, dass Grahhopper bereits als Docker-Image verfügbar ist, was einen einfachen Aufbau der Infrastruktur ermöglicht.
+Bezüglich der Integration unterscheiden sich \emph{Graphhopper} und \emph{OSRM} kaum. Der Entscheid fiel auf \emph{Graphhopper}, da die Vorverarbeitung deutlich schneller ist und die Konfigurationsmöglichkeiten uns mehr Freiheiten bieten. Mit der Auswahl zwischen Dijkstra und A* können wir auch vergleichen, welcher Algorithmus besser für Flächen-Traversierungen geeignet ist.
+
 
 \subsection{nächste ÖV-Haltestellen finden}
 \label{analyse:nächste ÖV-Haltestellen finden}
