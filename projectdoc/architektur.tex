@@ -106,21 +106,46 @@ Als letzten Schritt führen wir die erzeugten Fusswege und die modifizierten Str
 
 \subsubsection{Plaza Routing}
 \label{architektur:Plaza Routing}
-Der Plaza Routing Container (siehe Abbildung \ref{fig:container_diagram}) ist für das Koordinieren und Verabeiten von Routing-Anfragen verantwortlich. Er bietet für das QGIS-Plugin eine API an. Mit Hilfe von search.ch (für ÖV-Routing) und der Routing-Engine (für Fussgänger-Routing) wird eine komplette Route mit Fahrplan erstellt und dem QGIS-Plugin übergeben.
+Der Plaza Routing Container (siehe Abbildung \ref{fig:container_diagram}) ist für das Koordinieren und Verarbeiten von Routing-Anfragen verantwortlich. Er bietet für das QGIS-Plugin eine API an. Mit Hilfe von verschiedenen Drittsystemen und der Routing-Engine (für Fussgänger-Routing) wird eine komplette Route mit Fahrplan erstellt und dem QGIS-Plugin oder anderen Konsumenten übergeben.
 
-\paragraph{Schnittstelle}\label{architektur:Schnittstelle}~\\
-%TODO Interface, welches nach aussen exponiert wird mit Swagger
+In diesem Abschnitt wird vertieft in die einzelne Bestandteile des Plaza Routing eingegangen. So sind nachfolgend die einzelnen Schichten und Konstrukte aufgeführt und beschrieben. Zur Übersicht findet man das Schichten-Diagramm in Abbildung \ref{fig:package_diagram_plaza_routing}. Die Verantwortlichkeiten der Drittsystemen wird in den jeweiligen Schichten angesprochen.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth]{projectdoc/img/package_diagram}
+\caption[Schichten-Diagramm Plaza Routing]{Schichten-Diagramm Plaza Routing}
+\label{fig:package_diagram_plaza_routing}
+\end{figure}
+
+\paragraph{app}\label{architektur:app-layer}~\\
+Hierbei handelt es sich um den zentralen Einstiegspunkt der Flask-Applikation \cite{flask}. Die Flask-Applikation wird in dieser Komponente konfiguriert und gestartet. Dabei wird mithilfe von Flask-RESTPlus \cite{flask-restplus}, einer Flask-Extension, eine \ac{REST}-\ac{API} exponiert, welche für das Routing genutzt werden kann. Die \ac{API} ist im Abschnitt \nameref{architektur:api-layer} genauer beschrieben.
+Die Extension hat den Vorteil, dass automatisch eine Swagger-Dokumentation \cite{swagger} generiert wird, mit welcher unter anderem \ac{API}-Clients in verschiedenen Programmiersprachen generiert werden können.  
+
+\paragraph{api}\label{architektur:api-layer}~\\
+In dieser Schicht wird eine \ac{REST}-\ac{API} für den zentralen Einstieg in das Plaza Routing exponiert. Diese \ac{API} wird primär vom \nameref{architektur:QGIS Plugin} verwendet. Eine Einschränkung bezüglich der Konsumenten gibt es nicht.
+
+Die \ac{OAS} \cite{open-api-specificaiton} der \ac{API} ist unter \cite{plaza-routing-api-spez} verfügbar. SwaggerUI kann unter \cite{plaza-routing-api-swaggerui} eingesehen werden. Die {API}-Spezifikation wird in einem Git-Repository gehalten. Änderungen werden somit automatisch auf der Github-Page \cite{plaza-routing-api-spez} publiziert. Dies hat die Vorteile, dass es keine Abweichung zwischen Spezifikation und Dokumentation geben kann, mit Swagger \cite{swagger} die Schnittstelle bereits ideal beschrieben ist und die Haltung in einem öffentlichen Repository eine Diskussions-Plattform für Konsumenten bietet.
+
+\paragraph{business}\label{architektur:business-layer}~\\
+In der Business-Schicht ist die Business-Logik der \ac{API}-Abfragen vorhanden. Das PlazaRouting wird logisch in zwei Bereiche \emph{PublicTransportRouteFinder} und \emph{WalkingRouteFinder} aufgeteilt. Die Koordination übernimmt dabei \emph{PlazaRouteFinder}. So wird das Design-Prinzip \emph{Separation of Concern} ideal umgesetzt, da \emph{PublicTransportRouteFinder} nur mit Services kommuniziert, welche für das ÖV-Routing notwendig sind und \emph{WalkingRouteFinder} die Kommunikation mit der Routing-Engine übernimmt.
+
+\paragraph{integration}\label{architektur:integration-layer}~\\
+In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendigkeit beschrieben. In dieser Architektur, werden Komponente, welche mit Drittsystemen oder -komponenten kommunizieren als \emph{Service} bezeichnet und der Integration-Schicht angegliedert.
+
+\subparagraph{Search.ch Service}\label{architektur:Search.ch Service}~\\
 TODO
 
-\paragraph{Routing-Engine Anbindung}\label{architektur:Routing-Engine Anbindung}~\\
+\subparagraph{Overpass Service}\label{architektur:Overpass Service}~\\
+Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Stationen in einem gegebenen Umkreis und geografischen Position von ÖV-Stationen basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden. Da ÖV-Stationen und -Linien in \ac{OSM} nicht konsistent gemappt sind, wird das Recovery Blocks Pattern \cite{fault_tolerant_software} angewendet, um möglichst ein 
+%TODO Problematik mit OSM-Daten und Recovery-Block Pattern
+
+
+
+\subparagraph{Geocoding Service}\label{architektur:Geocoding Service}~\\
+TODO
+
+\subparagraph{Routing-Engine Service}\label{architektur:Routing-Engine Service}~\\
 %TODO Strategy-Pattern beschreiben, welches verwendet wird, damit Routing-Engine ausgetauscht werden kann
-TODO
-
-
-\paragraph{Overpass Anbindung}\label{architektur:Overpass Anbindung}~\\
-TODO
-
-\paragraph{Search.ch Anbindung}\label{architektur:Search.ch Anbindung}~\\
 TODO
 
 
