@@ -133,20 +133,16 @@ In der Business-Schicht ist die Business-Logik der \ac{API}-Abfragen vorhanden. 
 In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendigkeit beschrieben. In dieser Architektur, werden Komponente, welche mit Drittsystemen oder -komponenten kommunizieren als \emph{Service} bezeichnet und der Integration-Schicht angegliedert.
 
 \subparagraph{Search.ch Service}\label{architektur:Search.ch Service}~\\
-TODO
+Der \emph{SearchChService} kommuniziert mit der Fahrplan-\ac{API} von search.ch \cite{search_ch_route_api}.
 
 \subparagraph{Overpass Service}\label{architektur:Overpass Service}~\\
-Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Stationen in einem gegebenen Umkreis und geografischen Position von ÖV-Stationen basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden. Da ÖV-Stationen und -Linien in \ac{OSM} nicht konsistent gemappt sind, wird das Recovery Blocks Pattern \cite{fault_tolerant_software} angewendet, um möglichst ein 
-%TODO Problematik mit OSM-Daten und Recovery-Block Pattern
-
-
+Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Stationen in einem gegebenen Umkreis und geografischen Position von ÖV-Stationen basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden. 
 
 \subparagraph{Geocoding Service}\label{architektur:Geocoding Service}~\\
-TODO
+Der \emph{GeocodingService} liefert für eine Adresse eine Koordinate.
 
 \subparagraph{Routing-Engine Service}\label{architektur:Routing-Engine Service}~\\
-%TODO Strategy-Pattern beschreiben, welches verwendet wird, damit Routing-Engine ausgetauscht werden kann
-TODO
+Der \emph{RoutingEngineService} ist für das Fussgänger-Routing zuständig und kommuniziert mit einer Routing-Engine. Die Architektur ist mit dem Strategy Pattern so gewählt, dass die Routing-Engine einfach ausgetauscht werden kann.
 
 
 
