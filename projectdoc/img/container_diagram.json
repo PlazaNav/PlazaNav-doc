@@ -8,6 +8,14 @@
   "elements": [
     {
       "type": "Software System",
+      "name": "nominatim.openstreetmap.org",
+      "description": "Geocoding",
+      "tags": "",
+      "position": "195,1050",
+      "containers": []
+    },
+    {
+      "type": "Software System",
       "name": "Overpass",
       "description": "",
       "tags": "",
@@ -62,7 +70,7 @@
       "name": "search.ch",
       "description": "ÖV-Routing",
       "tags": "",
-      "position": "195,930",
+      "position": "195,705",
       "containers": []
     }
   ],
@@ -88,6 +96,13 @@
       "description": "Findet Haltestellen mit",
       "technology": "",
       "destination": "Overpass",
+      "tags": ""
+    },
+    {
+      "source": "Plaza Routing",
+      "description": "Holt Adresse von",
+      "technology": "",
+      "destination": "nominatim.openstreetmap.org",
       "tags": ""
     },
     {
