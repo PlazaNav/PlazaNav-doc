@@ -130,7 +130,7 @@ Die \ac{OAS} \cite{open-api-specificaiton} der \ac{API} ist unter \cite{plaza-ro
 In der Business-Schicht ist die Business-Logik der \ac{API}-Abfragen vorhanden. Das PlazaRouting wird logisch in zwei Bereiche \emph{PublicTransportRouteFinder} und \emph{WalkingRouteFinder} aufgeteilt. Die Koordination übernimmt dabei \emph{PlazaRouteFinder}. So wird das Design-Prinzip \emph{Separation of Concern} ideal umgesetzt, da \emph{PublicTransportRouteFinder} nur mit Services kommuniziert, welche für das ÖV-Routing notwendig sind und \emph{WalkingRouteFinder} die Kommunikation mit der Routing-Engine übernimmt.
 
 \paragraph{integration}\label{architektur:integration-layer}~\\
-In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendigkeit beschrieben. In dieser Architektur, werden Komponente, welche mit Drittsystemen oder -komponenten kommunizieren als \emph{Service} bezeichnet und der Integration-Schicht angegliedert.
+In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendigkeit beschrieben. In dieser Architektur werden Komponenten, welche mit Drittsystemen oder -komponenten kommunizieren als \emph{Services} bezeichnet und der Integration-Schicht angegliedert.
 
 \subparagraph{Search.ch Service}\label{architektur:Search.ch Service}~\\
 Der \emph{SearchChService} kommuniziert mit der Fahrplan-\ac{API} von search.ch \cite{search_ch_route_api}.
