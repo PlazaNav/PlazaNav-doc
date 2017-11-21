@@ -127,6 +127,21 @@ TODO
 TODO
 % TODO Welche Variante wird verwendet
 
+\subsubsection{Start-/Endpunkt auf der Fläche}
+\label{subsub:Start-/Endpunkt auf der Fläche}
+Ein Spezialfall des Fussgänger-Routings entsteht, wenn der Start- oder Endpunkt auf einer Fussgänger-Fläche liegt. Wie in \ref{problem:Start-/Endpunkt auf der Fläche} beschrieben ist es üblich, dass Routing-Engines eine Mittelsenkrechte zum nächten Punkt auf dem Strassennetz ziehen.
+
+In unserem Prototyp erfolgt die komplette Berechnung der kürzesten Wege durch Fussgänger-Flächen im Voraus, zur Laufzeit (bei einer Anfrage des Benutzers) werden die neu berechneten Fusswege lediglich von der Routing-Engine verwendet. Für unsere Zwecke ergeben sich so zwei mögliche Ansätze:
+
+\begin{enumerate}
+    \item Zur Laufzeit wird vom Start-, bzw. Endpunkt auf der Fläche der kürzeste Weg zum Strassennetz in Richtung der Route berechnet, dabei werden Hindernisse umgangen.
+    \item Die von uns berechneten Wege über Flächen reichen aus, die Routing-Engine zieht eine Mittelsenkrechte auf den nächstgelegenen Fussweg auf der Fläche. Zur Laufzeit müssen keine zusätzlichen Berechnungen durchgeführt werden.
+\end{enumerate}
+
+% TODO: Bild einfügen für Vergleich der Ansätze, sobald wir im QGIS mit unserem Plugin routen anzeigen können
+
+Wie in Abbildung x zu sehen ergibt der zweite Ansatz ohne zusätzlichen Berechnungen genügend gute Resultate, da es zwischen jedem Ein- und Ausgangspunkt ein Fussweg hat, der bereits den kürzesten Weg beschreibt. Eine zusätzliche Berechnung des kürzesten Pfades wie im ersten Ansatz ergibt keine signifikante Verbesserung der Route.
+
 \subsection{Kurzbeschreibung und Charakterisierung}
 \label{sub:Kurzbeschreibung und Charakterisierung}
 TODO
