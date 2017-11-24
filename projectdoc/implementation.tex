@@ -19,15 +19,32 @@ TODO
 
 \subsubsection{Plaza Routing}
 \label{impl:Plaza Routing}
-TODO
+In den folgenden Unterkapitel wird die Umsetzung der Plaza Routing Architektur, welche im Kapitel \ref{architektur:Plaza Routing} definiert ist, erläutert. 
+
+\paragraph{api}\label{impl:Plaza Routing api}~\\
+In diesem Kapitel wird auf die Umsetzung der api-Schicht in Abbildung \ref{fig:package_diagram_plaza_routing} Bezug genommen.
+
+TODO Flask Setup beschreiben
+
+\paragraph{Zusammenspiel und Verantwortlichkeit}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit}~\\
+In Abbildung \ref{fig:communication_diagram} sind die Interaktionen zwischen den Komponenten in einem Kommunikations-Diagramm aufgeschlüsselt. Wir haben uns bewusst für diese Diagrammart entschieden, da der Fokus auf den Verantwortlichkeiten der Komponenten und ihrer Zusammenarbeit liegt und nicht direkt auf der dahinter liegenden Logik.
 
 \begin{figure}[ht]
-\centering
-\includegraphics[width=1\linewidth]{projectdoc/img/communication_diagram}
-\caption[Plaza Routing Collaboration Diagramm]{Plaza Routing Communication Diagramm}
-\label{fig:communication_diagram}
+    \centering
+    \includegraphics[width=1\linewidth]{projectdoc/img/communication_diagram}
+    \caption[Plaza Routing Collaboration Diagramm]{Plaza Routing Communication Diagramm}
+    \label{fig:communication_diagram}
 \end{figure}
 
+Herauszuheben ist, dass \emph{PublicTransportRouteFinder} wie in \ref{impl:Plaza Routing ÖV-Haltestellen eruieren} beschrieben, zuerst die ÖV-Haltestellen in der Nähe eruiert und für jede Haltestelle die ÖV-Verbindung über \emph{SearchChService} von search.ch \cite{search_ch_route_api} bezieht.
 
-% Da ÖV-Stationen und -Linien in \ac{OSM} nicht konsistent gemappt sind, wird das Recovery Blocks Pattern \cite{fault_tolerant_software} angewendet, um möglichst ein 
+\paragraph{ÖV-Haltestellen eruieren}\label{impl:Plaza Routing ÖV-Haltestellen eruieren}~\\
+ÖV-Haltestellen werden mit Overpass \cite{wiki:overpass} aus \ac{OSM} bezogen. Dabei wird um den aktuellen Standort eine \gls{BoundingBox} gezogen. Die Bounding Box ist konfigurierbar und entspricht einer zumutbaren Laufdistanz. In dieser Fläche werden Nodes und Relationen mit Tags, welche ÖV-Haltestellen identifizieren (\emph{''public\_transport''=''stop\_position''}, \emph{''type''=''public\_transport''} etc.), gefiltert.
+
+\paragraph{Beste Route eruieren}\label{impl:Plaza Routing Beste Route eruieren}~\\
+TODO mit Sequenzdiagram
+
+\paragraph{inkonsistentes ÖV-Mapping}\label{impl:Plaza Routing inkonsistentes ÖV-Mapping}~\\
+Mit Hilfe von Overpass \cite{wiki:overpass} wird für eine ÖV-Verbindung die korrekte Koordinate der Einstiegs- und der letzten Endhaltestelle geholt. Search.ch \cite{search_ch_route_api} liefert in ÖV-Verbindung für zwei gegenüberliegenden Haltestelle (je eine für jede Fahrrichtung) eine Koordinate zurück, welche beispielsweise direkt auf der Hauptstrasse liegen kann. Dies ist für ein Fussgänger-Routing nicht optimal.
+Da ÖV-Stationen und -Linien in \ac{OSM} nicht konsistent gemappt sind, wird das Recovery Blocks Pattern \cite{fault_tolerant_software} angewendet, um dem User so gut wie möglich ein genaues Resultat zu liefern.
 %TODO Problematik mit OSM-Daten und Recovery-Block Pattern in Implementation verschieben
