@@ -27,19 +27,27 @@ In diesem Kapitel wird auf die Umsetzung der api-Schicht in Abbildung \ref{fig:p
 TODO Flask Setup beschreiben
 
 \paragraph{Zusammenspiel und Verantwortlichkeit}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit}~\\
-In Abbildung \ref{fig:communication_diagram} sind die Interaktionen zwischen den Komponenten in einem Kommunikations-Diagramm aufgeschlüsselt. Wir haben uns bewusst für diese Diagrammart entschieden, da der Fokus auf den Verantwortlichkeiten der Komponenten und ihrer Zusammenarbeit liegt und nicht direkt auf der dahinter liegenden Logik.
+In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen in Unter-Squenz-Diagram in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} ausgelagert. Dabei geht es nicht primär um die Logik die dahinter liegt, sondern um die Verantwortlichkeiten der Services. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\linewidth]{projectdoc/img/communication_diagram}
-    \caption[Plaza Routing Collaboration Diagramm]{Plaza Routing Communication Diagramm}
-    \label{fig:communication_diagram}
+    \includegraphics[width=0.7\linewidth]{projectdoc/img/sequence_diagram_plaza_routing_overview}
+    \caption[Plaza Routing Sequenz-Diagramm Übersich]{Plaza Routing Sequenz-Diagramm Übersicht}
+    \label{fig:sequence_diagram_plaza_routing_overview}
 \end{figure}
 
-Herauszuheben ist, dass \emph{PublicTransportRouteFinder} wie in \ref{impl:Plaza Routing ÖV-Haltestellen eruieren} beschrieben, zuerst die ÖV-Haltestellen in der Nähe eruiert und für jede Haltestelle die ÖV-Verbindung über \emph{SearchChService} von search.ch \cite{search_ch_route_api} bezieht.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{projectdoc/img/sequence_diagram_plaza_routing_route_comb}
+    \caption[Plaza Routing Sequenz-Diagramm Route Combinations]{Plaza Routing Sequenz-Diagramm Route Combinations}
+    \label{fig:sequence_diagram_plaza_routing_route_combs}
+\end{figure}
+
+
+Herauszuheben ist, dass \emph{PublicTransportRouteFinder} in Schritt 6 zuerst die ÖV-Haltestellen in der Nähe eruiert (siehe \ref{impl:Plaza Routing ÖV-Haltestellen eruieren}) und für jede Haltestelle die ÖV-Verbindung über \emph{SearchChService} iterativ in Schritt 7 von search.ch \cite{search_ch_route_api} bezieht.
 
 \paragraph{ÖV-Haltestellen eruieren}\label{impl:Plaza Routing ÖV-Haltestellen eruieren}~\\
-ÖV-Haltestellen werden mit Overpass \cite{wiki:overpass} aus \ac{OSM} bezogen. Dabei wird um den aktuellen Standort eine \gls{BoundingBox} gezogen. Die Bounding Box ist konfigurierbar und entspricht einer zumutbaren Laufdistanz. In dieser Fläche werden Nodes und Relationen mit Tags, welche ÖV-Haltestellen identifizieren (\emph{''public\_transport''=''stop\_position''}, \emph{''type''=''public\_transport''} etc.), gefiltert.
+ÖV-Haltestellen werden mit Overpass \cite{wiki:overpass} aus \ac{OSM} bezogen. Dabei wird um den aktuellen Standort eine \gls{BoundingBox} gezogen. Die Bounding Box ist konfigurierbar und entspricht einer zumutbaren Laufdistanz. In dieser Fläche werden Nodes und Relationen mit Tags, welche ÖV-Haltestellen identifizieren (\emph{''public\_transport''=''stop\_position''}, \emph{''type''=''public\_transport''} etc.), gefiltert und die \emph{uic\_ref} zurückgegeben.
 
 \paragraph{Beste Route eruieren}\label{impl:Plaza Routing Beste Route eruieren}~\\
 TODO mit Sequenzdiagram
