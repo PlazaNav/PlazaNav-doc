@@ -1,0 +1,24 @@
+
+\section{Infrastruktur}
+\label{sec:Infrastruktur}
+
+\subsection{Continuous Integration}
+\label{sub:Continuous Integration}
+
+In unserem Projekt wird \ac{CI} einerseits für das automatische Erstellen dieser Dokumentation mi LaTeX verwendet, und andererseits, um automatische Tests für die Backend-Implementation auszuführen. Beides wird im Folgenden kurz beschrieben.
+
+\subsubsection{Erstellen der LaTeX-Dokumentation}
+\label{subsub:Erstellen der LaTeX-Dokumentation}
+
+Bei jedem Git Commit in das Repository der Dokumentation \cite{github:PlazaRoute-doc} wird mit Continuous Integration ein PDF erstellt. So wird sichergestellt, dass die Dokumentation keine syntaktischen Fehler enthält. Das PDF wird in unser internes JIRA hochgeladen und direkt dem Task angehängt, der zum Commit gehört.
+
+Für diese Continuous Integration haben wir uns für Travis CI \cite{travis-ci} entschieden, da die Integration mit Github gut funktioniert und das Produkt für Open-Source-Projekte kostenlos ist. Allerdings bietet Travis CI keine direkte Unterstützung für eine LaTeX-Umgebung, die LaTeX-Pakete aus den Repositories sind ausserdem veraltet. So muss bei jedem Build die LaTeX-Umgebung kompiliert werden, damit immer die neueste Version aller Pakete verwendet werden kann.
+
+\subsubsection{CI für Backend}
+
+Mit \ac{CI} für das Backend des Prototyps werden bei jedem Commit in das Repository \cite{github:PlazaRoute} alle Tests ausgeführt. So wird sichergestellt, dass die Tests auch auf einem isolierten System mit den definierten Abhängigkeiten korrekt durchlaufen. Für jeden Merge in den Master-Branch des Repositories wird zusätzlich mit Sphinx \cite{sphinx} eine automatische Dokumentation der Python-Pakete generiert. Diese ist unter \cite{PlazaRoute-apidoc} veröffentlicht.
+
+Anders als bei \ref{subsub:Erstellen der LaTeX-Dokumentation} funktioniert hier Travis CI für unseren Fall nicht. Eine Abhängigkeit unserer Implementation ist Pyosmium \cite{pyosmium}, das selbst die \emph{boost} Library für C++-Komponenten verwendet. Leider sind die Python-Bindings dafür in der Umgebung von Travis CI veraltet und wären nur sehr aufwändig selbst zu kompilieren. Stattdessen sind wir auf CircleCI \cite{circleci} ausgewichen, das für einen parallelen \ac{CI}-Job kostenlos ist. Dies reicht für unsere Zwecke völlig aus. CircleCI bietet die Möglichkeit, eigene Docker-Container zu verwenden. So können wir ein eigenes Docker-Image bauen, das \emph{boost} bereits in der neuesten Version vorinstalliert hat, womit es mit den Python-Abhängigkeiten auch keine Probleme mehr gibt.
+
+\subsection{Deployment}
+\label{sub:Deployment}
