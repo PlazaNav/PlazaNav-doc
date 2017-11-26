@@ -142,6 +142,20 @@ In unserem Prototyp erfolgt die komplette Berechnung der kürzesten Wege durch F
 
 Wie in Abbildung x zu sehen ergibt der zweite Ansatz ohne zusätzlichen Berechnungen genügend gute Resultate, da es zwischen jedem Ein- und Ausgangspunkt ein Fussweg hat, der bereits den kürzesten Weg beschreibt. Eine zusätzliche Berechnung des kürzesten Pfades wie im ersten Ansatz ergibt keine signifikante Verbesserung der Route.
 
+\subsubsection{Routing bei zwei benachbarten Flächen}
+\label{subsub:Routing bei zwei benachbarten Flächen}
+
+Wie in \ref{target:Routing bei zwei benachbarten Flächen} beschrieben, gibt es bei zwei benachbarten Flächen einen Spezialfall für das Routing. Bei unserer Implementation wissen die beiden Flächen nichts voneinander und es werden keine Einstiegspunkte erkannt, wo der Fussgänger die Abgrenzung der beiden Flächen überqueren könnte.
+
+Im Rahmen unserer Arbeit haben wir in der Literatur keine entsprechende Diskussion dazu gefunden. Wir haben für die Lösung des Problems zwei Ansätze überlegt:
+
+\begin{enumerate}
+    \item Die beiden Flächen miteinander kombinieren: Wenn sich zwei Fussgänger-Flächen berühren, können sie geometrisch vereint und als eine einzige Fussgänger-Fläche angesehen werden.
+    \item Gemeinsame Einstiegspunkte zwischen den Flächen definieren: An der Kante, wo sich zwei Flächen berühren, werden künstlich in einem regelmässigen Abstand Einstiegspunkte eingefügt, wo für das Routing der Fussgänger die Kante überqueren kann.
+\end{enumerate}
+
+%TODO: Ergänzen, je nach Resultat, ob wir einen Ansatz implementieren
+
 \subsection{Kurzbeschreibung und Charakterisierung}
 \label{sub:Kurzbeschreibung und Charakterisierung}
 TODO
