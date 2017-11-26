@@ -133,7 +133,7 @@ In der Business-Schicht ist die Business-Logik der \ac{API}-Abfragen vorhanden. 
 In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendigkeit beschrieben. In dieser Architektur werden Komponenten, welche mit Drittsystemen oder -komponenten kommunizieren als \emph{Services} bezeichnet und der Integration-Schicht angegliedert.
 
 \subparagraph{Search.ch Service}\label{architektur:Search.ch Service}~\\
-Der \emph{SearchChService} kommuniziert mit der Fahrplan-\ac{API} von search.ch \cite{search_ch_route_api}.
+Der \emph{SearchChService} kommuniziert mit der Fahrplan-\ac{API} von search.ch \cite{search_ch_route_api} und bezieht die Fahrplan-Daten für eine bestimmte Ausgangsstation und Destination.
 
 \subparagraph{Overpass Service}\label{architektur:Overpass Service}~\\
 Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Stationen in einem gegebenen Umkreis und geografischen Position von ÖV-Stationen basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden. 

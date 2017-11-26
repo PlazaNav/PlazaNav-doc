@@ -17,6 +17,12 @@
             ]
         },
         {
+            "command": "makeglossaries",
+            "args": [
+                "%DOCFILE%"
+            ]
+        },
+        {
             "command": "xelatex",
             "args": [
                 "-synctex=1",
