@@ -2,7 +2,7 @@
 \label{sec:Bewertung}
 Im folgenden sind Komponente aufgelistet, welche im Kontext des Kapitels \ref{sec:Stand der Technik} erarbeitet wurden und einen Variantenentscheid mit sich bringen. Dazu werden messbare Kriterien definiert, gewichtet und die einzelnen Varianten daran gemessen.
 
-Den Varianten wird eine Punktzahl von 1 bis 3 zugewiesen, wobei 3 das Beste ist. Bis und mit dem angegebenen Maximalwert erhält man die volle Punktzahl. Liegt man 20\% über dem Wert, wird der Variante noch 2 Punkte zugewiesen. Alles darüber ergibt 1 Punkt.
+Den Varianten wird eine Punktzahl auf einer linearen Skala von 1 bis 5 zugewiesen.
 
 \subsection{Routing über offene Flächen}
 \label{eval:Routing über offene Flächen}
@@ -106,12 +106,12 @@ Die Vorverarbeitung wurde mit beiden Algorithmen auf der Test-Datei ausgeführt 
 
 
 \paragraph{zusätzliche Datenmenge}\label{result:zusätzliche Datenmenge}~\\
-Tabelle \ref{Resultat: zusätzliche Datenmenge} zeigt die zusätzliche Datenmenge im \ac{OSM}-Format, die durch die Vorverarbeitung mit dem jeweiligen Algorithmus entstanden ist, verglichen mit der Dateigrösse der \ac{OSM}-Datei vor der Vorverarbeitung.
+Tabelle \ref{table: zusätzliche Datenmenge} zeigt die zusätzliche Datenmenge im \ac{OSM}-Format, die durch die Vorverarbeitung mit dem jeweiligen Algorithmus entstanden ist, verglichen mit der Dateigrösse der \ac{OSM}-Datei vor der Vorverarbeitung.
 
 \begin{table}[H]
     \centering
     \caption{Resultat: zusätzliche Datenmenge}
-    \label{Resultat: zusätzliche Datenmenge}
+    \label{table: zusätzliche Datenmenge}
     \begin{tabular}{lll}
         & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\
         \textbf{zusätzliche Datenmenge} & 4.13 MB                    & 15.1 MB  \\  
@@ -121,8 +121,7 @@ Tabelle \ref{Resultat: zusätzliche Datenmenge} zeigt die zusätzliche Datenmeng
 \end{table}
 
 \paragraph{Natürlichkeit}\label{result:Natürlichkeit}~\\
-
-
+Für die Evaluation wurde die Bewertung der Natürlichkeit mit fünf Probanden durchgeführt. Die einzelnen Bewertungen sind in Tabelle \ref{table:Resultat Natürlichkeit} abgebildet. In Abbildung \ref{chart:natürlichkeit_vergleich} sind die durchschnittlichen Bewertungen pro Platz und Algorithmus dargestellt.
 
 \begin{figure}[ht]
     \centering
@@ -154,12 +153,10 @@ Tabelle \ref{Resultat: zusätzliche Datenmenge} zeigt die zusätzliche Datenmeng
 \end{figure}
 
 
-
-
 \begin{table}[ht]
     \centering
     \caption{Resultat: Natürlichkeit}
-    \label{Resultat: Natürlichkeit}
+    \label{table:Resultat Natürlichkeit}
     \begin{tabular}{lll}
         & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\
         \textbf{Helvetiaplatz}   &                          &                          \\
@@ -187,11 +184,16 @@ Tabelle \ref{Resultat: zusätzliche Datenmenge} zeigt die zusätzliche Datenmeng
 \subsubsection{Auswertung und Schlussfolgerung}
 \label{result:Auswertung und Schlussfolgerung}
 
+Die einzelnen Werte sind in Tabelle \ref{table:Resultat Evaluation Flächen-Algorithmus} zusammen gefasst und gewichtet. Es zeigt sich, dass der Visibility Graph knapp besser abschneidet, der Unterschied ist allerdings sehr gering und nicht eindeutig.
 
-\begin{table}[H]
+Bei der Bewertung der Natürlichkeit durch Probanden ergaben sich einige Erkenntnisse. So bewerteten einige Probanden eine direkte Route mit etwas ``scharfen'' Ecken - wie sie der Visibility Graph erzeugt - natürlicher, während andere die etwas kurvigeren Routen des Spiderweb Graphs bevorzugten.
+
+Abschliessend kann man sagen, dass beide Algorithmen gute Resultate bringen. Wenn die Verarbeitungszeit wichtig ist, bringt der Visibility Graph Vorteile, der Spiderweb Graph erzeugt dafür tendenziell die etwas natürlicheren Routen.
+
+\begin{table}[ht]
     \centering
     \caption{Resultat der Evaluation Flächen-Algorithmus}
-    \label{Resultat Evaluation Flächen-Algorithmus}
+    \label{table:Resultat Evaluation Flächen-Algorithmus}
     \begin{tabular}{lllll}
             \hline
             \textbf{ID} & \textbf{Titel}         & \textbf{\begin{tabular}[c]{@{}l@{}}Relatives Gewicht \\ (0-1)\end{tabular}} & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\ \hline
