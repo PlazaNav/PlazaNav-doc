@@ -13,11 +13,11 @@ Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen he
 \label{sub:Kriterien}
 
 \paragraph{Verarbeitungszeit}\label{criteria:Verarbeitungszeit}~\\
-Der aktuelle Import der \ac{OSM}-Daten der Schweiz ins System Tourpl \cite{hsr_tourpl}, ein Produkt des Geometa Lab der HSR \cite{geometa_lab_hsr}, dauert 2 Stunden. Die Verarbeitung der Plätze der Schweiz soll nicht länger als diese 2 Stunden dauern.
+Der aktuelle Import der \ac{OSM}-Daten der Schweiz ins System Tourpl \cite{hsr_tourpl}, ein Produkt des Geometa Lab der HSR \cite{geometa_lab_hsr}, dauert 2 Stunden. Diese Zeitdauer soll nicht überschritten werden. Die Verarbeitungszeit wird bewertet auf einer Skala von 1 (2 Stunden) bis 5 (0 Minuten).
 
 
 \paragraph{zusätzliche Datenmenge}\label{criteria:zusätzliche Datenmenge}~\\
-Die Algorithmen generieren zusätzliche Geometrien. Dabei sollen die zusätzlich erstellten Geometrien nicht mehr als 5\% der Datenmenge der \ac{OSM}-Datei der Schweiz \cite{osm_data_switzerland} betragen. Mit Stand 28.11.2017 haben die \ac{OSM}-Daten der Schweiz (switzerland-exact.osm.pbf) eine Grösse von 279MB in \ac{PBF} und 6444MB als \ac{OSM}. Somit beträgt die maximal zusätzliche Datenmenge bezogen auf die \ac{OSM}-Datei 322MB.
+Die Algorithmen generieren zusätzliche Geometrien. Da die öffentlichen Plätze nur einen kleinen Teil der Kartendaten bilden, soll die zusätzliche Datenmenge keinen signifikaten Teil ausmachen. Die zusätzliche Datenmenge im Verhältnis zur originalen Datei wird bewertet auf einer Skala von 1 (1\%) bis 5 (0\%).
 
 
 \paragraph{Natürlichkeit}\label{criteria:Natürlichkeit}~\\
@@ -56,7 +56,7 @@ Für die Vergleichswerte der Verarbeitungszeit und der zusätzlichen Datenmenge 
             nodes near coords align={vertical},
             every node near coord/.append style={color=black}
         ] 
-            \addplot[style={blue,fill=blue!30!white}] 
+            \addplot[style={orange,fill=orange!30!white}]
                 coordinates {(Visibility,4.1) (Spiderweb,15)};
         \end{axis}
     \end{tikzpicture}%
@@ -79,7 +79,7 @@ Für die Vergleichswerte der Verarbeitungszeit und der zusätzlichen Datenmenge 
             nodes near coords align={vertical},
             every node near coord/.append style={color=black},
         ] 
-            \addplot[style={red,fill=red!30!white}] 
+            \addplot[style={purple,fill=purple!30!white}]
                 coordinates {(Visibility,13.78) (Spiderweb,32.88)};
         \end{axis}
     \end{tikzpicture}
@@ -97,8 +97,10 @@ Die Vorverarbeitung wurde mit beiden Algorithmen auf der Test-Datei ausgeführt 
     \caption{Resultat: Verarbeitungszeit (ohne Initialer Import der Daten)}
     \label{Resultat: Verarbeitungszeit}
     \begin{tabular}{lll}
-        & \textbf{Visiblity Graph} & \textbf{Spiderweb Graph} \\
-        \textbf{Verarbeitungszeit} & 13m47s                   & 32m53s                   
+        & \textbf{Visiblity Graph} & \textbf{Spiderweb Graph}     \\
+        Verarbeitungszeit  &        13m47s                   & 32m53s    \\
+        %  5 - ((t / 2h)*4)
+        \textbf{Bewertung 1-5} &    4.54                     &  3.90
     \end{tabular}
 \end{table}
 
@@ -113,7 +115,8 @@ Tabelle \ref{Resultat: zusätzliche Datenmenge} zeigt die zusätzliche Datenmeng
     \begin{tabular}{lll}
         & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\
         \textbf{zusätzliche Datenmenge} & 4.13 MB                    & 15.1 MB  \\  
-        in Prozent der Originalgrösse   & 0.06\%                     & 0.24\%              
+        in Prozent der Originalgrösse   & 0.06\%                     & 0.24\%   \\
+        \textbf{Bewertung 1-5}          & 4.76                       & 4.04
     \end{tabular}
 \end{table}
 
@@ -146,7 +149,7 @@ Tabelle \ref{Resultat: zusätzliche Datenmenge} zeigt die zusätzliche Datenmeng
         \end{axis}
     \end{tikzpicture}%
 
-    \caption[Diagramm Natürlichkeit von Visibility / Spiderweb Graph]{Durchschnittliche Bewertung der Natürlichkeit auf den verschiedenen Plätzen}
+    \caption[Diagramm Natürlichkeit von Visibility / Spiderweb Graph]{Durchschnittliche Bewertungen der Natürlichkeit auf den verschiedenen Plätzen}
     \label{chart:natürlichkeit_vergleich}
 \end{figure}
 
@@ -185,17 +188,17 @@ Tabelle \ref{Resultat: zusätzliche Datenmenge} zeigt die zusätzliche Datenmeng
 \label{result:Auswertung und Schlussfolgerung}
 
 
-\begin{table}[ht]
+\begin{table}[H]
     \centering
-    \caption{Evaluationskriterien Flächen-Algorithmus}
-    \label{Evaluationskriterien Flächen-Algorithmus}
+    \caption{Resultat der Evaluation Flächen-Algorithmus}
+    \label{Resultat Evaluation Flächen-Algorithmus}
     \begin{tabular}{lllll}
             \hline
             \textbf{ID} & \textbf{Titel}         & \textbf{\begin{tabular}[c]{@{}l@{}}Relatives Gewicht \\ (0-1)\end{tabular}} & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\ \hline
-            1           & \nameref{criteria:Verarbeitungszeit}      & 0.5                                                                         & 5 / 2.5                   & 1 / 0.5                  \\
-            2           & \nameref{criteria:zusätzliche Datenmenge} & 0.4                                                                         & 4 / 1.6                   & 2 / 0.8                  \\
-            3           & \nameref{criteria:Natürlichkeit}          & 0.7                                                                         & 2 / 1.4                   & 4 / 2.8                  \\ \hline
-            \multicolumn{3}{l}{\textbf{Total}}                                                                                 & \textbf{11 / 5.5}         & \textbf{7 / 4.1}        
+            1           & \nameref{criteria:Verarbeitungszeit}      & 0.3       & 4.54 / 1.36                   & 3.9 / 1.17                   \\
+            2           & \nameref{criteria:zusätzliche Datenmenge} & 0.2       & 4.76 / 0.95                   & 4.04 / 0.81                  \\
+            3           & \nameref{criteria:Natürlichkeit}          & 0.5       & 3.33 / 1.67                   & 3.4 / 1.7                    \\ \hline
+            \multicolumn{3}{l}{\textbf{Total}}                                  & \textbf{12.6 / 3.98}         & \textbf{11.36 / 3.68}
      \end{tabular}               
 \end{table}
 
