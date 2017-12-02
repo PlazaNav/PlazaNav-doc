@@ -15,9 +15,60 @@ TODO
 
 \subsubsection{Plaza Vorverarbeitung}
 \label{impl:Plaza Vorverarbeitung}
-TODO
 
-\subsubsection{Plaza Routing}
+In diesem Kapitel wird die Umsetzung der Plaza Vorverarbeitung, wie sie in Kapitel \ref{architektur:Plaza Vorverarbeitung} beschrieben ist, erläutert. Dabei wird das Zusammenspiel der verschiedenen Komponenten aufgezeigt und einige Implementationsdetails diskutiert.
+
+Die Code-Dokumentation der Plaza Vorverarbeitung ist unter \cite{PlazaRoute-apidoc} veröffentlicht.
+
+\paragraph{Struktur und Ablauf der Komponenten} \label{impl:Struktur der Komponenten} ~\\
+Die Python-Pakete wurden anhand der Architektur und des Datenflusses, wie in Abbildung \ref{fig:dataflow_vorverarbeitung} zu sehen, strukturiert. So wurde für jede Komponente \emph{OSM Importer}, \emph{Plaza Optimizer} und \emph{OSM Merger} ein eigenes Python-Subpackage erstellt.
+
+Angestossen wird die Vorverarbeitung vom \code{\_\_main\_\_.py} file, das vom Benutzer mit der Kommandozeile aufgerufen wird.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{projectdoc/img/sequence_diagram_plaza_preprocessing.png}
+    \caption[Sequenz Diagramm Plaza Vorverarbeitung]{Sequenz Diagramm Plaza Vorverarbeitung}
+    \label{fig:sequence_diagram_plaza_preprocessing}
+\end{figure}
+
+In Abbildung \ref{fig:sequence_diagram_plaza_preprocessing} ist der Ablauf in einem Sequenzdiagramm dargestellt. Dies entspricht nicht komplett dem Programmcode, sondern soll nur zur Veranschaulichung des Zusammenspiels der einzelnen Komponenten dienen.
+
+Im Folgenden wird auf die einzelnen Komponenten eingegangen.
+
+\paragraph{Importer}\label{impl:Importer}~\\
+Das Importer-Package liest aus einer gegebenen \ac{OSM}-Datei (Dateityp \ac{OSM} oder \ac{PBF}) die für uns relevanten Daten mit Hilfe von Pyosmium \cite{pyosmium} ein. Während dem Einlesen werden die benötigten Daten direkt heraus gefiltert. Für uns relevant sind vor allem Plazas, die anhand von konfigurierbaren Tags bestimmt werden. Zusätzlich werden alle Strassen benötigt, um die Plazas später wieder an das Strassennetz anzuschliessen (siehe Abschnitt \nameref{impl:Merger}). Punkte und Gebäude werden für die Berechnung von Hindernissen auf den Plazas genutzt.
+
+Alle ausgelesenen Daten werden in ein \code{OSMHolder} Objekt verpackt und zurück gegeben.
+
+\paragraph{Optimizer}\label{impl:Optimizer}~\\
+Der Optimizer übernimmt die Kernfunktion der Vorverarbeitung, die Optimierung von Fussgänger-Flächen.
+
+Das \code{OSMHolder}-Objekt aus dem \nameref{impl:Importer} wird de Optimizer übergeben. Als erstes wird für Strassen, Punkte und Gebäude je ein R-Tree \cite{rtree_Guttman} Index erstellt. Dies erlaubt es uns, effizient geometrische Objekte zu finden, die sich mit dem Plaza schneiden. Ohne einen Index müsste für jedes Objekt (Linie, Punkt oder Gebäude) jeweils der komplette Datensatz durchsucht werden ($O(n)$). Mit einer Index-Suche ($O(\log n)$) werden die Datensätze auf ein paar wenige mögliche Treffer eingegrenzt.
+
+Für jedes Plaza werden folgende Schritte ausgeführt:
+\begin{enumerate}
+    \item Es werden alle \glspl{Einstiegspunkt} berechnet. Plazas, die weniger als zwei Einstiegspunkte haben, werden direkt verworfen, da auf diesen mit unserem Algorithmus gar keine kürzesten Wege berechnet werden könnten.
+    \item Linien, die das Plaza schneiden und einen \gls{Einstiegspunkt} bilden, werden mit der \ac{OSM} ID zwischengespeichert. Die jeweiligen \glspl{Einstiegspunkt} werden später vom \nameref{impl:Merger} in diese Linien eingefügt.
+    \item Alle Hindernisse auf dem Plaza werden ausgeschnitten. Dies kann ein Gebäude sein, das auf dem Platz steht, oder ein Hindernis wie z.B. ein Brunnen. Solche Hindernisse werden mit einem Quadrat mit konfigurierbaren Radius ausgeschnitten. Sollte nach diesem Schritt das Plaza komplett von Gebäuden oder Hindernissen verdeckt sein, wird es verworfen.
+    \item Nun findet die eigentliche Optimierung statt, das Berechnen eines Graphen über das Plaza. Als Knotenpunkte des Graphen werden die \glspl{Einstiegspunkt} sowie alle Eckpunkte des Polygons (dementsprechend auch von Hindernissen) beachtet. Es sind die beiden Verfahren SpiderWeb Graph und Visibility Graph implementiert. Das Verfahren kann über das Strategy-Pattern \cite{gof_patterns} konfiguriert werden.
+    \item Um die Anzahl Kanten des Graphen zu verringern, werden aus den generierten Graphen alle kürzesten Wege von jedem Einstiegspunkt zu jedem anderen Einstiegspunkt berechnet. Dies kann mit dem Dijkstra- \cite{dijkstra_algorithm} oder A*-Algorithmus \cite{astar} durchgeführt werden. Alle Kanten, die nicht auf diesen kürzesten Pfade sind, werden verworfen.
+    \item Für den SpiderWeb Graphen wird zusätzlich die Anzahl Knotenpunkte in den kürzesten Pfaden reduziert, indem die Linien geglättet werden. Dazu wird mit Hilfe von Shapely \cite{shapely} der Douglas-Peucker Algorithmus \cite{douglas-peucker_algorithm} verwendet.
+\end{enumerate}
+
+
+\paragraph{Merger}\label{impl:Merger}~\\
+Die Aufgabe des Merger ist es, die vom \nameref{impl:Optimizer} neu erstellten Geometrien wieder mit den originalen \ac{OSM}-Daten zu verschmelzen.
+\begin{enumerate}
+    \item In einem ersten Schritt werden die erstellten Linien im \ac{OSM}-Format als Nodes und Ways in eine temporäre Datei gespeichert.
+    \item Als nächstes werden die Einstiegspunkte in das Strassennetz eingebunden. Nur wenn unsere Linien einen gemeinsamen Punkt mit dem bestehenden Strassennetz haben, werden sie vom Router überhaupt für das Routing beachtet. Da sich jeder Einstiegspunkt mit einer bestehenden Linie kreuzt, wird dieser jeweils als zusätzlicher Punkt dem \ac{OSM}-Way hinzugefügt.
+    \item Die im vorherigen Schritt modifizierten Ways werden ebenfalls in eine temporäre Datei abgespeichert. Dazu wird die Versionsnummer erhöht, damit die bestehenden Ways schlussendlich überschrieben werden.
+    \item Nun werden alle in den vorherigen Schritten erstellten temporären \ac{OSM}-Dateien mit der originalen Datei zusammen geschmolzen, die ursprünglich importiert wurde. Dazu wird das externe Tool Osmosis \cite{osmosis} aufgerufen.
+\end{enumerate}
+
+Als Endresultat liegt nun eine \ac{OSM}-Datei mit den kompletten Kartendaten vor, die um zusätzliche Linien für die Optimierung über Fussgängerflächen ergänzt wurde. Die Datei kann nun etwa einer Routing-Engine übergeben werden.
+
+\subsubsection{Plaza Routing}~\\
 \label{impl:Plaza Routing}
 In den folgenden Unterkapitel wird die Umsetzung der Plaza Routing Architektur, welche im Kapitel \ref{architektur:Plaza Routing} definiert ist, erläutert. 
 
@@ -32,7 +83,7 @@ In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interakt
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.7\linewidth]{projectdoc/img/sequence_diagram_plaza_routing_overview}
-    \caption[Plaza Routing Sequenz-Diagramm Übersich]{Plaza Routing Sequenz-Diagramm Übersicht}
+    \caption[Plaza Routing Sequenz-Diagramm Übersicht]{Plaza Routing Sequenz-Diagramm Übersicht}
     \label{fig:sequence_diagram_plaza_routing_overview}
 \end{figure}
 
