@@ -5,10 +5,6 @@
 \subsection{Komponenten}
 \label{impl:Komponenten}
 
-\subsection{QGIS Plugin}
-\label{impl:QGIS Plugin}
-TODO
-
 \subsection{PlazaRoute Container}
 \label{impl:PlazaRoute Container}
 TODO
@@ -68,17 +64,29 @@ Die Aufgabe des Merger ist es, die vom \nameref{impl:Optimizer} neu erstellten G
 
 Als Endresultat liegt nun eine \ac{OSM}-Datei mit den kompletten Kartendaten vor, die um zusätzliche Linien für die Optimierung über Fussgängerflächen ergänzt wurde. Die Datei kann nun etwa einer Routing-Engine übergeben werden.
 
-\subsubsection{Plaza Routing}~\\
+\subsubsection{Plaza Routing}
 \label{impl:Plaza Routing}
-In den folgenden Unterkapitel wird die Umsetzung der Plaza Routing Architektur, welche im Kapitel \ref{architektur:Plaza Routing} definiert ist, erläutert. 
+In den folgenden Unterkapitel wird die Umsetzung der Plaza Routing Architektur, welche im Kapitel \ref{architektur:Plaza Routing} definiert ist, erläutert. Dabei handelt es sich um eine Flask-Applikation\cite{flask}.
+
+\paragraph{app}\label{impl:app-layer}~\\
+Die Flask-Applikation\cite{flask} wird in dieser Komponente konfiguriert und gestartet. So wird unter anderem das Logging aufgesetzt und die \ac{API}, welche im Abschnitt \nameref{impl:Plaza Routing api} beschrieben ist, initialisiert.
+
+Ebenfalls werden hier Error-Handler definiert, welche dafür sorgen, dass der Konsument der \ac{API} eine ansprechende und informative Fehlermeldung erhält und sicherstellt, dass keine Implementationsdetails der Applikation exponiert werden.
 
 \paragraph{api}\label{impl:Plaza Routing api}~\\
-In diesem Kapitel wird auf die Umsetzung der api-Schicht in Abbildung \ref{fig:package_diagram_plaza_routing} Bezug genommen.
+In diesem Abschnitt wird auf die Umsetzung der api-Schicht in Abbildung \ref{fig:package_diagram_plaza_routing} und auf den Abschnitt \nameref{architektur:api-layer} in der Architektur Bezug genommen.
 
-TODO Flask Setup beschreiben
+Dabei wird mithilfe von Flask-RESTPlus \cite{flask-restplus}, einer Flask-Extension, eine \ac{REST}-\ac{API} exponiert. Diese besteht aktuell aus einem \ac{REST}-Service, welcher im Abschnitt \nameref{impl:PlazaRouting} genauer erläutert ist. Die Extension hat den Vorteil, dass automatisch eine Swagger-Dokumentation \cite{swagger} generiert wird, mit welcher unter anderem \ac{API}-Clients in verschiedenen Programmiersprachen generiert werden können. Diese ist unter \cite{plaza-routing-api-swaggerui} verfügbar. Ebenfalls ist sofort ersichtlich, wie das Response-Model der \ac{API} aussieht und in welchem Format welche Parameter übergeben werden müssen. Dies Vereinfacht die Handhabung mit der \ac{API} massiv.
 
-\paragraph{Zusammenspiel und Verantwortlichkeit}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit}~\\
-In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen in ein Unter-Sequenz-Diagram in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} ausgelagert. Dabei geht es primär nicht um die Logik, die dahinter liegt, sondern um die Verantwortlichkeiten der Services. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich.
+Diese Komponenten kann ohne Probleme mit \ac{REST}-Services analog zu \nameref{impl:PlazaRouting} ergänzt werden.
+
+\subparagraph{PlazaRouting}\label{impl:PlazaRouting}~\\
+In der Komponenten \emph{PlazaRouting} wird der \ac{REST}-Service für das Routing exponiert. Im Bezug auf das Maturity Model \cite{maturity_model} von Leonard Richardson befinden wir uns auf Level 2. Im \ac{REST}-Service werden die übergebenen Parameter entgegen genommen, automatisch in das verlangte Format geparsed und geprüft, ob die Parameter, welche zwingend verlangt werden, auch übergeben wurden. Diese Information wird dann weiter an die Business-Schicht gereicht, welche im nächsten Abschnitt aufgeschlüsselt wird. Die Komponente besitzt sonst keine weitere Logik.
+
+\paragraph{Zusammenspiel und Verantwortlichkeit der Business- und Service-Schicht}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit der Business- und Service-Schicht}~\\
+In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen und das Optimieren der besten Route in ein Unter-Sequenz-Diagram in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs}, respektive Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} ausgelagert. Dabei geht es primär nicht um die Logik, die dahinter liegt, sondern um die Verantwortlichkeiten der Services. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich. Aus diesem Grund entsprechen die Diagramme nicht exakt dem Programmcode. 
+
+Die Ausgangsposition und Destination können entweder als Koordinate oder Adresse übergeben werden. Falls es sich um eine Adresse handelt, wird ein Geocoding durchgeführt, um die Koordinate zu extrahieren. Dies erklärt den zweimaligen Zugriff auf das \emph{Geocoding} im Sequenz-Diagramm \ref{fig:sequence_diagram_plaza_routing_overview}.
 
 \begin{figure}[ht]
     \centering
@@ -94,7 +102,7 @@ In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interakt
     \label{fig:sequence_diagram_plaza_routing_route_combs}
 \end{figure}
 
-So sieht man in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} gut, dass im Loop für eine Ausgangs-ÖV-Station die Verbindung von search.ch \cite{search_ch_route_api} geholt (siehe Paragraph \nameref{impl:Plaza Routing ÖV-Haltestellen eruieren}) und zwei Mal eine Fussgänger-Routing durchgeführt wird, jeweils vom aktuellen Standort zur ersten ÖV-Station und von der letzten ÖV-Station zur Destination. Diese Daten sind die Grundlagen für die Entscheidungsfindung der besten Route, welche in Paragraph \nameref{impl:Plaza Routing Beste Route eruieren} beschrieben ist.
+Man sieht in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} gut, dass im Loop für eine Ausgangs-ÖV-Station die Verbindung von search.ch \cite{search_ch_route_api} geholt (siehe Abschnitt \nameref{impl:Plaza Routing ÖV-Haltestellen eruieren}) und zwei Mal eine Fussgänger-Routing durchgeführt wird, jeweils vom aktuellen Standort zur ersten ÖV-Station und von der letzten ÖV-Station zur Destination. Diese Daten sind die Grundlagen für die Entscheidungsfindung der besten Route, welche in Abschnitt \nameref{impl:Plaza Routing Beste Route eruieren} beschrieben ist. \emph{Optimize Route Combination} ist im Abschnitt \nameref{impl:Plaza Routing Route optimieren} genauer beschrieben.
 
 \paragraph{ÖV-Haltestellen eruieren}\label{impl:Plaza Routing ÖV-Haltestellen eruieren}~\\
 ÖV-Haltestellen werden mit Overpass \cite{wiki:overpass} aus \ac{OSM} bezogen. Dabei wird um den aktuellen Standort eine \gls{BoundingBox} gezogen. Die Bounding Box ist konfigurierbar und entspricht einer zumutbaren Laufdistanz. In dieser Fläche werden Nodes und Relationen mit Tags, welche ÖV-Haltestellen identifizieren (\emph{''public\_transport''=''stop\_position''}, \emph{''type''=''public\_transport''} etc.), gefiltert und deren \emph{uic\_ref} zurückgegeben.
@@ -119,8 +127,8 @@ Die Dauer des Fussstrecke wird doppelt gewichtet. Ein einmaliges Umsteigen schl�
 
 Eine Verbindung, bei welcher man 5 Minuten geht, 15 Minuten fährt und zwei Mal umsteigen muss, wird mit Totalkosten von $5 * 60 * 2 + 15 * 60 + 2 * 7 * 60 = 2340$ mit den anderen möglichen Verbindungen verglichen. Schlussendlich wird die Verbindung mit den niedrigsten Kosten retourniert.
 
-\paragraph{Inkonsistentes ÖV-Mapping}\label{impl:Plaza Routing inkonsistentes ÖV-Mapping}~\\
-Mit Hilfe von Overpass \cite{wiki:overpass} wird für eine ÖV-Verbindung die korrekte Koordinate der Einstiegs- und der letzten Endhaltestelle geholt. Search.ch \cite{search_ch_route_api} liefert in einer ÖV-Verbindung für zwei gegenüberliegenden Haltestelle (je eine für jede Fahrrichtung) eine Koordinate zurück, welche beispielsweise direkt auf der Hauptstrasse liegen kann (siehe Abbildung \ref{fig:one_coordinate_for_two_stops}). Dies ist für ein Fussgänger-Routing nicht optimal.
+\paragraph{Route optimieren}\label{impl:Plaza Routing Route optimieren}~\\
+Search.ch \cite{search_ch_route_api} liefert in einer ÖV-Verbindung für zwei gegenüberliegenden Haltestelle (je eine für jede Fahrrichtung) eine Koordinate zurück, welche beispielsweise direkt auf der Hauptstrasse liegen kann (siehe Abbildung \ref{fig:one_coordinate_for_two_stops}). Dies ist für ein Fussgänger-Routing suboptimal.
 
 \begin{figure}[ht]
 \centering
@@ -129,13 +137,20 @@ Mit Hilfe von Overpass \cite{wiki:overpass} wird für eine ÖV-Verbindung die ko
 \label{fig:one_coordinate_for_two_stops}
 \end{figure}
 
+Aus diesem Grund werden diese Koordinaten nun von Overpass \cite{wiki:overpass} bezogen. Der Ablauf ist schematisch in Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} dargestellt. So wird für jede ÖV-Teilstrecke die Koordinate für die Einstieg- und Ausstiegsstation geladen. Nach dem Laden muss nochmals das Fussgänger-Routing durchgeführt werden, da sich die Koordinate der ersten und letzten ÖV-Station verändert haben.
 
-Aus diesem Grund werden diese Koordinaten nun von Overpass \cite{wiki:overpass} bezogen. 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth]{projectdoc/img/sequence_diagram_plaza_routing_optimize_route_comb}
+\caption[Plaza Routing Sequenz-Diagramm Optimize Route Combination]{Plaza Routing Sequenz-Diagramm Optimize Route Combination}
+\label{fig:sequence_diagram_plaza_routing_optimize_route_comb}
+\end{figure}
+
 Da ÖV-Stationen und -Linien in \ac{OSM} jedoch nicht konsistent gemappt sind, wird das Recovery Blocks Pattern \cite{fault_tolerant_software} angewendet, um dem User so oft wie möglich ein genaues Resultat liefern zu können. Mit nicht konsistent meinen wir, dass sie nicht zwingend den Vorgaben in \cite{osm_wiki_relation} folgen. Durch Tests lassen sich jedoch Trends erkennen, wie Mapper grundsätzlich mit ÖV-Verbindungen umgehen.
 
-Vorgängig muss klargestellt werden, dass wenn die Rede vo einer Linie ist, grundsätzliche eine Buslinie oder ähnliches, welches in \ac{OSM} als Relation \cite{osm_wiki_relation} abgebildet ist, gemeint ist. Spricht man von einer Station, ist die ÖV-Station gemeint, welche als Node gemappt ist.
+Vorgängig muss klargestellt werden, dass wenn die Rede vo einer Linie ist, grundsätzliche eine Buslinie oder ähnliches, welche in \ac{OSM} als Relation \cite{osm_wiki_relation} abgebildet ist, gemeint ist. Spricht man von einer Station, ist die ÖV-Station gemeint, welche als Node gemappt ist.
 
-In einem ersten Schritt werden die Daten über die bekannte ÖV-Linie geladen. Search.ch \cite{search_ch_route_api} liefert eine \emph{uic\_ref} für die initiale ÖV-Station und eine bei welcher man aussteigt. Üblicherweise erhält man zwei Relationen zurück, je eine für jede Fahrrichtung. Mit den beiden Stationen kann man nun die Members der Relation durchgehen und die Linie selektieren, bei welcher die \emph{uic\_ref} der initialen ÖV-Station vor der \emph{uic\_ref} der Ausstiegsstation kommt.
+In einem ersten Schritt werden die Daten über die bekannte ÖV-Linie geladen. Search.ch \cite{search_ch_route_api} liefert eine \emph{uic\_ref} für die initiale ÖV-Station und eine, bei welcher man aussteigt. Üblicherweise erhält man zwei Relationen zurück, je eine für jede Fahrrichtung. Mit den beiden Stationen kann man nun die Members der Relation durchgehen und die Linie selektieren, bei welcher die \emph{uic\_ref} der initialen ÖV-Station vor der \emph{uic\_ref} der Ausstiegsstation kommt.
 Anmerken muss man, dass es natürlich mit einem Risiko verbunden ist, so die korrekte Koordinate zu eruieren. Entspricht die Reihenfolge der Members nicht der tatsächlichen Reihenfolge der ÖV-Stationen, kommt aber bei beiden Relationen oder der Falschen die \emph{uic\_ref} der initialen ÖV-Station vor der \emph{uic\_ref} der Ausstiegsstation, kann es vorkommen, dass man die falsche Station erwischt. Mit diesem Restrisiko leben wir.
 
 Ist die erste Variante nicht erfolgreich, werden die Relationen mit der \emph{uic\_ref} der initialen ÖV-Station geladen. ÖV-Stationen mit der gleichen \emph{uic\_ref} gehören normalerweise zu einer Relation, welche auch selbst diese \emph{uic\_ref} besitzt. Über diese Relation können die möglichen initialen Ausgangsstationen und die Linien geladen werden. In einem weiteren Schritt werden die Ausstiegstationen in einem ähnlichen Verfahren für die \emph{uic\_ref} der Ausstiegsstation geladen. Im idealen Fall hat man nun die Einstiegsstationen, Linien und Ausstiegstationen für beide Fahrtrichtungen. Mit diesen Daten kann nun die korrekte Einstiegs- und Ausstiegstation der konkreten Linie zugeordnet werden (durch ihre Zugehörigkeit als Member). Da man die Einstiegs- und Ausstiegstation separat geladen hat, ist es eine Leichtigkeit, die Linie in die richtige Fahrtrichtung zu eruieren.
@@ -152,5 +167,8 @@ Das Verbesserte Resultat von Abbildung \ref{fig:one_coordinate_for_two_stops} is
 \end{figure}
 
 
-Die erhöhte Genauigkeit kommt nicht ohne Performanzeinbusse. Im Worst-Case wird drei Mal eine Overpass-Abfrage \cite{wiki:overpass} durchgeführt und schlussendlich doch die Fallback-Koordinate von search.ch \cite{search_ch_route_api} retourniert. Wir müssen uns nun die Frage stellen, welche Wartezeit dem User in diesem Fall noch zumutbar ist und ob der User entscheiden soll, ob er diese Genauigkeit will oder mit der Koordinate von search.ch \cite{search_ch_route_api} zufrieden ist.
+Die erhöhte Genauigkeit kommt nicht ohne Performanzeinbusse. Im Worst-Case wird drei Mal eine Overpass-Abfrage \cite{wiki:overpass} für jede ÖV-Teilstrecke durchgeführt und schlussendlich doch die Fallback-Koordinate von search.ch \cite{search_ch_route_api} retourniert. Aus diesem Grund kann man beim Aufruf des \ac{REST}-Service ein optionales Flag setzen, welches dem User die Antwort auf die Frage überlässt, ob er diese Genauigkeit will oder mit der Koordinate von search.ch \cite{search_ch_route_api} zufrieden ist. Bei gesetztem Flag beschränken sich die Zugriffe auf Overpass \cite{wiki:overpass} auf das Holen der ÖV-Haltestellen.
 
+\subsection{QGIS Plugin}
+\label{impl:QGIS Plugin}
+TODO
