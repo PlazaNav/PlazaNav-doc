@@ -157,7 +157,7 @@ Ist die erste Variante nicht erfolgreich, werden die Relationen mit der \emph{ui
 
 Führen diese zwei Varianten nicht zum Ziel, wird die Koordinate von search.ch zurückgegeben.
 
-Das Verbesserte Resultat von Abbildung \ref{fig:one_coordinate_for_two_stops} ist in Abbildung \ref{fig:one_coordinate_for_two_stops_improved} ersichtlich.
+Das verbesserte Resultat von Abbildung \ref{fig:one_coordinate_for_two_stops} ist in Abbildung \ref{fig:one_coordinate_for_two_stops_improved} ersichtlich. In Abbildung \ref{fig:precise_public_transport_stops_comparison} sieht man wie sich die Optimierung auf den konkreten Anwendungsfall auswirkt.
 
 \begin{figure}[ht]
     \centering
@@ -188,22 +188,36 @@ Im Kapitel \ref{sub:Möglichkeiten der Weiterentwicklung} wird darauf eingegange
 
 \subsection{QGIS Plugin}
 \label{impl:QGIS Plugin}
-TODO
+%TODO Plugin Builder, Plugin Repo erwähnen
+Das QGIS Plugin Plaza Route fügt sich nahtlos als \emph{Dockwidget} in die QGIS-Umgebung ein. In Abbildung \ref{fig:qgis_plugin_plaza_route} sieht man dies in Aktion. Beim Entwicklen des Plugin wurde Wert darauf gelegt, dass man Funktionalität bietet, welche bei vergleichbaren Produkten verfügbar sind. So lassen sich die Start und die Destination über eine Kontextmenu direkt auf der Karte auswählen. Das Plugin lässt Koordinaten, sowie Adressen zu. Die Adresse können in einem beliebigen System, welches Postgis kennt, angeben werden. Dies ermöglicht eine unkomplizierte Anwendung, da das Plugin keine Anforderungen an das System stellt. Das Plugin wird installiert, eine Karte wird geöffnet und das Routing kann bereits durchgeführt werden.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1.0\linewidth]{projectdoc/img/qgis_plugin_plaza_route}
-\caption[test]{test}
+\caption[QGIS Plugin Plaza Route]{QGIS Plugin Plaza Route}
 \label{fig:qgis_plugin_plaza_route}
 \end{figure}
 
+Die Integration der Karte erfolgt über \emph{QgsMapTool}. Dadurch können Klicks auf der Karte abgefangen werden und an das Dockwidget übergeben werden. Dabei wird das Observer-Pattern eingesetzt, um eine loose Kopplung sicherzustellen. Das Dockwidget registriert sich dabei bei einer Implementation des \emph{QgsMapTool} und wird somit von dieser Implementation über die Auswahl auf der Karte informiert.
+
+In Abbildung \ref{fig:precise_public_transport_stops_comparison} ist der Unterschied zwischen dem un- und gesetztem \emph{precise public transport stop} Flag sichtbar.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1.0\linewidth]{projectdoc/img/precise_public_transport_stops_comparison}
-\caption[test]{test}
+\caption[Vergleich search.ch Koordinaten und optimierten Koordinaten]{Vergleich search.ch Koordinaten und optimierten Koordinaten}
 \label{fig:precise_public_transport_stops_comparison}
 \end{figure}
+
+Neben der Route wird dem Benutzer auch eine einfache Navigation angezeigt, welche aus der erhaltenen Response generiert wird.  
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{projectdoc/img/qgis_plugin_plaza_route_navigation}
+\caption[QGIS Plugin Plaza Route Navigation]{QGIS Plugin Plaza Route Navigation}
+\label{fig:qgis_plugin_plaza_route_navigation}
+\end{figure}
+
 
 
 
