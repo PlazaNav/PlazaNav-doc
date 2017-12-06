@@ -169,6 +169,47 @@ Das Verbesserte Resultat von Abbildung \ref{fig:one_coordinate_for_two_stops} is
 
 Die erhöhte Genauigkeit kommt nicht ohne Performanzeinbusse. Im Worst-Case wird drei Mal eine Overpass-Abfrage \cite{wiki:overpass} für jede ÖV-Teilstrecke durchgeführt und schlussendlich doch die Fallback-Koordinate von search.ch \cite{search_ch_route_api} retourniert. Aus diesem Grund kann man beim Aufruf des \ac{REST}-Service ein optionales Flag setzen, welches dem User die Antwort auf die Frage überlässt, ob er diese Genauigkeit will oder mit der Koordinate von search.ch \cite{search_ch_route_api} zufrieden ist. Bei gesetztem Flag beschränken sich die Zugriffe auf Overpass \cite{wiki:overpass} auf das Holen der ÖV-Haltestellen.
 
+\paragraph{Route-Kombination oder nur Fussgänger-Route}\label{impl:Route-Kombination oder nur Fussgänger-Route}~\\
+Bevor überhaupt ein ÖV-Routing durchgeführt wird, wird geprüft, ob das Ziel in einem konfigurierbaren Grenzwert zu Fuss erreichbar ist. Wenn dies zutrifft, wird nur das Fussgänger-Routing retourniert. Dadurch werden die Drittsysteme geschont und die Abfragezeit ist minimal. Search.ch \cite{search_ch_route_api} gibt für kleinere Routen ebenfalls nur ein Fussgänger-Routing zurück, somit wäre diese Abfrage ohne diesen Grenzwert überflüssig.
+
+Nach dem Durchgeführten Plaza Routing, sprich der Kombination aus dem Fussgänger- und ÖV-Routing, wird überprüft, ob die Dauer des Fussweg vom Start zum Ziel kleiner ist als die Summe aus der Dauer des Fussweg zur Ausgangsstation, der Wartezeit auf die ÖV-Verbindung, des ÖV-Routing und des Fussweg zum Ziel. Ist man zu Fuss schneller, wird das Fussgänger-Routing retourniert. Dies ist in Abbildung \ref{fig:qgis_plugin_plaza_route_walking_public_transport_comparison} dargestellt. In der linken Grafik wird das Routing mit der Startzeit 15:46 Uhr durchgeführt. Bei der retournierten ÖV-Verbindung muss man \emph{240s} warten und hat für das Fussgänger- und ÖV-Routing zusammen \emph{829s}.
+In der rechten Grafik startet man um 14:12 Uhr und wartet auf die gleiche ÖV-Linie \emph{480s}. Zu Fuss ist das Ziel in \emph{1137s} erreichbar. Links erhält man die Gesamtdauer von \emph{1069s} und rechts \emph{1309s}.
+Aus diesem Grund wird rechts nur das Fussgänger-Routing retourniert, da \emph{1309s > 1137s} zutrifft.
+
+Es lässt sich nun darüber streiten, ob man dies dem Benutzer zumuten kann. Wir haben entschieden, dass wir die schnellstmögliche Variante anbieten möchten und nicht die Bequemste.
+Im Kapitel \ref{sub:Möglichkeiten der Weiterentwicklung} wird darauf eingegangen, dass man in einer weiteren Version die Benutzer-Präferenzen definieren kann.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.0\linewidth]{projectdoc/img/qgis_plugin_plaza_route_walking_public_transport_comparison}
+    \caption[Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309]{Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309s}
+    \label{fig:qgis_plugin_plaza_route_walking_public_transport_comparison}
+\end{figure}
+
 \subsection{QGIS Plugin}
 \label{impl:QGIS Plugin}
 TODO
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1.0\linewidth]{projectdoc/img/qgis_plugin_plaza_route}
+\caption[test]{test}
+\label{fig:qgis_plugin_plaza_route}
+\end{figure}
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1.0\linewidth]{projectdoc/img/precise_public_transport_stops_comparison}
+\caption[test]{test}
+\label{fig:precise_public_transport_stops_comparison}
+\end{figure}
+
+
+
+
+
+
+
+
+% verschiede Koordinatensysteme, Flugverbindung, Unterschied precise public transport stops mit Screenshots
