@@ -141,7 +141,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFfvqlc59pAuro="
 									},
-									"name": "PublicTransportRouteFinder",
+									"name": "PublicTransportConnectionFinder",
 									"ownedElements": [
 										{
 											"_type": "UMLDependency",
@@ -3837,7 +3837,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "PublicTransportRouteFinder",
+											"text": "PublicTransportConnectionFinder",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
