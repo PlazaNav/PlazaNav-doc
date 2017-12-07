@@ -188,8 +188,8 @@ Im Kapitel \ref{sub:Möglichkeiten der Weiterentwicklung} wird darauf eingegange
 
 \subsection{QGIS Plugin}
 \label{impl:QGIS Plugin}
-%TODO Plugin Builder, Plugin Repo erwähnen
-Das QGIS Plugin Plaza Route fügt sich nahtlos als \emph{Dockwidget} in die QGIS-Umgebung ein. Die Basis wurde mit dem Plugin Builder Plugin gelegt. In Abbildung \ref{fig:qgis_plugin_plaza_route} sieht man dies in Aktion. Beim Entwicklen des Plugin wurde Wert darauf gelegt, dass man Funktionalität bietet, welche bei vergleichbaren Produkten verfügbar sind. So lassen sich die Start und die Destination über eine Kontextmenü direkt auf der Karte auswählen. Das Plugin lässt Koordinaten, sowie Adressen zu. Die Koordinaten können in einem beliebigen System, welches QGIS kennt, angeben werden. Dies ermöglicht eine unkomplizierte Anwendung, da das Plugin keine speziellen Anforderungen an das System und den Benutzer stellt. Das Plugin wird installiert, eine Karte wird geöffnet und das Routing kann bereits durchgeführt werden.
+% TODO Plugin Repo erwähnen
+Das QGIS Plugin Plaza Route fügt sich nahtlos als \emph{Dockwidget} in die QGIS-Umgebung ein. Dabei wird über Python-Bindings (PyQt4) mit dem Qt-Framework gearbeitet. In Abbildung \ref{fig:qgis_plugin_plaza_route} sieht man das Plugin in Aktion. Die Basis wurde mit dem QGIS Plugin Builder \cite{qgis_plugin_builder} gelegt. Beim Entwickeln des Plugin wurde Wert darauf gelegt, dass man Funktionalität bietet, welche bei vergleichbaren Produkten verfügbar ist. So lassen sich die Start und die Destination über eine Kontextmenü direkt auf der Karte auswählen. Das Plugin lässt Koordinaten, sowie Adressen zu. Die Koordinaten können in einem beliebigen System, welches QGIS kennt, angeben werden. Dies ermöglicht eine unkomplizierte Anwendung, da das Plugin keine speziellen Anforderungen an das System und den Benutzer stellt. Das Plugin wird installiert, eine Karte wird geöffnet und das Routing kann bereits durchgeführt werden.
 
 \begin{figure}[ht]
 \centering
@@ -198,11 +198,11 @@ Das QGIS Plugin Plaza Route fügt sich nahtlos als \emph{Dockwidget} in die QGIS
 \label{fig:qgis_plugin_plaza_route}
 \end{figure}
 
-Die Integration der Karte erfolgt über \emph{QgsMapTool}. Dadurch können Klicks auf der Karte abgefangen werden und an das Dockwidget übergeben werden. Dabei wird das Observer-Pattern eingesetzt, um eine loose Kopplung sicherzustellen. Das Dockwidget registriert sich dabei bei einer Implementation des \emph{QgsMapTool} und wird somit von dieser über die Auswahl auf der Karte informiert.
+Die Integration der Karte erfolgt über \emph{QgsMapTool}. Dadurch können Klicks auf der Karte abgefangen und an das Dockwidget übergeben werden. Dabei wird das Observer-Pattern \cite{gof_patterns} eingesetzt, um eine loose Kopplung sicherzustellen. Das Dockwidget registriert sich dabei bei \emph{PlazaRouteMapTool} einer Implementation des \emph{QgsMapTool} und wird somit von dieser über die Auswahl auf der Karte informiert.
 
-Die Kommunikation mit dem \ac{REST}-Service, welcher im Abschnitt \nameref{impl:Plaza Routing api} beschrieben ist, erfolgt über den \emph{QNetworkAccessManager}, damit auch Proxy-Einstellungen des Users im QGIS berücksichtigt werden.
+Die Kommunikation mit dem \ac{REST}-Service, welcher im Abschnitt \nameref{impl:Plaza Routing api} beschrieben ist, erfolgt in \emph{PlazaRouteRoutingService} über den \emph{QNetworkAccessManager}, damit auch Proxy-Einstellungen im QGIS des Users berücksichtigt werden.
 
-Die Karte wird über \emph{QgsRubberBand} modifiziert. \emph{QgsRubberBand} nutzt man für das Zeichnen von transienten Geometrien. In Listing \ref{QgsRubberBand Pseudocode} ist die Nutzung schematisch aufgezeigt. Die Geometrien werden dabei auf die Karte gelegt und verschwinden beim Beenden von QGIS.
+Die Karte wird über \emph{QgsRubberBand} modifiziert. \emph{QgsRubberBand} nutzt man für das Zeichnen von transienten Geometrien. In Listing \ref{QgsRubberBand Pseudocode} ist die Nutzung schematisch aufgezeigt. Die Geometrien werden dabei auf die Karte gelegt und verschwinden beim Beenden von QGIS. Für eine ÖV-Verbindung werden die Stationen mit Fluglinien verbunden.
 
 \begin{listing}[ht]
     \inputminted{python}{projectdoc/listing/rubber_band.py}
@@ -219,7 +219,7 @@ Im Abschnitt \nameref{impl:Plaza Routing Route optimieren} wurde auf die Problem
 \label{fig:precise_public_transport_stops_comparison}
 \end{figure}
 
-Neben der Route wird dem Benutzer auch eine einfache Navigation angezeigt, welche aus der erhaltenen Response generiert wird.  
+Neben der Route wird dem Benutzer auch eine einfache Navigation (siehe Abbildung \ref{fig:qgis_plugin_plaza_route_navigation}) angezeigt, welche aus der erhaltenen Response generiert wird.  
 
 \begin{figure}[ht]
 \centering
@@ -228,12 +228,3 @@ Neben der Route wird dem Benutzer auch eine einfache Navigation angezeigt, welch
 \label{fig:qgis_plugin_plaza_route_navigation}
 \end{figure}
 
-
-
-
-
-
-
-
-
-% verschiede Koordinatensysteme, Flugverbindung, Unterschied precise public transport stops mit Screenshots
