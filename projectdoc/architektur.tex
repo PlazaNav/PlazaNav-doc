@@ -28,7 +28,7 @@ Der User bedient die QGIS Desktop Applikation mit dem von uns entwickelten Plugi
     \includegraphics[width=1\linewidth]{projectdoc/img/container_diagram.png}
     \caption[Container Diagramm]{Container Diagramm von PlazaRoute; Das System PlazaRoute befindet sich in der eingerahmten Box; Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
     \label{fig:container_diagram}
-    \end{figure}    
+    \end{figure}
 
 In Abbildung \ref{fig:container_diagram} zoomen wir in das System PlazaRoute hinein und teilen es in drei Container auf, die logisch voneinander getrennt sind. So könnten die Container auch verteilt deployed werden.
 
@@ -52,7 +52,7 @@ Abbildung \ref{fig:component_diagram_vorverarbeitung} zeigt die einzelnen Kompon
     \caption[Datenfluss Vorverarbeitung]{Datenfluss-Diagramm der Vorverarbeitung von \ac{OSM}-Daten bis zur Übergabe an die Routing-Engine; Grafik erstellt mit \emph{draw.io}}
     \label{fig:dataflow_vorverarbeitung}
 \end{figure}
-    
+
 
 \begin{figure}[ht]
 \centering
@@ -113,7 +113,7 @@ In diesem Abschnitt wird vertieft in die einzelne Bestandteile des Plaza Routing
 \end{figure}
 
 \paragraph{app}\label{architektur:app-layer}~\\
-Hierbei handelt es sich um den zentralen Einstiegspunkt in die Komponente \emph{PlazaRouting}. Die Komponenten wird in dieser Schicht konfiguriert und initialisiert. 
+Hierbei handelt es sich um den zentralen Einstiegspunkt in die Komponente \emph{PlazaRouting}. Die Komponenten wird in dieser Schicht konfiguriert und initialisiert.
 
 \paragraph{api}\label{architektur:api-layer}~\\
 In dieser Schicht wird eine \ac{REST}-\ac{API} für den gesamten externen Einstieg in das Plaza Routing exponiert. Diese \ac{API} wird primär vom \nameref{architektur:QGIS Plugin} verwendet. Eine Einschränkung bezüglich der Konsumenten gibt es nicht.
@@ -121,7 +121,7 @@ In dieser Schicht wird eine \ac{REST}-\ac{API} für den gesamten externen Einsti
 Die \ac{OAS} \cite{open-api-specificaiton} der \ac{API} ist unter \cite{plaza-routing-api-spez} verfügbar. SwaggerUI kann unter \cite{plaza-routing-api-swaggerui} eingesehen werden. Die {API}-Spezifikation wird in einem Git-Repository gehalten. Änderungen werden somit automatisch auf der Github-Page \cite{plaza-routing-api-spez} publiziert. Dies hat die Vorteile, dass es keine Abweichung zwischen Spezifikation und Dokumentation geben kann, mit Swagger \cite{swagger} die Schnittstelle bereits ideal beschrieben ist und die Haltung in einem öffentlichen Repository eine Diskussions-Plattform für Konsumenten bietet.
 
 \paragraph{business}\label{architektur:business-layer}~\\
-In der Business-Schicht ist die Business-Logik der \ac{API}-Abfragen vorhanden. Das PlazaRouting wird logisch in zwei Bereiche \emph{PublicTransportRouteFinder} und \emph{WalkingRouteFinder} aufgeteilt. Die Koordination übernimmt dabei \emph{PlazaRouteFinder}. So wird das Design-Prinzip \emph{Separation of Concern} ideal umgesetzt, da \emph{PublicTransportRouteFinder} nur mit Services kommuniziert, welche für das ÖV-Routing notwendig sind und \emph{WalkingRouteFinder} die Kommunikation mit der Routing-Engine übernimmt.
+In der Business-Schicht ist die Business-Logik der \ac{API}-Abfragen vorhanden. Das PlazaRouting wird logisch in zwei Bereiche \emph{PublicTransportConnectionFinder} und \emph{WalkingRouteFinder} aufgeteilt. Die Koordination übernimmt dabei \emph{PlazaRouteFinder}. So wird das Design-Prinzip \emph{Separation of Concern} ideal umgesetzt, da \emph{PublicTransportConnectionFinder} nur mit Services kommuniziert, welche für das ÖV-Routing notwendig sind und \emph{WalkingRouteFinder} die Kommunikation mit der Routing-Engine übernimmt.
 
 \paragraph{integration}\label{architektur:integration-layer}~\\
 In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendigkeit beschrieben. In dieser Architektur werden Komponenten, welche mit Drittsystemen oder -komponenten kommunizieren als \emph{Services} bezeichnet und der Integration-Schicht angegliedert.
@@ -130,7 +130,7 @@ In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendi
 Der \emph{SearchChService} kommuniziert mit der Fahrplan-\ac{API} von search.ch \cite{search_ch_route_api} und bezieht die Fahrplan-Daten für eine bestimmte Ausgangsstation und Destination.
 
 \subparagraph{Overpass Service}\label{architektur:Overpass Service}~\\
-Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Stationen in einem gegebenen Umkreis und geografischen Position von ÖV-Stationen basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden. 
+Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Stationen in einem gegebenen Umkreis und geografischen Position von ÖV-Stationen basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden.
 
 \subparagraph{Geocoding Service}\label{architektur:Geocoding Service}~\\
 Der \emph{GeocodingService} liefert für eine Adresse eine Koordinate.
@@ -140,6 +140,7 @@ Der \emph{RoutingEngineService} ist für das Fussgänger-Routing zuständig und 
 
 \subsection{QGIS Plugin}
 \label{architektur:QGIS Plugin}
+
 Das QGIS-Plugin ist unabhängig vom System PlazaRoute und läuft auf dem Client des Benutzers. Die Kommunikation mit dem Container Plaza Routing erfolgt über einen REST-Service. Das Plugin ist reiner Konsument und zeigt auf, welchen Mehrwert PlazaRoute bieten kann. In Abbildung \ref{fig:class_diagram_plaza_route_qgis_plugin} ist das Klassen-Diagramm zu sehen. Herausheben kann man, dass das Plugin in fünf Komponente zerlegt wird. \emph{PlazaRouteRoutingService} kommuniziert mit dem REST-Service (siehe Abschnitt \nameref{architektur:api-layer}). \emph{PlazaRouteMapTool} übernimmt die Interaktion mit der Karte und führt das Zeichnen der Route mit \emph{PlazaRouteRouteDrawer} durch. \emph{PlazaRouteRoutingGenerator} generiert ein Routing für die zurückgelieferte Route. Die zentrale Steuerung übernimmt das Dockwidget.
 
 \begin{figure}[th]
@@ -148,6 +149,4 @@ Das QGIS-Plugin ist unabhängig vom System PlazaRoute und läuft auf dem Client 
 \caption[Klassen-Diagramm Plaza Route QGIS Plugin]{Klassen-Diagramm Plaza Route QGIS Plugin}
 \label{fig:class_diagram_plaza_route_qgis_plugin}
 \end{figure}
-
-
 
