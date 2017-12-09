@@ -22,3 +22,19 @@ Anders als bei \ref{subsub:Erstellen der LaTeX-Dokumentation} funktioniert hier 
 
 \subsection{Deployment}
 \label{sub:Deployment}
+
+Um das Deployment möglichst zu vereinfachen, werden für die einzelnen Container von PlazaRoute (siehe \ref{architektur:PlazaRoute Container}) jeweils eigene Docker-Container erstellt. Man beachte die Unterscheidung zwischen einem Container im Sinne des C4-Modells \cite{c4model} und einem Docker-Container. In unserem Fall wird für jeden "C4-Container" genau ein Docker-Container erstellt.
+
+\subsubsection{Plaza Vorverarbeitung}
+\label{deployment:Plaza Vorverarbeitung}
+
+Die \nameref{impl:Plaza Vorverarbeitung} wird periodisch von Hand oder automatisch ausgeführt. Um die Installation und das Dependency-Management zu vereinfachen, wurde ein Docker Image erstellt und auf Docker Hub \cite{dockerhub:plazaroute} hochgeladen, damit es direkt verwendet werden kann. Die Benutzung ist im Github Repository \cite{github:PlazaRoute} dokumentiert.
+
+\subsubsection{Plaza Routing}
+\label{deployment:Plaza Routing}
+
+Das \nameref{impl:Plaza Routing} stellt das Backend dar und bietet eine API an, die vom QGIS-Plugin benutzt wird. Neben den Online-Diensten braucht es dazu eine lokale Instanz der Routing-Engine, in unserem Fall Graphhopper \cite{graphhopper}.
+
+Für Plaza Routing und Graphhopper wurde je ein Docker-Image erstellt. Da Flask \cite{flask} nur ein minimaler Applikations-Server mitbringt, wird unsere Flask-Applikation auf einem \emph{uWSGI} \cite{uwsgi} Server gestartet. Als dritter Container benutzen wir \emph{Nginx} \cite{nginx}, der als Reverse Proxy konfiguriert ist und alle Anfragen an den Plaza Routing Container weiterleitet. So ist der Applikations-Server zusätzlich abgeschirmt.
+
+Um das Management der drei Container zu vereinfachen, wurde Docker Compose \cite{docker-compose} verwendet. Die Benutzung ist im Github Repository \cite{github:PlazaRoute} dokumentiert.
