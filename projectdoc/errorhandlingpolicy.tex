@@ -1,0 +1,61 @@
+
+\section{Error-Handling Policy}
+\label{sec:Error-Handling Policy}
+Grundsätzlich folgt das System dem Motto, dass dem Benutzer keine Internas exponiert werden, sondern im Fehlerfall eine kurze und prägnante Meldung zurückgegeben wird, was schief gelaufen ist. Im folgenden sind dazu die Exception und Logging Policy aufgeführt.
+
+\subsection{Exception Policy}
+\label{ehp:Exception Policy}
+Aufgrund der unterschiedlichen Anforderung der Komponenten \emph{Plaza Vorverarbeitung} und \emph{Plaza Routing} an das System und den Benutzer werden die Exception Policies für beide getrennt betrachtet.
+
+\subsubsection{Plaza Vorverarbeitung}
+\label{ehp:Plaza Vorverarbeitung}
+Die Komponente wird als Command-Line-Tool verwendet. Das hat den Vorteil, dass der Benutzer nicht schnell mit Fehlermeldungen überfordert ist. 
+
+Verwendet werden die eingebauten Exceptions \emph{ValueError} und \emph{RuntimeError}, sowie die Exceptions von \emph{Argparse}, die beim Parsen von Kommandozeilen-Argumenten auftreten.
+
+Die Parameter werden beim Aufruf direkt von \emph{Argparse} validiert, der Benutzer sollte also nur die \emph{Argparse} Exceptions sehen. \emph{RuntimeError} und \emph{ValueError} werden innerhalb des Programms verwendet, um sicher zu stellen, dass alle benötigten Daten eines vorherigen Schrittes vorhanden sind. Wenn ein solcher Fehler auftritt, deutet dies auf ein Programmierfehler hin, nicht ein Fehler der Benutzereingabe.
+
+\subsubsection{Plaza Routing}
+\label{ehp:Plaza Routing}
+PlazaRouting definiert zwei eigene Typen an Exceptions, namentlich \emph{ValidationError} und \emph{ServiceError} und setzt auf die eingebaute \emph{ValueError}. 
+
+\paragraph{ServiceError}\label{ehp:PR:ServiceError}~\\
+ServiceError werden für Fehler beim Aufruf von Fremdsystemen in der \hyperref[architektur:integration-layer]{Integration-Schicht} verwendet. So kann es sein, dass ein Fremdsystem temporär offline ist oder sich Breaking-Changes in der API ereignet haben. In diesem Fall wird die Exception geloggt und eine ServiceError geworfen.
+
+\paragraph{ValidationError}\label{ehp:PR:ValidationErrorr}~\\
+ValidationError werden für Fehler verwendet, welche aufgrund von Benutzereingaben geworfen werden. Dazu gehört beispielsweise der Aufruf der API mit ungültigen Parameter (Bsp. falsche formatierte Koordinaten). Das Werfen dieser Exception beschränkt sich jedoch nicht nur auf die \hyperref[architektur:business-layer]{Business-Schicht}. Auch die \hyperref[architektur:integration-layer]{Integration-Schicht} kann gebrauch von dieser machen, falls die Parameter für unsere Seite in Ordnung sind, für ein Fremdsystem jedoch nicht. So kann beispielsweise eine Routing-Engine für eine Koordinate den Fehler "Point is out of bounds" werfen, falls die Koordinate nicht auf der Karte gefunden wird, auf welcher die Routing-Engine agiert. Dies tritt beispielsweise auf, wenn man eine Koordinate aus Deutschland dem Service übergibt, die Routing-Engine jedoch nur das \ac{OSM}-File der Schweiz kennt.
+
+Diese Exception hat die Eigenschaft, dass die Message in der Exception nach aussen, sprich dem Benutzer, exponiert werden kann. Somit muss diese mit klaren und ohne internen Implementierungdetails versehenen Messages versehen werden. Dies wird aus dem Grund gemacht, da der Fehler auf Seiten des Benutzers liegt und er somit sofort sehen kann, wie er das System richtig bedienen kann.
+
+\paragraph{ValueError}\label{ehp:PR:ValueError}~\\
+Fehler auf Seiten von PlazaRouting werden mit ValueError geworfen. Dabei sollen diese mit informativen Details versehen werden, so dass bei der Fehlerbehebung genug Informationen für das Reproduzieren vorhanden sind.
+
+\paragraph{Error Handlers}\label{ehp:Error Handlers}~\\
+In der \hyperref[architektur:api-layer]{api-Schicht} werden Error-Handler registiert. Für die zwei eigenen Exceptions (\nameref{ehp:PR:ServiceError} und \nameref{ehp:PR:ValidationErrorr}) existieren je zwei Error-Handler, welche die geworfenen Exceptions abfangen und verarbeiten. Als letztes wird ein Default-Handler registriert, welcher sicherstellt, dass alle Exceptions gefangen werden und dass nur definierte Meldungen an den Benutzer exponiert werden. Die Verwendung ist in Listing \ref{listing:Error Handler} dargestellt.
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/flask_error_handler.py}
+    \caption{Error Handler}
+    \label{listing:Error Handler}
+\end{listing}
+
+Man sieht in Listing \ref{listing:Error Handler} gut, dass die Message der \emph{ValidationError} direkt retourniert wird und für die anderen Typen vordefinierte Meldungen zurückgegeben werden.
+
+
+\paragraph{Verwendete HTTP Status Codes}\label{ehp:Verwendete HTTP Status Codes}~\\
+Folgende HTTP Status Codes sollen verwendet werden:
+\begin{itemize}
+    \item \emph{200 OK}
+    \item \emph{400 Bad Request}: Fehler auf Seiten des Benutzer
+    \item \emph{500 Internal Server Error}: Fehler auf Seiten PlazaRouting
+    \item \emph{503 Service Unavailable}: Fehler, welche aufgrund fehlerhaften Fremdsystem auftreten (nicht-verfügbar, Änderungen in der API)
+\end{itemize}
+
+
+\subsection{Logging Policy}
+\label{ehp:Logging Policy}
+Beide Komponenten führen ein Log-File, welches zur Information oder im Fehlerfall zur Hand gezogen werden kann. Für das Logging wird die Python-Library \emph{logging} verwendet. Dadurch sind die Standard-Log-Level (default, info, warning, error) verfügbar.
+
+Exceptions müssen zwingend mit Stack-Trace protokolliert werden, falls diese nicht korrekt behandelt werden können und ein Fehler-Recovery nicht möglich ist. Das Logging von Exceptions wird dort durchgeführt, wo der Fehler auftritt und gefangen wird.
+
+Dem Entwickler steht es frei die anderen Log-Levels nach Belieben einzusetzen.
