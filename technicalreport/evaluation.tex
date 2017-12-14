@@ -7,7 +7,7 @@ Den Varianten wird eine Punktzahl auf einer linearen Skala von 1 bis 5 zugewiese
 \subsection{Routing über offene Flächen}
 \label{eval:Routing über offene Flächen}
 
-Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen hervorgebracht, namentlich \nameref{solution:Visibility Graph} und \nameref{solution:Spider-Web Graph}, welche im Folgenden analysiert werden.
+Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen hervorgebracht, namentlich \nameref{solution:Visibility-Graph} und \nameref{solution:SpiderWeb-Graph}, welche im Folgenden analysiert werden.
 
 \subsubsection{Kriterien}
 \label{sub:Kriterien}
@@ -27,13 +27,13 @@ Für die Natürlichkeit einer Route ist es schwer, messbare Kriterien zu definie
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{technicalreport/img/algorithm-comparison-routes}
-    \caption[Beispielhafte Routen für Natürlichkeits-Test]{Beispielhafte Routen über die drei getesteten Flächen; Jeweils oben bzw. links Visibility Graph, unten bzw. rechts Spiderweb Graph}
+    \caption[Beispielhafte Routen für Natürlichkeits-Test]{Beispielhafte Routen über die drei getesteten Flächen; Jeweils oben bzw. links Visibility-Graph, unten bzw. rechts SpiderWeb-Graph}
     \label{fig:algorithm-example-routes}
 \end{figure}
 
 
 \subsubsection{Resultate}
-\label{sub:Resultate}
+\label{eval:Resultate}
 
 Die Vorverarbeitung wurde auf einem Rechner mit einem Intel i7 2600k Prozessor und Fedora 26 als Betriebssystem ausgeführt.
 
@@ -49,7 +49,7 @@ Für die Vergleichswerte der Verarbeitungszeit und der zusätzlichen Datenmenge 
             ylabel={Zus. Datenmenge [MB]},
             ymin=0,
             ymax=30,
-            symbolic x coords={Visibility,Spiderweb},
+            symbolic x coords={Visibility,SpiderWeb},
             xtick=data,
             enlarge x limits=0.6, % pull bars together
             nodes near coords,
@@ -57,7 +57,7 @@ Für die Vergleichswerte der Verarbeitungszeit und der zusätzlichen Datenmenge 
             every node near coord/.append style={color=black}
         ] 
             \addplot[style={orange,fill=orange!30!white}]
-                coordinates {(Visibility,4.1) (Spiderweb,15)};
+                coordinates {(Visibility,4.1) (SpiderWeb,15)};
         \end{axis}
     \end{tikzpicture}%
     ~%
@@ -72,7 +72,7 @@ Für die Vergleichswerte der Verarbeitungszeit und der zusätzlichen Datenmenge 
             yticklabel pos=right, % axis label on the right
             ymin=0,
             ymax=60,
-            symbolic x coords={Visibility,Spiderweb},
+            symbolic x coords={Visibility,SpiderWeb},
             xtick=data,
             enlarge x limits=0.6, % pull bars together
             nodes near coords,
@@ -80,11 +80,11 @@ Für die Vergleichswerte der Verarbeitungszeit und der zusätzlichen Datenmenge 
             every node near coord/.append style={color=black},
         ] 
             \addplot[style={purple,fill=purple!30!white}]
-                coordinates {(Visibility,13.78) (Spiderweb,32.88)};
+                coordinates {(Visibility,13.78) (SpiderWeb,32.88)};
         \end{axis}
     \end{tikzpicture}
 
-    \caption[Diagramm Datenmenge / Verarbeitungszeit]{Vergleich der zusätzlichen Datenmenge und der Verarbeitungszeit von Visibility Graph und Spiderweb Graph}
+    \caption[Diagramm Datenmenge / Verarbeitungszeit]{Vergleich der zusätzlichen Datenmenge und der Verarbeitungszeit von Visibility-Graph und SpiderWeb-Graph}
     \label{chart:datenmenge_laufzeit_vergleich}
 \end{figure}
     
@@ -97,7 +97,7 @@ Die Vorverarbeitung wurde mit beiden Algorithmen auf der Test-Datei ausgeführt 
     \caption{Resultat: Verarbeitungszeit (ohne Initialer Import der Daten)}
     \label{Resultat: Verarbeitungszeit}
     \begin{tabular}{lll}
-        & \textbf{Visiblity Graph} & \textbf{Spiderweb Graph}     \\
+        & \textbf{Visibility-Graph} & \textbf{SpiderWeb-Graph}     \\
         Verarbeitungszeit  &        13min 47s                   & 32min 53s    \\
         %  5 - ((t / 2h)*4)
         \textbf{Bewertung 1-5} &    4.54                     &  3.90
@@ -113,7 +113,7 @@ Tabelle \ref{table: zusätzliche Datenmenge} zeigt die zusätzliche Datenmenge i
     \caption{Resultat: zusätzliche Datenmenge}
     \label{table: zusätzliche Datenmenge}
     \begin{tabular}{lll}
-        & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\
+        & \textbf{Visibility-Graph} & \textbf{SpiderWeb-Graph} \\
         \textbf{zusätzliche Datenmenge} & 4.13 MB                    & 15.1 MB  \\  
         in Prozent der Originalgrösse   & 0.06\%                     & 0.24\%   \\
         \textbf{Bewertung 1-5}          & 4.76                       & 4.04
@@ -144,11 +144,11 @@ Für die Evaluation wurde die Bewertung der Natürlichkeit mit fünf Probanden d
                 {(Helvetiaplatz,3.6) (Fischmarktplatz,3.2) (Bahnhofplatz Bern,3.2)};
             \addplot [style={red, fill=red!30!white},postaction={pattern=dots}] coordinates 
                 {(Helvetiaplatz,3.6) (Fischmarktplatz,3.4) (Bahnhofplatz Bern,3.2)};
-            \legend{Visibility Graph,Spiderweb Graph}
+            \legend{Visibility-Graph,SpiderWeb-Graph}
         \end{axis}
     \end{tikzpicture}%
 
-    \caption[Diagramm Natürlichkeit von Visibility / Spiderweb Graph]{Durchschnittliche Bewertungen der Natürlichkeit auf den verschiedenen Plätzen}
+    \caption[Diagramm Natürlichkeit von Visibility / SpiderWeb-Graph]{Durchschnittliche Bewertungen der Natürlichkeit auf den verschiedenen Plätzen}
     \label{chart:natürlichkeit_vergleich}
 \end{figure}
 
@@ -157,7 +157,7 @@ Für die Evaluation wurde die Bewertung der Natürlichkeit mit fünf Probanden d
     \caption{Resultat: Natürlichkeit}
     \label{table:Resultat Natürlichkeit}
     \begin{tabular}{lll}
-        & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\
+        & \textbf{Visibility-Graph} & \textbf{SpiderWeb-Graph} \\
         \textbf{Helvetiaplatz}   &                          &                          \\
         Proband 1                & 4                        & 3                        \\
         Proband 2                & 3                        & 4                        \\
@@ -183,11 +183,11 @@ Für die Evaluation wurde die Bewertung der Natürlichkeit mit fünf Probanden d
 \subsubsection{Auswertung und Schlussfolgerung}
 \label{result:Auswertung und Schlussfolgerung}
 
-Die einzelnen Werte sind in Tabelle \ref{table:Resultat Evaluation Flächen-Algorithmus} zusammen gefasst und gewichtet. Es zeigt sich, dass der Visibility Graph knapp besser abschneidet, der Unterschied ist allerdings sehr gering und nicht eindeutig.
+Die einzelnen Werte sind in Tabelle \ref{table:Resultat Evaluation Flächen-Algorithmus} zusammen gefasst und gewichtet. Es zeigt sich, dass der Visibility-Graph knapp besser abschneidet, der Unterschied ist allerdings sehr gering und nicht eindeutig.
 
-Bei der Bewertung der Natürlichkeit durch Probanden ergaben sich einige Erkenntnisse. So bewerteten einige Probanden eine direkte Route mit etwas ``scharfen'' Ecken - wie sie der Visibility Graph erzeugt - natürlicher, während andere die etwas kurvigeren Routen des Spiderweb Graphs bevorzugten. Die Bewertungen der Natürlichkeit ist allerdings zu relativieren, da fünf Probanden in diesem Kontext nicht ausreichen, um eine abschliessende Erkenntnis zu gewinnen. Für einen ersten Eindruck genügt dies aber.
+Bei der Bewertung der Natürlichkeit durch Probanden ergaben sich einige Erkenntnisse. So bewerteten einige Probanden eine direkte Route mit etwas ``scharfen'' Ecken - wie sie der Visibility-Graph erzeugt - natürlicher, während andere die etwas kurvigeren Routen des SpiderWeb-Graphs bevorzugten. Die Bewertungen der Natürlichkeit ist allerdings zu relativieren, da fünf Probanden in diesem Kontext nicht ausreichen, um eine abschliessende Erkenntnis zu gewinnen. Für einen ersten Eindruck genügt dies aber.
 
-Abschliessend kann man sagen, dass beide Algorithmen gute Resultate bringen. Wenn die Verarbeitungszeit wichtig ist, bringt der Visibility Graph Vorteile, der Spiderweb Graph erzeugt dafür tendenziell die etwas natürlicheren Routen.
+Abschliessend kann man sagen, dass beide Algorithmen gute Resultate bringen. Wenn die Verarbeitungszeit wichtig ist, bringt der Visibility-Graph Vorteile, der SpiderWeb-Graph erzeugt dafür tendenziell die etwas natürlicheren Routen.
 
 \begin{table}[ht]
     \centering
@@ -195,7 +195,7 @@ Abschliessend kann man sagen, dass beide Algorithmen gute Resultate bringen. Wen
     \label{table:Resultat Evaluation Flächen-Algorithmus}
     \begin{tabular}{lllll}
             \hline
-            \textbf{ID} & \textbf{Titel}         & \textbf{\begin{tabular}[c]{@{}l@{}}Relatives Gewicht \\ (0-1)\end{tabular}} & \textbf{Visibility Graph} & \textbf{Spiderweb Graph} \\ \hline
+            \textbf{ID} & \textbf{Titel}         & \textbf{\begin{tabular}[c]{@{}l@{}}Relatives Gewicht \\ (0-1)\end{tabular}} & \textbf{Visibility-Graph} & \textbf{SpiderWeb-Graph} \\ \hline
             1           & \nameref{criteria:Verarbeitungszeit}      & 0.3       & 4.54 / 1.36                   & 3.9 / 1.17                   \\
             2           & \nameref{criteria:zusätzliche Datenmenge} & 0.2       & 4.76 / 0.95                   & 4.04 / 0.81                  \\
             3           & \nameref{criteria:Natürlichkeit}          & 0.5       & 3.33 / 1.67                   & 3.4 / 1.7                    \\ \hline
