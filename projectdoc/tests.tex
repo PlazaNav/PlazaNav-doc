@@ -3,4 +3,54 @@
 \label{sec:Tests}
 % Manuelle und automatische Tests
 
-TODO
+\subsection{Strategie}
+\label{test:Strategie}
+Grundsätzliches Ziel war es beim Entdecken von Grenzfällen und Fehlern nach dem \ac{TDD}-Zyklus vorzugehen. Für das Testing wurden Unit- und Integration-Tests grosszügig eingesetzt. Durch die Gegebenheiten der Problem-Domäne ist es von besonderer Wichtigkeit, dass möglichst breit und viel getestet wird. Dadurch kann den Problemen, welche durch ein "fehlendes" \ac{OSM}-Datenmodell auftreten, entgegen gewirkt werden.  Die Tests werden automatisiert bei jedem Commit mit Continuous Integration durch CircleCI \cite{circleci} ausgeführt. So ist sichergestellt, dass Builds, welche auf einem Feature-Branch fehlschlagen, nicht in den Master gemerged werden. Im nachfolgenden sind die Tests für die Komponenten \emph{Plaza Vorverarbeitung} und \emph{Plaza Routing} getrennt aufgeschlüsselt, da die Applikationen mit unterschiedlichen Bedingungen zu kämpfen haben. 
+
+
+\subsection{Plaza Vorverarbeitung}
+\label{test:Plaza Vorverarbeitung}
+Bei \emph{Plaza Vorverarbeitung} liegt der Fokus auf dem korrekten Zusammenspiel der Komponenten. Die Abbildung \ref{fig:dataflow_vorverarbeitung} zeigt dessen Datenfluss auf. Aus diesem Grund haben wir den Fokus auf Integration-Tests gelegt. So wird unter anderem beim Testen des \nameref{impl:Optimizer} auch der \nameref{impl:Importer} verwendet, da das Mocken der internen Datenstruktur, welche der \nameref{impl:Importer} liefert, keinen Sinn macht, da dieser aufgrund der vordefinierten \ac{OSM}-Dateien deterministische Daten liefert. In Fällen wo diese Annahme nicht zutrifft und Funktionen in Isolation getestet werden können, werden Unit-Tests, wie in Listing \ref{Unit-Test Shortest Path} sichtbar eingesetzt.
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/test_compute_dijkstra_shortest_paths.py}
+    \caption{Unit-Test Shortest Path}
+    \label{Unit-Test Shortest-Path}
+\end{listing}
+
+In Listing \ref{Integration-Test Plaza Preprocessor} ist sichtbar, wie das Unit-Testing gehandhabt wird. Durch Fixtures kann der Tests in diesem Fall auf vier verschiedene Arten getestet werden, beispielsweise eine Visibility-Graph Vorverarbeitung, welche den A* \cite{astar} als Shortest-Path-Algorithmus verwendet.
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/test_plaza_prepreprocessor.py}
+    \caption{Integration-Test Plaza Preprocessor}
+    \label{Integration-Test Plaza Preprocessor}
+\end{listing}
+
+\subsection{Plaza Routing}
+\label{test:Plaza Routing}
+
+
+\subsubsection{Healthchecks}
+\label{test:Healthchecks}
+Da alle Services in den Tests gemockt werden, ist es unabdingbar dass mit Healthchecks die Fremdsysteme geprüft werden. So ist sichergestellt, dass der Aufruf auf das System mit den bewährten Parameter eine erfolgreiche Rückmeldung liefert, ob die Werte ansatzweise sinnvoll sind, wird durch die jeweiligen Parser der Services sichergestellt.
+
+
+
+\subsection{Fazit}
+\label{test:Fazit}
+
+\subsubsection{TDD}
+\label{fazit:TDD}
+Dieses Vorgehen nach dem \ac{TDD}-Zyklus hat sich vor allem beim Arbeiten mit Fremdsystemen extrem bewährt. Herauszuheben ist hier das Optimieren von Routen, welches im Abschnitt \nameref{impl:Plaza Routing Route optimieren} behandelt wurde. Hier wurde intensiv mit Overpass \cite{wiki:overpass} kommuniziert. Durch die Gegebenheit der \ac{OSM}-Daten und den Freiheiten der Mapper sind Grenzfälle und unerwartete Abbildungen der Daten keine Seltenheit. Bei diesen hat man Tests erstellt, welche das Verhalten reproduzieren und auf das erwartete Verhalten prüfen und konnte so die Logik modifizieren.
+
+\subsubsection{Tests mit Fremdsystemen}
+\label{fazit:Tests mit Fremdsystemen}
+Beim Arbeiten mit den Fremdsystemen hat sich gezeigt, dass es sich lohnt die Resultate der Service-Aufrufe zu mocken.
+
+\subsubsection{Fehlendes Typesystem}
+\label{fazit:Fehlendes Typesystem}
+Vorallem bei einer Sprache ohne Typesystem ist es von Vorteil, wenn man ausgiebig getestet wird. Ändert sich beispielsweise die Struktur eines Rückgabewerts sind die Auswirkungen dieser Änderungen nicht sofort sichtbar. Wird diese Stelle jedoch zusätzlich getestet, ist jederzeit klar, ob es sich um Breaking-Changes handelt.
+
+
+Mock -> warum?, da Daten ändern und so zu instabil --> Lessons-Learned
+Kann so nicht von Integrations-Tests reden
