@@ -1,5 +1,4 @@
 def optimized_visibility_graph():
-    # TODO: Anderer Typ von Pseudocode??
     visibility_graph = []
     for edge in all_edges:
         if edge_does_not_collide(edge):
