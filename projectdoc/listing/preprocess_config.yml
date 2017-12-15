@@ -1,0 +1,13 @@
+tag-filter:
+  plaza: # what counts as a plaza
+    includes:
+      tag-key-values: # tags with specific values
+        - or:
+          - highway: pedestrian
+        - or:
+          - highway: footway
+          - area: yes
+    excludes: # no tags should match
+      tag-key-values:
+        - or:
+          - area: no
