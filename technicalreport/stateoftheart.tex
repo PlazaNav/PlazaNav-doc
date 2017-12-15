@@ -1,6 +1,9 @@
 \section{Stand der Technik}
 \label{sec:Stand der Technik}
 
+\subsection{Aktuelle Situation}
+\label{sub:Aktuelle Situation}
+
 In \ac{OSM} gibt es mehrere Arten, wie Mapper mit Flächen umgehen. So wirken einige Mapper dem Fussgängerrouting-Problem über Flächen mit zusätzlichen eingezeichneten Wegen entgegen oder die Fläche ist ganz befreit von Wegen.
 
 In Abbildung \ref{fig:helvetiaplatz_comparison} und Abbildung \ref{fig:sechselaeutenplatz_comparison} ist ein Vergleich gängiger Routing-Engines aufgelistet, welche ein Fussgänger-Profil anbietet. In Abbildung \ref{fig:helvetiaplatz_comparison} sieht man schön, wie es bei \ac{OSM} möglich ist, dass die eingezeichneten Fusswege über denn Platz genutzt werden. Diese Route entspricht offensichtlich nicht einem natürlichen Fussgänger-Verhalten, da normalerweise der direkte Weg über den Platz gewählt wird, sofern keine Hindernisse im Weg sind. An dieser Stelle scheitert Google Maps. Der Vergleich von Google Maps und \ac{OSM} hinkt hier natürlich, da nicht beide auf den genau gleichen Datenbestand zurückgreifen. Betrachtet man in Abbildung \ref{fig:sechselaeutenplatz_comparison} hingegen den Sechseläutenplatz, sieht man, dass ohne eingezeichnete Wege alle getesteten Anbieter um den Platz herum führen.
@@ -22,21 +25,18 @@ In Abbildung \ref{fig:helvetiaplatz_comparison} und Abbildung \ref{fig:sechselae
 
 Abschliessend kann man sagen, dass alle getesteten Routing-Engines mit den Fussgänger-Profilen mit Stand 13.10.2017 scheitern, wenn keine Wege über die Fläche eingezeichnet sind und so die Dauer und Streckenlänge verfälscht wird.
 
-\subsection{Bestehende Lösungsansätze}
-\label{sub:Bestehende Lösungsansätze}
+\subsection{Lösungsansätze}
+\label{sub:Lösungsansätze}
 
 
 \subsubsection{Routing über offene Flächen}
 \label{solution:Routing über offene Flächen}
 
-Diese Arbeit nimmt Bezug auf zwei Lösungsansätze \cite{graser_visibility_graph}, \cite{dzafic_spider_web_graph}, welche sich aus verschiedenen Motivationsgründen mit dem Problem \ref{problem:Routing über offene Flächen} befassen. Diese werden in den folgenden Unterkapitel erläutert. Mit Pseudocode wird der Ansatz verdeutlicht. Beide Varianten werden in QGIS getestet. 
-
-Zum Schluss wird ein Variantenvergleich durchgeführt und ein Fazit gezogen. Ziel ist es, einen Flächen-Routing-Algorithmus zu finden, welche für die Vorverarbeitung der Flächen verwendet werden kann.  
+In den folgenden Unterkapitel werden bestehende Lösungsansätze aus der Literatur diskutiert, die das Problem des Routings über offene Flächen, wie in Kapitel \ref{subsub:Routing bei zwei benachbarten Flächen} beschrieben, lösen sollen. Die beiden vielversprechendsten Ansätze Visibility-Graph und SpiderWeb-Graph werden in Kapitel \ref{sec:Bewertung} tiefergehend miteinander verglichen.
 
 \paragraph{Visibility-Graph}\label{solution:Visibility-Graph}~\\
 
-Ein Ansatz zur Verhinderung von Kollisionen auf Flächen wurde in \cite{lozano-perez_visibility_graph} als Visibility-Graph beschrieben. Dabei wird in einem ersten Schritt für jeden Knotenpunkt einer Fläche eine Verbindung zu jedem anderen Knotenpunkt gezeichnet. Für unsere Zwecke werden dabei alle Knotenpunkte eines Polygons, Hindernisse,  sowie Schnittpunkte mit Strassen und Wegen (Einstiegspunkte) beachtet.
-% TODO: Einheitlicher Begriff für "entry/exit points" evtl. in Begriffe definieren
+Ein Ansatz zur Verhinderung von Kollisionen auf Flächen wurde in \cite{lozano-perez_visibility_graph} als Visibility-Graph beschrieben. Dabei wird in einem ersten Schritt für jeden Knotenpunkt einer Fläche eine Verbindung zu jedem anderen Knotenpunkt gezeichnet. Für unsere Zwecke werden dabei alle Knotenpunkte eines Polygons, Hindernisse,  sowie Schnittpunkte mit Strassen und Wegen (\glspl{Einstiegspunkt}) beachtet.
 
 In einem zweiten Schritt werden alle Verbindungen verworfen, die nicht komplett innerhalb der Fläche liegen oder mit einem Hindernis darauf kollidieren.
 
@@ -46,7 +46,7 @@ In einem zweiten Schritt werden alle Verbindungen verworfen, die nicht komplett 
     \label{visibility_graph_pseudocode}
 \end{listing}
 
-Für die Verwendung im Routing beschreibt \cite{graser_visibility_graph} einen Ansatz, um die Kanten des Visibility-Graphen zu reduzieren (siehe Listing \ref{visibility_graph_pseudocode}). Mit dem Visibility-Graphen allein gäbe es mit \(n\) Knotenpunkten bis zu \(n(n-1)/2\) Kanten. Für die Reduktion wird für jeden Einstiegspunkt (wie aus Schritt 1 bekannt) jeweils der kürzeste Pfad auf dem Visibility-Graphen zu allen anderen Einstiegspunkten berechnet. Alle Kanten, die nicht zu einem kürzesten Pfad gehören, werden verworfen. Abbildung  \ref{fig:visibility_graph_comparison} zeigt einen Vergleich zwischen eines Visibility-Graphen vor und nach dem Reduktionsverfahren.
+Für die Verwendung im Routing beschreibt \cite{graser_visibility_graph} einen Ansatz, um die Kanten des Visibility-Graphen zu reduzieren (siehe Listing \ref{visibility_graph_pseudocode}). Mit dem Visibility-Graphen allein gäbe es mit \(n\) Knotenpunkten bis zu \(n(n-1)/2\) Kanten. Für die Reduktion wird für jeden \gls{Einstiegspunkt} (wie aus Schritt 1 bekannt) jeweils der kürzeste Pfad auf dem Visibility-Graphen zu allen anderen Einstiegspunkten berechnet. Alle Kanten, die nicht zu einem kürzesten Pfad gehören, werden verworfen. Abbildung  \ref{fig:visibility_graph_comparison} zeigt einen Vergleich zwischen eines Visibility-Graphen vor und nach dem Reduktionsverfahren.
 
 \begin{figure}
     \includegraphics[width=\textwidth,keepaspectratio]{technicalreport/img/visibility_graph_comparison.png}
@@ -112,20 +112,6 @@ Die Andwendung dieser Methode für Flächenrouting wurde bereits in \cite{graser
 \label{fig:skeleton_example}
 \end{figure}
 
-\paragraph{Einschränkungen}~\\
-
-TODO
-% TODO mögliche Einschränkungen, welche die Varianten in ihrer Anwendung betreffen
-
-\paragraph{Vergleich}~\\
-
-TODO
-% TODO Gegenüberstellung der Varianten, welche ist in welcher Situaiton sinnvoll, wie ist der Performance-Vergleich?
-
-\paragraph{Fazit}~\\
-
-TODO
-% TODO Welche Variante wird verwendet
 
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{subsub:Start-/Endpunkt auf der Fläche}
@@ -138,23 +124,28 @@ In unserem Prototyp erfolgt die komplette Berechnung der kürzesten Wege durch F
     \item Die von uns berechneten Wege über Flächen reichen aus, die Routing-Engine zieht eine Mittelsenkrechte auf den nächstgelegenen Fussweg auf der Fläche. Zur Laufzeit müssen keine zusätzlichen Berechnungen durchgeführt werden.
 \end{enumerate}
 
-% TODO: Bild einfügen für Vergleich der Ansätze, sobald wir im QGIS mit unserem Plugin routen anzeigen können
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{technicalreport/img/vergleich_start-punkt-auf-flaeche}
+    \caption[Vergleich der Ansätze wenn Startpunkt auf Fläche]{Vergleich einer beispielhaften Route mit dem Ansatz 1 (links) und Ansatz 2 (rechts); Gezeigt auf dem Fischmarktplatz, St. Gallen, Rapperswil; Screenshot von Graphhopper \cite{graphhopper}}
+    \label{fig:vergleich_start-punkt_auf_fläche}
+\end{figure}
 
-Wie in Abbildung x zu sehen ergibt der zweite Ansatz ohne zusätzlichen Berechnungen genügend gute Resultate, da es zwischen jedem Ein- und Ausgangspunkt ein Fussweg hat, der bereits den kürzesten Weg beschreibt. Eine zusätzliche Berechnung des kürzesten Pfades wie im ersten Ansatz ergibt keine signifikante Verbesserung der Route.
+
+Wie in Abbildung \ref{fig:vergleich_start-punkt_auf_fläche} zu sehen, ergibt der zweite Ansatz ohne zusätzlichen Berechnungen genügend gute Resultate, da es zwischen jedem Ein- und Ausgangspunkt ein Fussweg hat, der bereits den kürzesten Weg beschreibt. Eine zusätzliche Berechnung des kürzesten Pfades wie im ersten Ansatz ergibt keine signifikante Verbesserung der Route.
 
 \subsubsection{Routing bei zwei benachbarten Flächen}
 \label{subsub:Routing bei zwei benachbarten Flächen}
 
-Wie in \ref{target:Routing bei zwei benachbarten Flächen} beschrieben, gibt es bei zwei benachbarten Flächen einen Spezialfall für das Routing. Bei unserer Implementation wissen die beiden Flächen nichts voneinander und es werden keine Einstiegspunkte erkannt, wo der Fussgänger die Abgrenzung der beiden Flächen überqueren könnte.
+Wie in \ref{target:Routing bei zwei benachbarten Flächen} beschrieben, gibt es bei zwei benachbarten Flächen einen Spezialfall für das Routing. Bei unserer Implementation wissen die beiden Flächen nichts voneinander und es werden keine \glspl{Einstiegspunkt} erkannt, wo der Fussgänger die Abgrenzung der beiden Flächen überqueren könnte.
 
 Im Rahmen unserer Arbeit haben wir in der Literatur keine entsprechende Diskussion dazu gefunden. Wir haben für die Lösung des Problems zwei Ansätze überlegt:
 
 \begin{enumerate}
     \item Die beiden Flächen miteinander kombinieren: Wenn sich zwei Fussgänger-Flächen berühren, können sie geometrisch vereint und als eine einzige Fussgänger-Fläche angesehen werden.
-    \item Gemeinsame Einstiegspunkte zwischen den Flächen definieren: An der Kante, wo sich zwei Flächen berühren, werden künstlich in einem regelmässigen Abstand Einstiegspunkte eingefügt, wo für das Routing der Fussgänger die Kante überqueren kann.
+    \item Gemeinsame \glspl{Einstiegspunkt} zwischen den Flächen definieren: An der Kante, wo sich zwei Flächen berühren, werden künstlich in einem regelmässigen Abstand Einstiegspunkte eingefügt, wo für das Routing der Fussgänger die Kante überqueren kann.
 \end{enumerate}
 
-%TODO: Ergänzen, je nach Resultat, ob wir einen Ansatz implementieren
 
 \subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 \label{subsub:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
@@ -181,13 +172,22 @@ Im Kontext des Fussgänger-Routings gibt es mit dem Ansatz der Cost Path Analyse
 
 Bei offenen Landflächen in Bergen ist es ausserdem schwierig zu entscheiden, ob ein Fussgänger eine Fläche passieren kann. Solche Flächen sind in \ac{OSM} oft nicht gemappt und es besteht keine Information über den Untergrund. Es kommen auch andere Faktoren wie z.B. die Jahreszeit hinzu. So könnte das Begehen einer Wiese im Sommer problemlos, im Winter aber durch eine Schneedecke zeitweise unmöglich sein. Bei Stränden sieht es wiederum anders aus, diese sind in \ac{OSM} meist als Flächen gemappt. Dort spielt aber auch das Höhenprofil normalerweise keine Rolle, womit ein Ansatz wie unter \ref{solution:Routing über offene Flächen} wieder effizienter sein könnte.
 
-\subsection{Kurzbeschreibung und Charakterisierung}
-\label{sub:Kurzbeschreibung und Charakterisierung}
-TODO
 
-\subsection{Defizite}
-\label{sub:Defizite}
+\subsection{Verbesserungsmöglichkeiten}
+\label{sub:Verbesserungsmöglichkeiten}
 % Hinweise auf Weiterentwicklungs-, bzw. Verbesserungspotential
-TODO
-% hier Probleme, welche im Visibility-Graph Paper erwähnt sind aufgreifen.
-% hier Einleitung auf Optimierung der Entry Points, welche verwendet werden
+Für die in Kapitel \ref{sub:Lösungsansätze} diskutierten Ansätze für Routing über offene Flächen werden Defizite und mögliche Verbesserungsmöglichkeiten aufgezeigt.
+
+\subsubsection{Einstiegspunkte}
+\label{subsub:Verbesserung_Einstiegspunkte}
+
+Sowohl der \nameref{solution:SpiderWeb-Graph} wie auch der \nameref{solution:Visibility-Graph} benutzen beide \glspl{Einstiegspunkt}, um die kürztesten Pfade zu finden und den Graphen mit dem bestehenden Strassennetz zu verbinden. Es kommt allerdings oft vor, dass es auf einer Fussgängerfläche keinen oder nur einen einzigen Einstiegspunkt gibt, wodurch auch kein Graph berechnet werden kann. In der Realität könnte es aber trotzdem möglich sein, eine solche Fläche zu Fuss zu überqueren, auch wenn keine Strasse daran angrenzt.
+
+Eine mögliche Lösung dieses Problems könnte sein, die Umgebung der Fussgänger-Fläche zu analysieren und künstliche \glspl{Einstiegspunkt} dort einzufügen, wo ein Fussgänger die Fläche betreten kann. Dies könnte von einer angrenzenden Fussgänger-Fläche aus sein (siehe Kap. \ref{subsub:Routing bei zwei benachbarten Flächen}) oder von einer anderen Fläche, wobei der Zutritt zur Fussgänger-Fläche nicht durch ein Hinderniss verunmöglicht werden soll.
+
+\subsubsection{SpiderWeb-Graph}
+\label{subsub:Verbesserung_SpiderWeb}
+
+Ein Problem des SpiderWeb-Graphen ist die Auflösung des Gitters (SpiderWebs), die gewählt werden muss, um optimale Routen zu erhalten. Bei einer zu kleinen Auflösung macht die Route viele Kurven, da sie ständig dem Gitter entlang fahren muss. Eine sehr grosse Auflösung des SpiderWebs ist aber für die Praxis sehr rechenaufwändig, da die benötigte Rechenzeit quadratisch mit einer höheren Auflösung steigt.
+
+Eine mögliche Verbesserung für dieses Problem ist die Anwendung einer Glättung auf die erzeugte Route. Damit wird die Anzahl der Kurven verringert und so einen natürlicheren Pfad erzeugt. Ein Ansatz dafür bietet der Douglas-Peucker Algorithmus \cite{douglas-peucker_algorithm}, der eine Linien-Geometrie vereinfachen kann. Dabei muss allerdings sichergestellt werden, dass die Glättung der Route nicht mit einem Hinderniss kollidiert oder ausserhalb der Fläche fällt. Mit Hilfe der Glättung kann so eine grössere Auflösung für das SpiderWeb gewählt werden, was zusätzlich Rechenzeit spart.
