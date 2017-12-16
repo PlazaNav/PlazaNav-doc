@@ -41,7 +41,7 @@ Das \code{OSMHolder}-Objekt aus dem \nameref{impl:Importer} wird de Optimizer ü
 
 Für jedes Plaza werden folgende Schritte ausgeführt:
 \begin{enumerate}
-    \item Es werden alle \glspl{Einstiegspunkt} berechnet. Plazas, die weniger als zwei Einstiegspunkte haben, werden direkt verworfen, da auf diesen mit unserem Algorithmus gar keine kürzesten Wege berechnet werden könnten.
+    \item Es werden alle \glspl{Einstiegspunkt} berechnet. Dazu werden alle Linien gesucht, die das Plaza schneiden oder dieses berühren. Der Schnittpunkt dieser Linien mit dem äusseren Polygon der Fläche bildet jeweils einen Einstiegspunkt. Um Rechenfehler auszugleichen, werden die Schnittpunkte mit einem Buffer von einigen Zentimeter um das Polygon herum gesucht. Plazas, die weniger als zwei Einstiegspunkte haben, werden direkt verworfen, da auf diesen mit unserem Algorithmus gar keine kürzesten Wege berechnet werden könnten.
     \item Linien, die das Plaza schneiden und einen \gls{Einstiegspunkt} bilden, werden mit der \ac{OSM} ID zwischengespeichert. Die jeweiligen \glspl{Einstiegspunkt} werden später vom \nameref{impl:Merger} in diese Linien eingefügt.
     \item Alle Hindernisse auf dem Plaza werden ausgeschnitten. Dies kann ein Gebäude sein, das auf dem Platz steht, oder ein Hindernis wie z.B. ein Brunnen. Solche Hindernisse werden mit einem Quadrat mit konfigurierbaren Radius ausgeschnitten. Sollte nach diesem Schritt das Plaza komplett von Gebäuden oder Hindernissen verdeckt sein, wird es verworfen.
     \item Nun findet die eigentliche Optimierung statt, das Berechnen eines Graphen über das Plaza. Als Knotenpunkte des Graphen werden die \glspl{Einstiegspunkt} sowie alle Eckpunkte des Polygons (dementsprechend auch von Hindernissen) beachtet. Es sind die beiden Verfahren SpiderWeb-Graph und Visibility-Graph implementiert. Das Verfahren kann über das Strategy-Pattern \cite{gof_patterns} konfiguriert werden.
@@ -59,7 +59,17 @@ Die Aufgabe des Merger ist es, die vom \nameref{impl:Optimizer} neu erstellten G
     \item Nun werden alle in den vorherigen Schritten erstellten temporären \ac{OSM}-Dateien mit der originalen Datei zusammen geschmolzen, die ursprünglich importiert wurde. Dazu wird das externe Tool Osmosis \cite{osmosis} aufgerufen.
 \end{enumerate}
 
-Als Endresultat liegt nun eine \ac{OSM}-Datei mit den kompletten Kartendaten vor, die um zusätzliche Linien für die Optimierung über Fussgängerflächen ergänzt wurde. Die Datei kann nun etwa einer Routing-Engine übergeben werden.
+Als Endresultat liegt nun eine \ac{OSM}-Datei mit den kompletten Kartendaten vor, die um zusätzliche Linien für die Optimierung über Fussgänger-Flächen ergänzt wurde. Die Datei kann nun etwa einer Routing-Engine übergeben werden.
+
+\paragraph{Konfiguration}\label{impl:preprocess_konfiguration}~\\
+Um das Plaza Preprocessing möglichst flexibel und erweiterbar zu machen, wird eine Konfigurationsdatei im YAML-Format verwendet. Es ist unter anderem konfigurierbar, welche Algorithmen (Visibility-Graph oder SpiderWeb-Graph) für die Berechnung der Graphen verwendet wird. Es können ebenfalls die \ac{OSM}-Tags bestimmt werden, die der \nameref{impl:Importer} verwendet, um zu klassifizieren, was z.B. als Plaza oder als Hindernis gilt. Listing \ref{listing:preprocess_config} zeigt einen Ausschnitt dieser Konfiguration.
+
+\begin{listing}[ht]
+    \inputminted{YAML}{projectdoc/listing/preprocess_config.yml}
+    \caption{Ausschnitt der Konfigurationsdatei von Plaza Preprocessing}
+    \label{listing:preprocess_config}
+\end{listing}
+
 
 \subsubsection{Plaza Routing}
 \label{impl:Plaza Routing}
@@ -78,7 +88,7 @@ Dabei wird mithilfe von Flask-RESTPlus \cite{flask-restplus}, einer Flask-Extens
 Diese Komponenten kann ohne Probleme mit \ac{REST}-Services analog zu \nameref{impl:PlazaRouting} ergänzt werden.
 
 \subparagraph{PlazaRouting}\label{impl:PlazaRouting}~\\
-In der Komponenten \emph{PlazaRouting} wird der \ac{REST}-Service für das Routing exponiert. Im Bezug auf das Maturity Model \cite{maturity_model} von Leonard Richardson befinden wir uns auf Level 2. Im \ac{REST}-Service werden die übergebenen Parameter entgegen genommen, automatisch in das verlangte Format geparsed und geprüft, ob die Parameter, welche zwingend verlangt werden, auch übergeben wurden. Diese Information wird dann weiter an die Business-Schicht gereicht, welche im nächsten Abschnitt aufgeschlüsselt wird. Die Komponente besitzt sonst keine weitere Logik.
+In der Komponente \emph{PlazaRouting} wird der \ac{REST}-Service für das Routing exponiert. Im Bezug auf das Maturity Model \cite{maturity_model} von Leonard Richardson befinden wir uns auf Level 2. Im \ac{REST}-Service werden die übergebenen Parameter entgegen genommen, automatisch in das verlangte Format geparsed und geprüft, ob die Parameter, welche zwingend verlangt werden, auch übergeben wurden. Diese Information wird dann weiter an die Business-Schicht gereicht, welche im nächsten Abschnitt aufgeschlüsselt wird. Die Komponente besitzt sonst keine weitere Logik.
 
 \paragraph{Zusammenspiel und Verantwortlichkeit der Business- und Service-Schicht}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit der Business- und Service-Schicht}~\\
 In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen und das Optimieren der besten Route in ein Unter-Sequenz-Diagram in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs}, respektive Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} ausgelagert. Dabei geht es primär nicht um die Logik, die dahinter liegt, sondern um die Verantwortlichkeiten der Services. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich. Aus diesem Grund entsprechen die Diagramme nicht exakt dem Programmcode. 
@@ -179,9 +189,12 @@ Im Kapitel \ref{sub:Möglichkeiten der Weiterentwicklung} wird darauf eingegange
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\linewidth]{projectdoc/img/qgis_plugin_plaza_route_walking_public_transport_comparison}
-    \caption[Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309]{Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309s}
+    \caption[Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird]{Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309s}
     \label{fig:qgis_plugin_plaza_route_walking_public_transport_comparison}
 \end{figure}
+
+\paragraph{Konfiguration}\label{impl:PlazaRouting_Konfiguration}~\\
+Die Konfiguration der \emph{Plaza Routing} Komponente erfolgt durch ein Python-Konfigurationsfile im Root-Verzeichnis des Python-Packages. Dort können unter anderem die \ac{API}s zu den benötigten Services angepasst werden. Ausserdem ist konfigurierbar, welche Grenzwerte für das Finden der besten Route (siehe Abschnitt \nameref{impl:Plaza Routing Beste Route eruieren}) verwendet werden.
 
 \subsection{QGIS Plugin}
 \label{impl:QGIS Plugin}
