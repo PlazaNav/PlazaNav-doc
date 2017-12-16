@@ -62,7 +62,7 @@ Die Aufgabe des Merger ist es, die vom \nameref{impl:Optimizer} neu erstellten G
 Als Endresultat liegt nun eine \ac{OSM}-Datei mit den kompletten Kartendaten vor, die um zusätzliche Linien für die Optimierung über Fussgänger-Flächen ergänzt wurde. Die Datei kann nun etwa einer Routing-Engine übergeben werden.
 
 \paragraph{Konfiguration}\label{impl:preprocess_konfiguration}~\\
-Um das Plaza Preprocessing möglichst flexibel und erweiterbar zu machen, wird eine Konfigurationsdatei im YAML-Format verwendet. Es ist unter anderem konfigurierbar, welche Algorithmen (Visibility-Graph oder SpiderWeb-Graph) für die Berechnung der Graphen verwendet wird. Es können ebenfalls die \ac{OSM}-Tags bestimmt werden, die der \nameref{impl:Importer} verwendet, um zu klassifizieren, was z.B. als Plaza gilt. Listing \ref{listing:preprocess_config} zeigt einen Ausschnitt dieser Konfiguration.
+Um das Plaza Preprocessing möglichst flexibel und erweiterbar zu machen, wird eine Konfigurationsdatei im YAML-Format verwendet. Es ist unter anderem konfigurierbar, welche Algorithmen (Visibility-Graph oder SpiderWeb-Graph) für die Berechnung der Graphen verwendet wird. Es können ebenfalls die \ac{OSM}-Tags bestimmt werden, die der \nameref{impl:Importer} verwendet, um zu klassifizieren, was z.B. als Plaza oder als Hindernis gilt. Listing \ref{listing:preprocess_config} zeigt einen Ausschnitt dieser Konfiguration.
 
 \begin{listing}[ht]
     \inputminted{YAML}{projectdoc/listing/preprocess_config.yml}
