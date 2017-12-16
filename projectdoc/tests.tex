@@ -3,4 +3,57 @@
 \label{sec:Tests}
 % Manuelle und automatische Tests
 
-TODO
+\subsection{Strategie}
+\label{test:Strategie}
+Grundsätzliches Ziel war es beim Entdecken von Grenzfällen und Fehlern nach dem \ac{TDD}-Zyklus vorzugehen. Für das Testing wurden Unit- und Integration-Tests grosszügig eingesetzt. Durch die Gegebenheiten der Problem-Domäne ist es von besonderer Wichtigkeit, dass möglichst breit und viel getestet wird. Dadurch kann den Problemen, welche durch ein "fehlendes" \ac{OSM}-Datenmodell auftreten, entgegen gewirkt werden.  Die Tests werden automatisiert bei jedem Commit mit Continuous Integration durch CircleCI \cite{circleci} ausgeführt. So ist sichergestellt, dass Builds, welche auf einem Feature-Branch fehlschlagen, nicht in den Master gemerged werden. Im nachfolgenden sind die Tests für die Komponenten \emph{Plaza Vorverarbeitung} und \emph{Plaza Routing} getrennt aufgeschlüsselt, da die Applikationen mit unterschiedlichen Bedingungen zu kämpfen haben.
+
+
+\subsection{Plaza Vorverarbeitung}
+\label{test:Plaza Vorverarbeitung}
+Bei \emph{Plaza Vorverarbeitung} liegt der Fokus auf dem korrekten Zusammenspiel der Komponenten. Die Abbildung \ref{fig:dataflow_vorverarbeitung} zeigt dessen Datenfluss auf. Aus diesem Grund haben wir den Fokus auf Integration-Tests gelegt. So wird unter anderem beim Testen des \nameref{impl:Optimizer} auch der \nameref{impl:Importer} verwendet, da das Mocken der internen in-memory Datenstruktur, welche der \nameref{impl:Importer} liefert, keinen Sinn macht, da dieser aufgrund der vordefinierten \ac{OSM}-Dateien deterministische Daten liefert. In Fällen wo diese Annahme nicht zutrifft und Funktionen in Isolation getestet werden können, werden Unit-Tests, wie in Listing \ref{Unit-Test Shortest-Path} sichtbar, eingesetzt.
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/test_compute_dijkstra_shortest_paths.py}
+    \caption{Unit-Test Shortest Path}
+    \label{Unit-Test Shortest-Path}
+\end{listing}
+
+In Listing \ref{Integration-Test Plaza Preprocessor} ist aufgeführt, wie das Unit-Testing gehandhabt wird. Durch Fixtures kann der Tests in diesem Fall auf vier verschiedene Arten von möglichen Konfigurationen getestet werden, beispielsweise eine Visibility-Graph Vorverarbeitung, welche den A* \cite{astar} als Shortest-Path-Algorithmus verwendet.
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/test_plaza_prepreprocessor.py}
+    \caption{Integration-Test Plaza Preprocessor}
+    \label{Integration-Test Plaza Preprocessor}
+\end{listing}
+
+\subsection{Plaza Routing}
+\label{test:Plaza Routing}
+
+\emph{Plaza Routing} verwendet Fremdsysteme für unterschiedliche Zwecke. Unter anderem wird search.ch \cite{search_ch_route_api} für das Abfragen der ÖV-Verbindungen benötigt. Werden nun Tests direkt auf dem Fremdsystem durchgeführt, kann man nicht mit einem deterministischen Verhalten rechnen. Die Werte sind in diesem konkreten Fall datumsabhängig. So werden beispielsweise am Sonntag nicht die gleichen Verbindungen angeboten wie unter der Woche. Auch die Abfrage auf ein konkretes Datum ist nur beschränkt möglich, da die Daten nur einen gewissen Zeitraum in die Vergangenheit abrufbar sind. Bei Overpass \cite{wiki:overpass} liegt die Problematik bei den zugrundeliegenden Daten. In der Natur der \ac{OSM}-Daten liegt, dass sie sich stetig verändern. Stabile Tests sind in diesem Fall nicht möglich, wenn man wie in Kap. \ref{impl:Plaza Routing Route optimieren} von Koordinaten abhängig ist und diese direkt auf dem Fremdsystem überprüfen will. Diese Erfahrung wurde im Verlauf des Projekts gemacht. So wurden nachträglich Mocks eingeführt, welche stabile Tests ermöglichen. In Listing \ref{Mock search.ch} ist zu sehen, wie mit \emph{monkeypatch} \cite{pytest} für search.ch \cite{search_ch_route_api} aufgrund der übergebenen Parameter die richtige Antwort geliefert wird. 
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/mock_search_ch.py}
+    \caption{Mock search.ch}
+    \label{Mock search.ch}
+\end{listing}
+
+Durch diesen Ansatz lassen sich Unit- und Integration-Tests auf einer stabilen Datenbasis durchführen.
+
+\subsubsection{Healthchecks}
+\label{test:Healthchecks}
+Da alle Services in den Tests gemockt werden, ist es unabdingbar, dass mit Healthchecks die Fremdsysteme geprüft werden. So ist sichergestellt, dass der Aufruf auf das konkreten System mit den bewährten Parameter eine erfolgreiche Rückmeldung liefert. Ob die Werte ansatzweise sinnvoll sind, wird durch die jeweiligen Parser der Services sichergestellt.
+
+\subsection{Fazit}
+\label{test:Fazit}
+
+\subsubsection{TDD}
+\label{fazit:TDD}
+Das Vorgehen nach dem \ac{TDD}-Zyklus hat sich vor allem beim Arbeiten mit Fremdsystemen extrem bewährt. Herauszuheben ist hier das Optimieren von Routen, welches im Abschnitt \nameref{impl:Plaza Routing Route optimieren} behandelt wurde. Hier wurde intensiv mit Overpass \cite{wiki:overpass} kommuniziert. Durch die Gegebenheit der \ac{OSM}-Daten und den Freiheiten der Mapper sind Grenzfälle und unerwartete Abbildungen der Daten keine Seltenheit. In diesen Fällen hat man Tests erstellt, welche das Verhalten reproduzieren und auf das zu Erwartende prüfen und konnte so die Logik modifizieren, damit das wie im Implementationskapitel beschriebene fehlertolerante System umgesetzt werden konnte.
+
+\subsubsection{Tests mit Fremdsystemen}
+\label{fazit:Tests mit Fremdsystemen}
+Beim Arbeiten mit den Fremdsystemen hat sich gezeigt, dass es sich lohnt, die Resultate der Service-Aufrufe von Anfang an zu mocken, wenn man im Vorhinein bereits weiss, dass die zugrundeliegende Daten transient sind. Der Aufwand ist in diesem Fall nicht zu unterschätzen, hat sich aber in unserem Fall definitiv gelohnt.
+
+\subsubsection{Python Typensystem}
+\label{fazit:Python Typesystem}
+Vorallem bei einer Sprache mit einem dynamischen Typensystem wie bei Python ist es wichtig, dass ausgiebig getestet wird. Ändert sich beispielsweise die Struktur eines Rückgabewerts, sind die Auswirkungen dieser Änderungen nicht sofort sichtbar. Wird diese Stelle jedoch zusätzlich getestet, ist jederzeit klar, ob es sich um Breaking-Changes handelt. Mit den in Python 3 eingeführten "Type Hints" konnte dieses Problem aber schon etwas eingedämmt werden.
