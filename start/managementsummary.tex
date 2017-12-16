@@ -11,46 +11,44 @@
 
 % hier eine kurze Einleitung
 
-\textbf{Ausgangslage}~\\
-Die heutig gängigen Routing-Engines können effizient über Knoten und Kanten routen und wurden konkret für den motorisierten Individualverkehr optimiert. Für den nicht-motorisierten Individualverkehr (Fussgänger, Rollstuhlfahrer, Radfahrer, etc.) sieht die Lage drastisch anders aus. Der motorisierte Individualverkehr hält sich durchwegs an vorgegebene Regeln und Strecken. Ein Fussgänger hingegen, verhält sich grundlegend auf eine andere Art und Weise. Wo ein Autofahrer an die Streckenführung gebunden ist, optimiert ein Fussgänger gnadenlos. So überquert er ein Platz auf direktem Weg und und läuft nicht an der Strasse um den Platz herum, wie es ein Autofahrer tun muss. Dies ist jedoch in den Routing-Engine Status quo. In Abbildung ??? ist sichtbar, wie über den Fischmarktplatz in Rapperswil-Jonas, Schweiz geroutet wird. In der Natur des Menschen liegt es, dass der Platz ressourcenschonend überquert wird, was momentan nicht der Fall ist.
+\paragraph{Ausgangslage}~\\
+Die heutig gängigen Routing-Engines können effizient über Knoten und Kanten routen und wurden konkret für den motorisierten Individualverkehr optimiert. Für den nicht-motorisierten Individualverkehr (Fussgänger, Rollstuhlfahrer, Radfahrer, etc.) sieht die Lage drastisch anders aus. Der motorisierte Individualverkehr hält sich durchwegs an vorgegebene Regeln und Strecken. Ein Fussgänger hingegen verhält sich grundlegend auf eine andere Art und Weise. Wo ein Autofahrer an die Streckenführung gebunden ist, optimiert ein Fussgänger intuitiv. So überquert er ein Platz auf direktem Weg und und läuft nicht an der Strasse um den Platz herum, wie es ein Autofahrer tun muss. Dies ist jedoch in den Routing-Engine Status quo. In Abbildung ??? ist sichtbar, wie über den Fischmarktplatz in Rapperswil-Jonas, Schweiz geroutet wird. Es liegt in der Natur des Menschen, den Platz ressourcenschonend zu überqueren, was momentan nicht der Fall ist.
 
-Die Problematik beschränkt sich nicht nur auf Flächen, wie Plätze und Pärke sondern umfasst auch Strassen und weitere Arten von offenen Flächen, wie Berge und Strände.
+Die Problematik beschränkt sich nicht nur auf Flächen wie Plätze und Pärke, sondern umfasst auch Strassen und weitere Arten von offenen Flächen wie Berge und Strände.
 
-Durch den Einzug der mobilen Devices, ist es üblich, dass von einem beliebigen Startpunkt das Routing gestartet wird. Befindet sich man in diesem Fall gerade auf einer Fläche, wird aktuell eine Senkrechte zur Kante gezogen, auf welcher das Routing fortgesetzt wird.
-
-% TODO Bild
-
-Ein Fussgänger ist in vielen Fällen auf die öffentliche Verkehrsmittel angewiesen, was in einem multidimensionalen Routing resultiert. Das genaue Ansteuern einer bestimmten Haltestelle in die richtige Fahrtrichtung gestaltet sich schwierig, da für eine Haltestelle die gleiche Koordinate für beide Fahrtrichtungen von verschiedenen Services retourniert wird.
+Durch den Einzug der mobilen Geräte ist es üblich, dass von einem beliebigen Startpunkt das Routing gestartet wird. Befindet sich man in diesem Fall gerade auf einer Fläche, wird aktuell eine Senkrechte zur Kante gezogen, auf welcher das Routing fortgesetzt wird.
 
 % TODO Bild
 
-Für ein Fussgänger-Routing ist dies supoptimal, da man nicht davon ausgehen, dass die Haltestellen für eine Linie immer auf der gegenüberliegenden Seite liegt.
+Ein Fussgänger ist in vielen Fällen auf die öffentliche Verkehrsmittel angewiesen, was in einem multimodalem Routing resultiert. Das genaue Ansteuern einer bestimmten Haltestelle in die richtige Fahrtrichtung gestaltet sich schwierig, da für eine Haltestelle die gleiche Koordinate für beide Fahrtrichtungen von verschiedenen Services retourniert wird. Für ein Fussgänger-Routing ist dies supoptimal, da man nicht davon ausgehen, dass die Haltestellen für eine Linie immer auf der gegenüberliegenden Strassenseite liegt.
+
+% TODO Bild
 
 % TODO in Ordnung, wenn ich den unteren Punkt um Ziele ergänzen
-\textbf{Ziele, Vorgehen und Technologien}~\\
-Im Kontext der Arbeit \emph{PlazaRoute} wird die Problematik des Fussgänger-Routing über offene Flächen im urbanen Raum aufgegriffen. Kurz zusammengefasst heisst das, dass ein Routing-Engine ein natürliches Fussgänger-Routing generieren kann.
+\paragraph{Ziele, Vorgehen und Technologien}~\\
+Im Kontext der Arbeit \emph{PlazaRoute} wird die Problematik des Fussgänger-Routing über offene Flächen im urbanen Raum aufgegriffen. Kurz zusammengefasst heisst das, dass eine Routing-Engine ein natürliches Fussgänger-Routing generieren kann.
 
-In Kombination mit dem ÖV-Routing soll eine multidimensionales Routing möglich sein, welche Haltestellen genau ansteuert.
+In Kombination mit dem ÖV-Routing soll ein multimodales Routing möglich sein, welche Haltestellen genau ansteuert.
 
 % TODO Flächen-Traversierung-Algorithmen richtiger Begriff 
-Um diese Anforderungen erfüllen zu können, werden Flächen-Traversierung-Algorithmen evaluiert, analysiert, getestet und optimiert. Nach Abschluss dieser Tätigkeit wird es möglich sein, eine \ac{OSM}-Datei so aufbereiten zu können, dass Routing-Engines dem Fussgänger ein natürliches Routing bieten können. Um die Grenzen des Fusswegs sprengen zu können, wird parallel in Kombination mit search.ch \cite{search_ch_route_api} ein ÖV-Routing entwickelt. Das multidimensionale Routing wird durch eine visuelle Darstellung in einem QGIS-Plugin abgerundet, welche den Mehrwert für einen Fussgänger konkret aufzeigen wird.
+Um diese Anforderungen erfüllen zu können, werden Algorithmen zum Traversieren von offenen Flächen evaluiert, analysiert, getestet und optimiert. Nach Abschluss dieser Tätigkeit wird es möglich sein, eine \ac{OSM} Datei so aufbereiten zu können, dass Routing-Engines dem Fussgänger ein natürliches Routing bieten können. Um die Optimierung an einem praktischen Beispiel zeigen zu können, wird parallel in Kombination mit dem Service von search.ch \cite{search_ch_route_api} ein ÖV-Routing entwickelt. Das multimodale Routing wird durch eine visuelle Darstellung in einem QGIS-Plugin abgerundet, welche den Mehrwert für einen Fussgänger konkret aufzeigen wird.
 
 Die zugrundeliegende Technologie ist Python.
 
-\textbf{Ergebnisse}~\\
-Durch die Umsetzung einer Vorverarbeitung mit einem Visibility-Grahp oder SpiderWeb-Graph in Kombination mit einem Shortest-Path-Algorithmus (Dijkstra \cite{dijkstra_algorithm} und A* \cite{astar}) ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen auf welchen gängige Routing-Engines und andere Interessenten operieren oder auf der Implementation aufsetzen können.
+\paragraph{Ergebnisse}~\\
+Durch die Umsetzung einer Vorverarbeitung mit einem Visibility-Graph oder SpiderWeb-Graph in Kombination mit einem Shortest-Path-Algorithmus (Dijkstra \cite{dijkstra_algorithm} und A* \cite{astar}) ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen, auf welchen gängige Routing-Engines und andere Interessenten operieren oder auf der Implementation aufsetzen können.
 
-Fussgänger können zu jedem Zeitpunkt und auf jeder Position ein Routing durchführen, welchen ihrem Verhalten entspricht.
+Fussgänger können zu jedem Zeitpunkt und auf jeder Position ein Routing durchführen, welches ihrem Verhalten entspricht.
 
 % TODO Bild Visibility-Grahp und SpiderWeb-Graph eines verarbeitetend Platz
 
-Um Bequem und auf direktem Weg nach Hause zu gelangen, ist das Transportmittel übergreifende Routing als Service verfügbar und kann in einem QGIS-Plugin visualisiert werden.
+Um bequem und auf direktem Weg nach Hause zu gelangen, ist das Transportmittel-übergreifende Routing als Service verfügbar und kann in einem QGIS-Plugin visualisiert werden.
 
 % TODO Screenshot QGIS-Plugin und Screenshot verbesseretes anzielen ÖV-Haltestelle
 
-\textbf{Ausblick}~\\
-Die bestehende Lösung bietet weiteren Raum für Optimierungen. So können Plätze, welche für Fussgänger begehbar sind, durch fehlende Eintrittspunkte momentan nicht verarbeitet werden.
+\paragraph{Ausblick}~\\
+Die bestehende Lösung bietet weiteren Raum für Optimierungen. So können einige Plätze, welche für Fussgänger begehbar sind, durch fehlende \glsp{Eintrittspunkt} momentan nicht verarbeitet werden.
 
 Die Arbeit hat sich bewusst auf den urbanen Raum beschränkt, da die Mehrheit der Routings in diesem Umfeld durchgeführt werden. Diese Grenze soll erweitert werden und Flächen ohne konkrete Begrenzungen wie Berge und Strände einbeziehen.
 
-Die Vorverarbeitungen der Flächen stosst im Bezug auf die Performanz auf Grenzen. Ein Vergleich mit einer Lösung in PostGIS oder C++ ist denkbar.
+Die Vorverarbeitungen der Flächen stösst im Bezug auf die Performanz auf Grenzen. Ein Vergleich mit einer Lösung in PostGIS oder C++ ist denkbar.
