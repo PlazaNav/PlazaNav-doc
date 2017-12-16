@@ -20,6 +20,11 @@
 
 \include{projectdoc/index}
 
+\glsaddall
+\printglossary[type=main,title=Glossar]
+
+\include{appendix/abbreviations}
+
 \nocite{*}
 \cleardoublepage % https://tex.stackexchange.com/a/98995
 \phantomsection
@@ -27,18 +32,18 @@
 \bibliographystyle{IEEEtran}
 \bibliography{PlazaRoute}
 
-\input{appendix/abbreviations}
-\glsaddall
-\printglossary[type=main,title=Glossar]
-\input{appendix/cdcontent}
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
 \listoffigures
+
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Tabellenverzeichnis}
 \listoftables
-\input{appendix/listings}
+
+\renewcommand\listoflistingscaption{Code Listings}
+\listoflistings
+\addcontentsline{toc}{chapter}{Code Listings}
 
 \end{document}
