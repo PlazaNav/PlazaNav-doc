@@ -1,1 +1,0 @@
-pygmentize -l python -f latex -P commandprefix=PYG -F tokenmerge -o "index.out.pyg" "projectdoc/listing/test_plaza_prepreprocessor.py" 

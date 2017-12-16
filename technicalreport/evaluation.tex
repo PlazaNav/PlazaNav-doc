@@ -1,26 +1,23 @@
-\section{Bewertung}
-\label{sec:Bewertung}
-Im folgenden sind Komponente aufgelistet, welche im Kontext des Kapitels \ref{sec:Stand der Technik} erarbeitet wurden und einen Variantenentscheid mit sich bringen. Dazu werden messbare Kriterien definiert, gewichtet und die einzelnen Varianten daran gemessen.
+\section{Bewertung Routing über offene Flächen}
+\label{sec:Bewertung Routing über offene Flächen}
 
-Den Varianten wird eine Punktzahl auf einer linearen Skala von 1 bis 5 zugewiesen.
+Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen hervorgebracht, namentlich \nameref{solution:Visibility-Graph} und \nameref{solution:SpiderWeb-Graph}, welche im Folgenden analysiert werden. Dazu werden messbare Kriterien definiert, gewichtet und die beiden Varianten daran gemessen. Am Ende wird den Varianten eine Punktzahl auf einer linearen Skala von 1 bis 5 zugewiesen.
 
-\subsection{Routing über offene Flächen}
-\label{eval:Routing über offene Flächen}
-
-Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen hervorgebracht, namentlich \nameref{solution:Visibility-Graph} und \nameref{solution:SpiderWeb-Graph}, welche im Folgenden analysiert werden.
-
-\subsubsection{Kriterien}
+\subsection{Kriterien}
 \label{sub:Kriterien}
 
-\paragraph{Verarbeitungszeit}\label{criteria:Verarbeitungszeit}~\\
+\subsubsection{Verarbeitungszeit}
+\label{criteria:Verarbeitungszeit}
 Der aktuelle Import der \ac{OSM}-Daten der Schweiz ins System Tourpl \cite{hsr_tourpl}, ein Produkt des Geometa Lab der HSR \cite{geometa_lab_hsr}, dauert 2 Stunden. Diese Zeitdauer soll nicht überschritten werden. Die Verarbeitungszeit wird bewertet auf einer Skala von 1 (2 Stunden) bis 5 (0 Minuten).
 
 
-\paragraph{zusätzliche Datenmenge}\label{criteria:zusätzliche Datenmenge}~\\
+\subsubsection{zusätzliche Datenmenge}
+\label{criteria:zusätzliche Datenmenge}
 Die Algorithmen generieren zusätzliche Geometrien. Da die öffentlichen Plätze nur einen kleinen Teil der Kartendaten bilden, soll die zusätzliche Datenmenge keinen signifikaten Teil ausmachen. Die zusätzliche Datenmenge im Verhältnis zur originalen Datei wird bewertet auf einer Skala von 1 (1\%) bis 5 (0\%).
 
 
-\paragraph{Natürlichkeit}\label{criteria:Natürlichkeit}~\\
+\subsubsection{Natürlichkeit}
+\label{criteria:Natürlichkeit}
 % TODO Verweis auf Definition in Graser-Paper
 Für die Natürlichkeit einer Route ist es schwer, messbare Kriterien zu definieren. Als eine natürliche Route versteht man, wenn man auf direktem Weg über den Platz geht und keine Umwege macht. Treten Hindernisse auf dem Platz auf, widerspricht es einem natürlichen Fussgänger-Verhalten, wenn man direkt aufs Hindernis zu läuft und dieses am Rande umgeht. Um trotzdem ein Fazit ziehen zu können, werden 3 Plätze (Helvetiaplatz in Zürich, Fischmarktplatz in Rapperswil-Jona und der Bahnhofplatz in Bern) untersucht. Dabei wird für beide Varianten eine interaktive Routing-Oberfläche an Probanden zu Verfügung gestellt. Die Probanden haben die Möglichkeit, selbst Routen über den Platz zu setzen. In Abbildung \ref{fig:algorithm-example-routes} sind einige Routen beispielhaft dargestellt. Danach bewerten die Probanden die vorhin definierte Natürlichkeit mit Punkten von 1 bis 5. Als massgeblicher Vergleichswert wird der Durchschnitt der Bewertungen aller Probanden genommen.
 
@@ -32,7 +29,7 @@ Für die Natürlichkeit einer Route ist es schwer, messbare Kriterien zu definie
 \end{figure}
 
 
-\subsubsection{Resultate}
+\subsection{Resultate}
 \label{eval:Resultate}
 
 Die Vorverarbeitung wurde auf einem Rechner mit einem Intel i7 2600k Prozessor und Fedora 26 als Betriebssystem ausgeführt.
@@ -89,7 +86,8 @@ Für die Vergleichswerte der Verarbeitungszeit und der zusätzlichen Datenmenge 
 \end{figure}
     
 
-\paragraph{Verarbeitungszeit}\label{result:Verarbeitungszeit}~\\
+\subsubsection{Verarbeitungszeit}
+\label{result:Verarbeitungszeit}
 Die Vorverarbeitung wurde mit beiden Algorithmen auf der Test-Datei ausgeführt und dabei die benötigte Zeit gemessen. Die Zeit für den ersten Schritt, das Importieren der \ac{OSM}-Daten, wird dabei abgezogen, da dies unabhängig vom jeweiligen Algorithmus ist. Die Resultate sind in Tabelle \ref{Resultat: Verarbeitungszeit} dargestellt.
 
 \begin{table}[H]
@@ -105,7 +103,8 @@ Die Vorverarbeitung wurde mit beiden Algorithmen auf der Test-Datei ausgeführt 
 \end{table}
 
 
-\paragraph{zusätzliche Datenmenge}\label{result:zusätzliche Datenmenge}~\\
+\subsubsection{zusätzliche Datenmenge}
+\label{result:zusätzliche Datenmenge}
 Tabelle \ref{table: zusätzliche Datenmenge} zeigt die zusätzliche Datenmenge im \ac{OSM}-Format, die durch die Vorverarbeitung mit dem jeweiligen Algorithmus entstanden ist, verglichen mit der Dateigrösse der \ac{OSM}-Datei vor der Vorverarbeitung.
 
 \begin{table}[H]
@@ -120,7 +119,8 @@ Tabelle \ref{table: zusätzliche Datenmenge} zeigt die zusätzliche Datenmenge i
     \end{tabular}
 \end{table}
 
-\paragraph{Natürlichkeit}\label{result:Natürlichkeit}~\\
+\subsubsection{Natürlichkeit}
+\label{result:Natürlichkeit}
 Für die Evaluation wurde die Bewertung der Natürlichkeit mit fünf Probanden durchgeführt. Die einzelnen Bewertungen sind in Tabelle \ref{table:Resultat Natürlichkeit} abgebildet. In Abbildung \ref{chart:natürlichkeit_vergleich} sind die durchschnittlichen Bewertungen pro Platz und Algorithmus dargestellt.
 
 \begin{figure}[ht]
@@ -180,7 +180,7 @@ Für die Evaluation wurde die Bewertung der Natürlichkeit mit fünf Probanden d
     \end{tabular}
 \end{table}
 
-\subsubsection{Auswertung und Schlussfolgerung}
+\subsection{Auswertung und Schlussfolgerung}
 \label{result:Auswertung und Schlussfolgerung}
 
 Die einzelnen Werte sind in Tabelle \ref{table:Resultat Evaluation Flächen-Algorithmus} zusammen gefasst und gewichtet. Es zeigt sich, dass der Visibility-Graph knapp besser abschneidet, der Unterschied ist allerdings sehr gering und nicht eindeutig.
