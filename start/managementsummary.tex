@@ -31,12 +31,12 @@ Im Kontext der Arbeit \emph{PlazaRoute} wird die Problematik des Fussgänger-Rou
 In Kombination mit dem ÖV-Routing soll ein multimodales Routing möglich sein, welche Haltestellen genau ansteuert.
 
 % TODO Flächen-Traversierung-Algorithmen richtiger Begriff 
-Um diese Anforderungen erfüllen zu können, werden Algorithmen zum Traversieren von offenen Flächen evaluiert, analysiert, getestet und optimiert. Nach Abschluss dieser Tätigkeit wird es möglich sein, eine \ac{OSM} Datei so aufbereiten zu können, dass Routing-Engines dem Fussgänger ein natürliches Routing bieten können. Um die Optimierung an einem praktischen Beispiel zeigen zu können, wird parallel in Kombination mit dem Service von search.ch \cite{search_ch_route_api} ein ÖV-Routing entwickelt. Das multimodale Routing wird durch eine visuelle Darstellung in einem QGIS-Plugin abgerundet, welche den Mehrwert für einen Fussgänger konkret aufzeigen wird.
+Um diese Anforderungen erfüllen zu können, werden Algorithmen zum Traversieren von offenen Flächen evaluiert, analysiert, getestet und optimiert. Nach Abschluss dieser Tätigkeit wird es möglich sein, eine \ac{OSM} Datei so aufbereiten zu können, dass Routing-Engines dem Fussgänger ein natürliches Routing bieten können. Um die Optimierung an einem praktischen Beispiel zeigen zu können, wird parallel in Kombination mit dem Service von search.ch ein ÖV-Routing entwickelt. Das multimodale Routing wird durch eine visuelle Darstellung in einem QGIS-Plugin abgerundet, welche den Mehrwert für einen Fussgänger konkret aufzeigen wird.
 
 Die zugrundeliegende Technologie ist Python.
 
 \paragraph{Ergebnisse}~\\
-Durch die Umsetzung einer Vorverarbeitung mit einem Visibility-Graph oder SpiderWeb-Graph in Kombination mit einem Shortest-Path-Algorithmus (Dijkstra \cite{dijkstra_algorithm} und A* \cite{astar}) ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen, auf welchen gängige Routing-Engines und andere Interessenten operieren oder auf der Implementation aufsetzen können.
+Durch die Umsetzung einer Vorverarbeitung mit einem Visibility-Graph oder SpiderWeb-Graph in Kombination mit einem Shortest-Path-Algorithmus (Dijkstra und A*) ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen, auf welchen gängige Routing-Engines und andere Interessenten operieren oder auf der Implementation aufsetzen können.
 
 Fussgänger können zu jedem Zeitpunkt und auf jeder Position ein Routing durchführen, welches ihrem Verhalten entspricht.
 
