@@ -229,3 +229,7 @@ TSWLatexianTemp*
 
 # Ignore generated pdf
 index.pdf
+
+# Ignore generated minted files
+index.mintedmd5
+index.mintedcmd
