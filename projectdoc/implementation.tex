@@ -88,7 +88,7 @@ Dabei wird mithilfe von Flask-RESTPlus \cite{flask-restplus}, einer Flask-Extens
 Diese Komponenten kann ohne Probleme mit \ac{REST}-Services analog zu \nameref{impl:PlazaRouting} ergänzt werden.
 
 \subparagraph{PlazaRouting}\label{impl:PlazaRouting}~\\
-In der Komponenten \emph{PlazaRouting} wird der \ac{REST}-Service für das Routing exponiert. Im Bezug auf das Maturity Model \cite{maturity_model} von Leonard Richardson befinden wir uns auf Level 2. Im \ac{REST}-Service werden die übergebenen Parameter entgegen genommen, automatisch in das verlangte Format geparsed und geprüft, ob die Parameter, welche zwingend verlangt werden, auch übergeben wurden. Diese Information wird dann weiter an die Business-Schicht gereicht, welche im nächsten Abschnitt aufgeschlüsselt wird. Die Komponente besitzt sonst keine weitere Logik.
+In der Komponente \emph{PlazaRouting} wird der \ac{REST}-Service für das Routing exponiert. Im Bezug auf das Maturity Model \cite{maturity_model} von Leonard Richardson befinden wir uns auf Level 2. Im \ac{REST}-Service werden die übergebenen Parameter entgegen genommen, automatisch in das verlangte Format geparsed und geprüft, ob die Parameter, welche zwingend verlangt werden, auch übergeben wurden. Diese Information wird dann weiter an die Business-Schicht gereicht, welche im nächsten Abschnitt aufgeschlüsselt wird. Die Komponente besitzt sonst keine weitere Logik.
 
 \paragraph{Zusammenspiel und Verantwortlichkeit der Business- und Service-Schicht}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit der Business- und Service-Schicht}~\\
 In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen und das Optimieren der besten Route in ein Unter-Sequenz-Diagram in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs}, respektive Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} ausgelagert. Dabei geht es primär nicht um die Logik, die dahinter liegt, sondern um die Verantwortlichkeiten der Services. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich. Aus diesem Grund entsprechen die Diagramme nicht exakt dem Programmcode. 
@@ -189,9 +189,12 @@ Im Kapitel \ref{sub:Möglichkeiten der Weiterentwicklung} wird darauf eingegange
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\linewidth]{projectdoc/img/qgis_plugin_plaza_route_walking_public_transport_comparison}
-    \caption[Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309]{Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309s}
+    \caption[Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird]{Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309s}
     \label{fig:qgis_plugin_plaza_route_walking_public_transport_comparison}
 \end{figure}
+
+\paragraph{Konfiguration}\label{impl:PlazaRouting_Konfiguration}~\\
+Die Konfiguration der \emph{Plaza Routing} Komponente erfolgt durch ein Python-Konfigurationsfile im Root-Verzeichnis des Python-Packages. Dort können unter anderem die \ac{API}s zu den benötigten Services angepasst werden. Ausserdem ist konfigurierbar, welche Grenzwerte für das Finden der besten Route (siehe Abschnitt \nameref{impl:Plaza Routing Beste Route eruieren}) verwendet werden.
 
 \subsection{QGIS Plugin}
 \label{impl:QGIS Plugin}
