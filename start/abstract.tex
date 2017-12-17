@@ -5,5 +5,23 @@
 
 \chapter*{Abstract}\addcontentsline{toc}{chapter}{Abstract}
 
-% TODO ohne Bilder
-TODO
+Die heutig gängigen Routing-Engines sind für den motorisierten Individualverkehr optimiert. Bei diesem halten sich die Verkehrsteilnehmer an vorgegebene Regeln und Strecken. Fussgänger allerdings optimieren intuitiv ihre Route, so wählen sie zum Beispiel über eine öffentliche Fläche den möglichst kürzesten Weg zum Ziel. Bestehende Routing-Engines navigieren entlang der Kante des Platzes, anstatt ihn direkt zu überqueren.
+
+Es werden bestehende Algorithmen zur Traversierung von offenen Fussgänger-Flächen evaluiert, analysiert und optimiert. Mit einer Vorverarbeitung von OpenStreetMap-Daten wird gezeigt, wie eine Routing-Engine ein natürliches Fussgänger-Routing über offene Flächen unterstützen kann.
+
+Als praktische Umsetzung wird mit Hilfe des Services von search.ch ein Service für ein multimodales Routing mit öffentlichen Verkehrsmitteln erarbeitet. Mit einem eigens entwickelten Plugin für QGIS können die optimierten Routen visualisiert werden.
+
+Durch die Vorverarbeitung von OpenStreetMap-Daten ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen, auf welche gängige Routing-Engines aufsetzen können. Die eingesetzen Algorithmen zeigen deutlich bessere Ergebnisse als die bestehenden Implementationen in den Routing-Engines.
+
+Mit dem entwickelten Backend und einem zugehörigen QGIS-Plugin können Benutzer mit einem beliebigen Start- und Endpunkt ein ÖV-Routing mit optimiertem Verhalten bei Fussgänger-Routen durchführen.
+
+\cleardoublepage
+
+Today's most notable open source routing engines are optimized for motorized traffic, but show deficiencies when it comes to pedestrian routing. With open spaces, routers usually navigate along the edges of the polygon, whereas pedestrians would naturally take shortcuts through the open space while avoiding any obstacles.
+Past research has shown multiple approaches to this problem. In this thesis, some of these are approaches are compared and analyzed.
+
+With publicly available geographic data from OpenStreetMap and the help of existing algorithms, an implementation is provided to prepare geographic data for an existing routing engine, with the aim of enhancing its capabilities to provide a natural behavior in pedestrian routing. The preparation step is optimized with shortest-path algorithms to keep the additional data volume as low as possible.
+
+Furthermore, the optimized pedestrian routing is used in combination with an existing service for public transport routing in Switzerland, providing a practical application with multimodal transportation. With a newly-developed plugin for QGIS, users are able to visualize the optimized routes.
+
+The implementation of two different approaches --- visibility graph and SpiderWeb graph --- shows a clear improvement on routes for pedestrian navigation, compared to the methods that are used in current routing engines. In the future, this implementation could serve as a reference to integrate these approaches directly into routing engines.
