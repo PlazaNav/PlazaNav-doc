@@ -8,11 +8,10 @@ In diesem Kapitel wird die Architektur unserer Applikation und die Schnittstelle
 \label{architektur:Systemkontext}
 
 \begin{figure}[ht]
-\centering
-% TODO: Grafik zuschneiden
-\includegraphics[width=1\linewidth]{projectdoc/img/system-context_diagram.png}
-\caption[System Kontext Diagramm]{System PlazaRoute im Kontext mit Umsystemen; Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
-\label{fig:system_context_diagram}
+    \centering
+    \includegraphics[width=1\linewidth]{projectdoc/img/system-context_diagram.png}
+    \caption[System Kontext Diagramm]{System PlazaRoute im Kontext mit Umsystemen; Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
+    \label{fig:system_context_diagram}
 \end{figure}
 
 Abbildung \ref{fig:system_context_diagram} zeigt das System PlazaRoute mit den Umsystemen auf. Beim Betrachten der C4-Diagramme ist zu beachten, dass diese nicht der \acs{UML}-Spezifikation folgen. Gestrichelte Pfeile bedeuten, dass eine Anfrage in Richtung der Pfeilspitze an ein System geht. Der Datenfluss läuft in die entgegengesetzte Richtung der Pfeile.
@@ -24,11 +23,10 @@ Der User bedient die QGIS Desktop Applikation mit dem von uns entwickelten Plugi
 
 \begin{figure}[ht]
     \centering
-    % TODO: Grafik zuschneiden
     \includegraphics[width=1\linewidth]{projectdoc/img/container_diagram.png}
     \caption[Container Diagramm]{Container Diagramm von PlazaRoute; Das System PlazaRoute befindet sich in der eingerahmten Box; Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
     \label{fig:container_diagram}
-    \end{figure}
+\end{figure}
 
 In Abbildung \ref{fig:container_diagram} zoomen wir in das System PlazaRoute hinein und teilen es in drei Container auf, die logisch voneinander getrennt sind. So könnten die Container auch verteilt deployed werden.
 
@@ -55,11 +53,10 @@ Abbildung \ref{fig:component_diagram_vorverarbeitung} zeigt die einzelnen Kompon
 
 
 \begin{figure}[ht]
-\centering
-% TODO: Grafik zuschneiden
-\includegraphics[width=1\linewidth]{projectdoc/img/component_diagram_plaza-vorverarbeitung.png}
-\caption[Komponentendiagramm Vorverarbeitung]{Komponentendiagramm der Plaza Vorverarbeitung (eingerahmt); Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
-\label{fig:component_diagram_vorverarbeitung}
+    \centering
+    \includegraphics[width=1\linewidth]{projectdoc/img/component_diagram_plaza-vorverarbeitung.png}
+    \caption[Komponentendiagramm Vorverarbeitung]{Komponentendiagramm der Plaza Vorverarbeitung (eingerahmt); Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
+    \label{fig:component_diagram_vorverarbeitung}
 \end{figure}
 
 
@@ -144,9 +141,9 @@ Der \emph{RoutingEngineService} ist für das Fussgänger-Routing zuständig und 
 Das QGIS-Plugin ist unabhängig vom System PlazaRoute und läuft auf dem Client des Benutzers. Die Kommunikation mit dem Container Plaza Routing erfolgt über einen REST-Service. Das Plugin ist reiner Konsument und zeigt auf, welchen Mehrwert PlazaRoute bieten kann. In Abbildung \ref{fig:class_diagram_plaza_route_qgis_plugin} ist das Klassen-Diagramm zu sehen. Herausheben kann man, dass das Plugin in fünf Komponente zerlegt wird. \emph{PlazaRouteRoutingService} kommuniziert mit dem REST-Service (siehe Abschnitt \nameref{architektur:api-layer}). \emph{PlazaRouteMapTool} übernimmt die Interaktion mit der Karte und führt das Zeichnen der Route mit \emph{PlazaRouteRouteDrawer} durch. \emph{PlazaRouteRoutingGenerator} generiert ein Routing für die zurückgelieferte Route. Die zentrale Steuerung übernimmt das Dockwidget.
 
 \begin{figure}[th]
-\centering
-\includegraphics[width=1.0\linewidth]{projectdoc/img/class_diagram_plaza_route_qgis_plugin}
-\caption[Klassen-Diagramm Plaza Route QGIS Plugin]{Klassen-Diagramm Plaza Route QGIS Plugin}
-\label{fig:class_diagram_plaza_route_qgis_plugin}
+    \centering
+    \includegraphics[width=1.0\linewidth]{projectdoc/img/class_diagram_plaza_route_qgis_plugin}
+    \caption[Klassen-Diagramm Plaza Route QGIS Plugin]{Klassen-Diagramm Plaza Route QGIS Plugin}
+    \label{fig:class_diagram_plaza_route_qgis_plugin}
 \end{figure}
 
