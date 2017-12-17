@@ -30,9 +30,15 @@ In Abbildung \ref{fig:sequence_diagram_plaza_preprocessing} ist der Ablauf in ei
 Im Folgenden wird auf die einzelnen Komponenten eingegangen.
 
 \paragraph{Importer}\label{impl:Importer}~\\
-Das Importer-Package liest aus einer gegebenen \ac{OSM}-Datei (Dateityp \ac{OSM} oder \ac{PBF}) die für uns relevanten Daten mit Hilfe von Pyosmium \cite{pyosmium} ein. Während dem Einlesen werden die benötigten Daten direkt heraus gefiltert. Für uns relevant sind vor allem Plazas, die anhand von konfigurierbaren Tags bestimmt werden. Zusätzlich werden alle Strassen benötigt, um die Plazas später wieder an das Strassennetz anzuschliessen (siehe Abschnitt \nameref{impl:Merger}). Punkte und Gebäude werden für die Berechnung von Hindernissen auf den Plazas genutzt.
+Das Importer-Package liest aus einer gegebenen \ac{OSM}-Datei (Dateityp \ac{OSM} oder \ac{PBF}) die für uns relevanten Daten mit Hilfe von Pyosmium \cite{pyosmium} ein. Während dem Einlesen werden die benötigten Daten direkt heraus gefiltert. Für uns relevant sind vor allem Plazas, die anhand von konfigurierbaren Tags bestimmt werden. Dies ist in Listing \ref{osmium_import_code} veranschaulicht. Zusätzlich werden alle Strassen benötigt, um die Plazas später wieder an das Strassennetz anzuschliessen (siehe Abschnitt \nameref{impl:Merger}). Punkte und Gebäude werden für die Berechnung von Hindernissen auf den Plazas genutzt.
 
 Alle ausgelesenen Daten werden in ein \code{OSMHolder} Objekt verpackt und zurück gegeben.
+
+\begin{listing}[ht]
+    \inputminted{python}{projectdoc/listing/osmium_handler.py}
+    \caption[Einlesen OSM-Daten mit Osmium]{Einlesen von OSM Daten mithilfe von \emph{Osmium}; Filterung auf für uns relevante Flächen}
+    \label{osmium_import_code}
+\end{listing}
 
 \paragraph{Optimizer}\label{impl:Optimizer}~\\
 Der Optimizer übernimmt die Kernfunktion der Vorverarbeitung, die Optimierung von Fussgänger-Flächen.
