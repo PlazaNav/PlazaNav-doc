@@ -91,8 +91,7 @@ Der OSM Merger ist dafür verantwortlich, unsere erzeugten Geometrien (Fusswege)
 
 Die durch unseren Algorithmus erzeugten Wege durch Flächen (in Shapely Datenstrukturen) sollen nun wieder zurück ins \ac{OSM}-Format geschrieben werden. Dazu wird wie beim \nameref{par:OSM Importer} Osmium verwendet, mit dem Geometrien in eine OSM-Datei geschrieben werden können
 
-In einem weiteren Schritt müssen unsere optimierten Wege in das bestehende Strassennetz eingebunden werden, damit die Routing-Engine diese auch beachtet. Dazu werden die Eingangspunkte der von uns erzeugten Fusswege in den bestehenden Strassen und Wegen referenziert, die an diesem Punkt auf die Fläche treffen. Somit werden sie topologisch direkt miteinander verbunden.
-% TODO: Begriff Eintrittspunkt definieren
+In einem weiteren Schritt müssen unsere optimierten Wege in das bestehende Strassennetz eingebunden werden, damit die Routing-Engine diese auch beachtet. Dazu werden die \glspl{Einstiegspunkt} der von uns erzeugten Fusswege in den bestehenden Strassen und Wegen referenziert, die an diesem Punkt auf die Fläche treffen. Somit werden sie topologisch direkt miteinander verbunden.
 
 Als letzten Schritt führen wir die erzeugten Fusswege und die modifizierten Strassen wieder zusammen mit der "grossen" \ac{OSM}-Datei, die ganz am Anfang importiert wurde. Dazu wird das Commandline-Tool Osmosis \cite{osmosis} verwendet.
 
