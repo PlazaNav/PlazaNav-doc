@@ -1,7 +1,7 @@
 \section{Resultate}
 \label{sec:Resultate}
 
-In diesem Kapitel werden die Resultate der Arbeit präsentiert. Die technische Beschreibung zur Implementation befindet sich jeweils in Teil \ref{chap:SW-Projektdokumentation} Kapitel \ref{sec:Implementation}.
+In diesem Kapitel werden die Resultate der Arbeit präsentiert. Die technische Beschreibung zur Implementation befindet sich in Teil \ref{chap:SW-Projektdokumentation} Kapitel \ref{sec:Implementation}.
 
 \subsection{Zielerreichung}
 \label{sub:Zielerreichung}
@@ -11,6 +11,8 @@ In der Evaluations-Phase wurde der Stand der Technik analysiert (Kap. \ref{sec:S
 Im nächsten Schritt wurden die Vorverarbeitung von \ac{OSM}-Daten mit der Flächenoptimierung implementiert. Die beiden Algorithmen --- \nameref{solution:Visibility-Graph} und \nameref{solution:SpiderWeb-Graph} --- wurden dabei parallel implementiert. Dies ermöglichte es uns, beide Ansätze optimal miteinander zu vergleichen (siehe Kapitel \ref{sec:Bewertung Routing über offene Flächen}).
 
 Zusammen mit der Vorverarbeitung haben wir einen Service \cite{github:PlazaRoute} implementiert, der mit Hilfe der Routing-API von search.ch \cite{search_ch_route_api} ein Routing mit öffentlichen Verkehrsmitteln ermöglicht, wobei für das Fussgänger-Routing unsere optimierten Daten der Vorverarbeitung verwendet werden, um ein natürliches Fussgänger-Routing über offene Flächen zu erreichen. Dabei werden von einem beliebigen Startpunkt aus mehrere Haltestellen in der Umgebung gesucht und mit der Kombination von Fussgänger- und ÖV-Routing die optimale Route ermittelt.
+
+Die Koordinaten der ÖV-Haltestellen werden dabei so optimiert, dass die ÖV-Haltestelle in die richtige Fahrtrichtung angesteuert werden kann.
 
 Damit unser Service getestet und visualisiert werden kann, wurde ein Plugin für QGIS entwickelt \cite{github:PlazaRoute-qgis-plugin}. Dieses ermöglicht es, mit unserem Service Routen für den öffentlichen Verkehr interaktiv zu berechnen und visualisieren.
 
