@@ -113,6 +113,42 @@ Die Andwendung dieser Methode für Flächenrouting wurde bereits in \cite{graser
 \end{figure}
 
 
+\subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
+\label{subsub:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
+
+Wie in \ref{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)} beschrieben, ergeben sich beim Überqueren von offenen Landflächen wie Berge oder Strände andere Fragestellungen. Hier spielt die Unterlage eine grössere Rolle, Faktoren wie Höhe oder Beschaffenheit des Untergrunds sind nun relevant. Für diese Problematik wird ein technischer Lösungsansatz vorgestellt und bewertet.
+
+\paragraph{Technischer Ansatz mit Cost Path Analyse}~\\
+Ein Ansatz für die Berechnung von Routen durch freie Flächen ist die Cost Path Analyse \cite{cost_path_analysis}. Dieses Verfahren wird oft angewendet, um in einer Fläche Korridore zu finden, um darin beispielsweise neue Strassen zu erschliessen \cite{gis-wiki:cost-path-analysis}.
+
+In einem ersten Schritt wird ein Raster über die Fläche gelegt. Jeder Kachel wird ein Wert zugewiesen, der den Kosten entspricht, um diese Fläche zu traversieren. Die Kosten können zusammen gesetzt sein aus mehreren Faktoren wie die Steigung oder Beschaffenheit des Untergrunds. So bekäme etwa ein Sandstrand höhere Kosten als eine Asphalt-Fläche. Dieses Raster wird auch Cost Surface genannt. \cite{gid_fundamentals}
+
+Sobald ein Startpunkt der Route bekannt ist, kann als nächstes ein Cost Distance Raster erstellt werden. Mit Hilfe der Cost Surface wird im Raster vom Startpunkt aus zu jedem erreichbaren Punkt die minimalen Kosten akkumuliert \cite{geospatial_analysis}. Ist nun der Zielpunkt der Route ebenfalls bekannt, kann von diesem Zielpunkt aus jeweils zur Nachbar-Kachel mit den geringsten Kosten navigiert werden, bis der Startpunkt erreicht wurde \cite{cost_path_analysis}. In Abbildung \ref{fig:cost_path_analysis} ist eine Cost Path Analyse beispielhaft dargestellt.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\linewidth]{technicalreport/img/cost_path_analysis}
+    \caption[Cost Path Analyse]{Resultat einer Cost Path Analyse; Grafik von \cite{geospatial_analysis}}
+    \label{fig:cost_path_analysis}
+\end{figure}
+
+\paragraph{Bewertung}~\\
+Im Kontext des Fussgänger-Routings gibt es mit dem Ansatz der Cost Path Analyse einige weitere Fragestellungen. Für jede Fläche müsste zuerst eine Cost Surface erstellt werden. Das Cost Distance Raster kann dann erst zur Laufzeit berechnet werden, da Start- und Zielpunkt vorher nicht bekannt sind.
+
+Bei offenen Landflächen in Bergen ist es ausserdem schwierig zu entscheiden, ob ein Fussgänger eine Fläche passieren kann. Solche Flächen sind in \ac{OSM} oft nicht gemappt und es besteht keine Information über den Untergrund. Es kommen auch andere Faktoren wie z.B. die Jahreszeit hinzu. So könnte das Begehen einer Wiese im Sommer problemlos, im Winter aber durch eine Schneedecke zeitweise unmöglich sein. Bei Stränden sieht es wiederum anders aus, diese sind in \ac{OSM} meist als Flächen gemappt. Dort spielt aber auch das Höhenprofil normalerweise keine Rolle, womit ein Ansatz wie unter \ref{solution:Routing über offene Flächen} wieder effizienter sein könnte.
+
+
+\subsubsection{Datenaufbereitung für das Fussgänger-Routing über Strassen}
+\label{subsub:Datenaufbereitung für das Fussgänger-Routing über Strassen}
+
+Damit eine Routing-Engine die Kartendaten für das Routing nutzen kann, müssen diese zuerst zu einem Graphen aufbereitet werden. Für das Fussgänger-Routing ergeben sich dabei andere Herausforderungen als beispielsweise bei motorisiertem Individualverkehr. So muss etwa beim Fussgänger-Routing beachtet werden, wann ein Fussgänger die Strasse überqueren kann. Dafür müssen gewisse Annahmen getroffen werden. Eine kaum befahrene Strasse in einem ländlichen Gebiet kann höchstwahrscheinlich jederzeit überquert werden, während in einem städtischen Gebiet eher Fussgängerstreifen verwendet werden.
+
+Ein wichtiger Bestandteil der Datenaufbereitung ist der Einbezug von Bürgersteige. Diese werde in OpenStreetMap auf unterschiedliche Weise gemappt \cite{osm_wiki_sidewalks}. Sie können als eigene Wege oder als Eigenschaft der Strasse definiert werden. In \cite{pedestrian_navigation_lang} wurde ein Datenmodell für Fussgänger-Routing entwickelt. Dabei ist die Datenqualität der \ac{OSM}-Daten bei Bürgersteigen weiterhin ein Problem. In den letzten Jahren gab es Bemühungen, die Datenqualität von Bürgersteige \cite{mapbox_sidewalk_improving} und Fussgängerstreifen \cite{crosswalks_aerial_extraction} durch die Analyse von Sattelitenbilder zu verbessern.
+
+Abschliessend kann man sagen, dass die Datenaufbereitung für Fussgänger-Routing weiterhin eine Herausforderung ist. Auch wenn diese für die Hauptproblemstellung von Routing über offene Flächen nicht direkt relevant sind, ist dies ein wichtiger Bestandteil für das Fussgänger-Routing als Ganzes.
+
+
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{subsub:Start-/Endpunkt auf der Fläche}
 Ein Spezialfall des Fussgänger-Routings entsteht, wenn der Start- oder Endpunkt auf einer Fussgänger-Fläche liegt. Wie in \ref{problem:Start-/Endpunkt auf der Fläche} beschrieben ist es üblich, dass Routing-Engines eine Mittelsenkrechte zum nächten Punkt auf dem Strassennetz ziehen.
@@ -145,33 +181,6 @@ Im Rahmen unserer Arbeit haben wir in der Literatur keine entsprechende Diskussi
     \item Die beiden Flächen miteinander kombinieren: Wenn sich zwei Fussgänger-Flächen berühren, können sie geometrisch vereint und als eine einzige Fussgänger-Fläche angesehen werden.
     \item Gemeinsame \glspl{Einstiegspunkt} zwischen den Flächen definieren: An der Kante, wo sich zwei Flächen berühren, werden künstlich in einem regelmässigen Abstand Einstiegspunkte eingefügt, wo für das Routing der Fussgänger die Kante überqueren kann.
 \end{enumerate}
-
-
-\subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
-\label{subsub:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
-
-Wie in \ref{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)} beschrieben, ergeben sich beim Überqueren von offenen Landflächen wie Berge oder Strände andere Fragestellungen. Hier spielt die Unterlage eine grössere Rolle, Faktoren wie Höhe oder Beschaffenheit des Untergrunds sind nun relevant. Für diese Problematik wird ein technischer Lösungsansatz vorgestellt und bewertet.
-
-\paragraph{Technischer Ansatz mit Cost Path Analyse}~\\
-Ein Ansatz für die Berechnung von Routen durch freie Flächen ist die Cost Path Analyse \cite{cost_path_analysis}. Dieses Verfahren wird oft angewendet, um in einer Fläche Korridore zu finden, um darin beispielsweise neue Strassen zu erschliessen \cite{gis-wiki:cost-path-analysis}.
-
-In einem ersten Schritt wird ein Raster über die Fläche gelegt. Jeder Kachel wird ein Wert zugewiesen, der den Kosten entspricht, um diese Fläche zu traversieren. Die Kosten können zusammen gesetzt sein aus mehreren Faktoren wie die Steigung oder Beschaffenheit des Untergrunds. So bekäme etwa ein Sandstrand höhere Kosten als eine Asphalt-Fläche. Dieses Raster wird auch Cost Surface genannt. \cite{gid_fundamentals}
-
-Sobald ein Startpunkt der Route bekannt ist, kann als nächstes ein Cost Distance Raster erstellt werden. Mit Hilfe der Cost Surface wird im Raster vom Startpunkt aus zu jedem erreichbaren Punkt die minimalen Kosten akkumuliert \cite{geospatial_analysis}. Ist nun der Zielpunkt der Route ebenfalls bekannt, kann von diesem Zielpunkt aus jeweils zur Nachbar-Kachel mit den geringsten Kosten navigiert werden, bis der Startpunkt erreicht wurde \cite{cost_path_analysis}. In Abbildung \ref{fig:cost_path_analysis} ist eine Cost Path Analyse beispielhaft dargestellt.
-
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.6\linewidth]{technicalreport/img/cost_path_analysis}
-    \caption[Cost Path Analyse]{Resultat einer Cost Path Analyse; Grafik von \cite{geospatial_analysis}}
-    \label{fig:cost_path_analysis}
-\end{figure}
-
-\paragraph{Bewertung}~\\
-Im Kontext des Fussgänger-Routings gibt es mit dem Ansatz der Cost Path Analyse einige weitere Fragestellungen. Für jede Fläche müsste zuerst eine Cost Surface erstellt werden. Das Cost Distance Raster kann dann erst zur Laufzeit berechnet werden, da Start- und Zielpunkt vorher nicht bekannt sind.
-
-Bei offenen Landflächen in Bergen ist es ausserdem schwierig zu entscheiden, ob ein Fussgänger eine Fläche passieren kann. Solche Flächen sind in \ac{OSM} oft nicht gemappt und es besteht keine Information über den Untergrund. Es kommen auch andere Faktoren wie z.B. die Jahreszeit hinzu. So könnte das Begehen einer Wiese im Sommer problemlos, im Winter aber durch eine Schneedecke zeitweise unmöglich sein. Bei Stränden sieht es wiederum anders aus, diese sind in \ac{OSM} meist als Flächen gemappt. Dort spielt aber auch das Höhenprofil normalerweise keine Rolle, womit ein Ansatz wie unter \ref{solution:Routing über offene Flächen} wieder effizienter sein könnte.
-
 
 \subsection{Verbesserungsmöglichkeiten}
 \label{sub:Verbesserungsmöglichkeiten}

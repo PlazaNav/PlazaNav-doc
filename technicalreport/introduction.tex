@@ -45,6 +45,11 @@ In Abbildung \ref{fig:topologisch_nicht_verbundener_graph} ist ein topologisch n
 \label{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 Berge und Strände sind bekanntermassen schwieriger zu überqueren als normale Plätze. Sei dies aufgrund der zurückzulegenden Höhendifferenz oder die Unterlage, welche das Fortbewegen mühsamer macht. Zusätzlich zum Problem \ref{problem:Routing über offene Flächen} kommt hier dazu, dass Umlaufen dieser offenen Flächen (Berge, Strände) effizienter sein kann als das Überqueren.
 
+\subsubsection{Datenaufbereitung für das Fussgänger-Routing über Strassen}
+\label{problem:Datenaufbereitung für das Fussgänger-Routing über Strassen}
+
+Bei der Datenaufbereitung für Fussgänger-Routing über Strassen ergeben sich andere Anforderungen als das Routing für den Strassenverkehr. So müssen etwa Bürgersteige und Fussgänger-Streifen beachtet werden, um zu entscheiden, ob eine Strasse für Fussgänger begehbar ist.
+
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{problem:Start-/Endpunkt auf der Fläche}
 Beginnt das Routing oder ist der Zielort auf einer Fläche, so ziehen die aktuellen Routing-Engines, falls keine Wege wie in \ref{problem:eingezeichnete Fussgängerrouten über offene Flächen} beschrieben eingezeichnet sind, eine rechtwinklige Linie zur nächsten Kante der Fläche und routen von dort weiter. Dies ist gut auf dem Sechseläutenplatz in Abbildung \ref{fig:start_endpoint_on_area} sichtbar. Falls bereits Wege auf der Fläche eingezeichnet sind, wird über diese geroutet.
@@ -94,6 +99,11 @@ Dieses Problem ist der Vollständigkeit halber aufgeführt, wird in dieser Arbei
 \subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 \label{target:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 Im Kontext dieser Arbeit wird kurz ein theoretischer Ansatz aufgezeigt, wie man mit einem kostenbasierten Graph den Eigenschaften diesen Unterflächen gerecht werden könnte.
+
+\subsubsection{Datenaufbereitung für das Fussgänger-Routing über Strassen}
+\label{target:Datenaufbereitung für das Fussgänger-Routing über Strassen}
+
+In dieser Arbeit wird der aktuelle Stand und die Herausforderungen für die Datenaufbereitung für allgemeines Fussgänger-Routings aufgezeigt. Für das Routing über offene Flächen sind diese Probleme allerdings nicht weiter relevant. Wir gehen davon aus, dass die verwendeten Routing-Engines ein genügend gutes Verhalten für Fussgänger-Routing über Strassen aufzeigen.
 
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{target:Start-/Endpunkt auf der Fläche}
