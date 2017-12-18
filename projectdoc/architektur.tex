@@ -8,11 +8,10 @@ In diesem Kapitel wird die Architektur unserer Applikation und die Schnittstelle
 \label{architektur:Systemkontext}
 
 \begin{figure}[ht]
-\centering
-% TODO: Grafik zuschneiden
-\includegraphics[width=1\linewidth]{projectdoc/img/system-context_diagram.png}
-\caption[System Kontext Diagramm]{System PlazaRoute im Kontext mit Umsystemen; Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
-\label{fig:system_context_diagram}
+    \centering
+    \includegraphics[width=1\linewidth]{projectdoc/img/system-context_diagram.png}
+    \caption[System Kontext Diagramm]{System PlazaRoute im Kontext mit Umsystemen; Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
+    \label{fig:system_context_diagram}
 \end{figure}
 
 Abbildung \ref{fig:system_context_diagram} zeigt das System PlazaRoute mit den Umsystemen auf. Beim Betrachten der C4-Diagramme ist zu beachten, dass diese nicht der \acs{UML}-Spezifikation folgen. Gestrichelte Pfeile bedeuten, dass eine Anfrage in Richtung der Pfeilspitze an ein System geht. Der Datenfluss läuft in die entgegengesetzte Richtung der Pfeile.
@@ -24,11 +23,10 @@ Der User bedient die QGIS Desktop Applikation mit dem von uns entwickelten Plugi
 
 \begin{figure}[ht]
     \centering
-    % TODO: Grafik zuschneiden
     \includegraphics[width=1\linewidth]{projectdoc/img/container_diagram.png}
     \caption[Container Diagramm]{Container Diagramm von PlazaRoute; Das System PlazaRoute befindet sich in der eingerahmten Box; Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
     \label{fig:container_diagram}
-    \end{figure}
+\end{figure}
 
 In Abbildung \ref{fig:container_diagram} zoomen wir in das System PlazaRoute hinein und teilen es in drei Container auf, die logisch voneinander getrennt sind. So könnten die Container auch verteilt deployed werden.
 
@@ -55,26 +53,17 @@ Abbildung \ref{fig:component_diagram_vorverarbeitung} zeigt die einzelnen Kompon
 
 
 \begin{figure}[ht]
-\centering
-% TODO: Grafik zuschneiden
-\includegraphics[width=1\linewidth]{projectdoc/img/component_diagram_plaza-vorverarbeitung.png}
-\caption[Komponentendiagramm Vorverarbeitung]{Komponentendiagramm der Plaza Vorverarbeitung (eingerahmt); Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
-\label{fig:component_diagram_vorverarbeitung}
+    \centering
+    \includegraphics[width=1\linewidth]{projectdoc/img/component_diagram_plaza-vorverarbeitung.png}
+    \caption[Komponentendiagramm Vorverarbeitung]{Komponentendiagramm der Plaza Vorverarbeitung (eingerahmt); Grafik erstellt mit \emph{Structurizr Express}\cite{structurizr}}
+    \label{fig:component_diagram_vorverarbeitung}
 \end{figure}
 
 
 \paragraph{OSM Importer}\label{par:OSM Importer}~\\
 Für unser optimiertes Routing wird in regelmässigen Abständen der neueste \ac{OSM}-Datensatz \cite{osm_data_switzerland} der Schweiz geladen. Die \acs{OSM}-Importer Komponente liest das komplette für uns relevante Kartenmaterial (z.B. die Schweiz) als \ac{PBF} ein und sucht dabei nach Flächen, die wir bearbeiten wollen.
 
-Dazu werden \emph{Osmium} und die dazugehörigen Python-Bindings \emph{pyOsmium}\cite{pyosmium} verwendet. Osmium erkennt automatisch Flächen aus \ac{OSM} Multipolygone oder Relationen. Mit einem eigenen Handler können wir dabei gleich das Einlesen des Files auf die für uns interessanten Flächen beschränken, wie in Listing \ref{osmium_import_code} gezeigt wird.
-
-%TODO: In Implementation verschieben?
-
-\begin{listing}[ht]
-    \inputminted{python}{projectdoc/listing/osmium_handler.py}
-    \caption[Einlesen OSM-Daten mit Osmium]{Einlesen von OSM Daten mithilfe von \emph{Osmium}; Filterung auf für uns relevante Flächen}
-    \label{osmium_import_code}
-\end{listing}
+Dazu werden \emph{Osmium} und die dazugehörigen Python-Bindings \emph{pyOsmium}\cite{pyosmium} verwendet. Osmium erkennt automatisch Flächen aus \ac{OSM} Multipolygone oder Relationen. Mit einem eigenen Handler können wir dabei gleich das Einlesen des Files auf die für uns interessanten Flächen beschränken.
 
 \paragraph{Plaza Optimizer}\label{par:Plaza Optimizer}~\\
 Die mit Osmium importierten \ac{OSM}-Daten sind noch reine \ac{OSM}-Objekte, auf denen keine Geometrie-Berechnungen angewendet werden können. Dazu wird die Python-Library \emph{Shapely}\cite{shapely} verwendet. Shapely kann mit Geometrien umgehen und Algorithmen von \ac{GEOS} wie \code{intersection} und \code{contains} darauf anwenden.
@@ -94,8 +83,7 @@ Der OSM Merger ist dafür verantwortlich, unsere erzeugten Geometrien (Fusswege)
 
 Die durch unseren Algorithmus erzeugten Wege durch Flächen (in Shapely Datenstrukturen) sollen nun wieder zurück ins \ac{OSM}-Format geschrieben werden. Dazu wird wie beim \nameref{par:OSM Importer} Osmium verwendet, mit dem Geometrien in eine OSM-Datei geschrieben werden können
 
-In einem weiteren Schritt müssen unsere optimierten Wege in das bestehende Strassennetz eingebunden werden, damit die Routing-Engine diese auch beachtet. Dazu werden die Eingangspunkte der von uns erzeugten Fusswege in den bestehenden Strassen und Wegen referenziert, die an diesem Punkt auf die Fläche treffen. Somit werden sie topologisch direkt miteinander verbunden.
-% TODO: Begriff Eintrittspunkt definieren
+In einem weiteren Schritt müssen unsere optimierten Wege in das bestehende Strassennetz eingebunden werden, damit die Routing-Engine diese auch beachtet. Dazu werden die \glspl{Einstiegspunkt} der von uns erzeugten Fusswege in den bestehenden Strassen und Wegen referenziert, die an diesem Punkt auf die Fläche treffen. Somit werden sie topologisch direkt miteinander verbunden.
 
 Als letzten Schritt führen wir die erzeugten Fusswege und die modifizierten Strassen wieder zusammen mit der "grossen" \ac{OSM}-Datei, die ganz am Anfang importiert wurde. Dazu wird das Commandline-Tool Osmosis \cite{osmosis} verwendet.
 
@@ -144,9 +132,9 @@ Der \emph{RoutingEngineService} ist für das Fussgänger-Routing zuständig und 
 Das QGIS-Plugin ist unabhängig vom System PlazaRoute und läuft auf dem Client des Benutzers. Die Kommunikation mit dem Container Plaza Routing erfolgt über einen REST-Service. Das Plugin ist reiner Konsument und zeigt auf, welchen Mehrwert PlazaRoute bieten kann. In Abbildung \ref{fig:class_diagram_plaza_route_qgis_plugin} ist das Klassen-Diagramm zu sehen. Herausheben kann man, dass das Plugin in fünf Komponente zerlegt wird. \emph{PlazaRouteRoutingService} kommuniziert mit dem REST-Service (siehe Abschnitt \nameref{architektur:api-layer}). \emph{PlazaRouteMapTool} übernimmt die Interaktion mit der Karte und führt das Zeichnen der Route mit \emph{PlazaRouteRouteDrawer} durch. \emph{PlazaRouteRoutingGenerator} generiert ein Routing für die zurückgelieferte Route. Die zentrale Steuerung übernimmt das Dockwidget.
 
 \begin{figure}[th]
-\centering
-\includegraphics[width=1.0\linewidth]{projectdoc/img/class_diagram_plaza_route_qgis_plugin}
-\caption[Klassen-Diagramm Plaza Route QGIS Plugin]{Klassen-Diagramm Plaza Route QGIS Plugin}
-\label{fig:class_diagram_plaza_route_qgis_plugin}
+    \centering
+    \includegraphics[width=1.0\linewidth]{projectdoc/img/class_diagram_plaza_route_qgis_plugin}
+    \caption[Klassen-Diagramm Plaza Route QGIS Plugin]{Klassen-Diagramm Plaza Route QGIS Plugin}
+    \label{fig:class_diagram_plaza_route_qgis_plugin}
 \end{figure}
 
