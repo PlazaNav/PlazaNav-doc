@@ -39,7 +39,7 @@ Bei einem Test mit einer von uns vorverarbeiteten OSM-Datei brauchte \emph{Graph
 \label{analyse:Konfigurationsmöglichkeiten}
 Für unsere Zwecke ist es sinnvoll, wenn wir die Routing-Engines auf das Fussgänger-Routing konfigurieren können. So sind z.B. Contraction Hierarchies nicht notwendig, da wir keine grossen Routen berechnen.
 
-\emph{Graphhopper} bietet die meisten Konfigurationsmöglichkeiten. Contraction Hierarchies können deaktiviert werden und für die Shortest-Path-Berechnung werden die A*- und Dijkstra-Algorithmen \cite{astar} \cite{Dijkstra_algorithm} unterstützt. \emph{OSRM} bietet ebenfalls einen Modus ohne Contraction Hierarchies, allerdings nur mit dem Dijkstra-Algorithmus.
+\emph{Graphhopper} bietet die meisten Konfigurationsmöglichkeiten. Contraction Hierarchies können deaktiviert werden und für die Shortest-Path-Berechnung werden die A*- und Dijkstra-Algorithmen \cite{astar} \cite{dijkstra_algorithm} unterstützt. \emph{OSRM} bietet ebenfalls einen Modus ohne Contraction Hierarchies, allerdings nur mit dem Dijkstra-Algorithmus.
 
 \subsubsection{Fussgänger-Profil}
 \label{analyse:Fussgänger-Profil}
@@ -49,7 +49,7 @@ Für das Routing werden bestimmte Profile verwendet, um das Routing auf verschie
 
 \subsubsection{Resultat}
 \label{analyse:Resulat}
-Bezüglich der Integration unterscheiden sich \emph{Graphhopper} und \emph{OSRM} kaum. Der Entscheid fiel auf \emph{Graphhopper}, da die Vorverarbeitung deutlich schneller ist und die Konfigurationsmöglichkeiten uns mehr Freiheiten bieten. Mit der Auswahl zwischen Dijkstra \cite{Dijkstra_algorithm} und A* \cite{astar} können wir auch vergleichen, welcher Algorithmus besser für Flächen-Traversierungen geeignet ist.
+Bezüglich der Integration unterscheiden sich \emph{Graphhopper} und \emph{OSRM} kaum. Der Entscheid fiel auf \emph{Graphhopper}, da die Vorverarbeitung deutlich schneller ist und die Konfigurationsmöglichkeiten uns mehr Freiheiten bieten. Mit der Auswahl zwischen Dijkstra \cite{dijkstra_algorithm} und A* \cite{astar} können wir auch vergleichen, welcher Algorithmus besser für Flächen-Traversierungen geeignet ist.
 
 
 \subsection{nächste ÖV-Haltestellen finden}
