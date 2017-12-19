@@ -118,7 +118,7 @@ In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendi
 Der \emph{SearchChService} kommuniziert mit der Fahrplan-\ac{API} von search.ch \cite{search_ch_route_api} und bezieht die Fahrplan-Daten für eine bestimmte Ausgangsstation und Destination.
 
 \subparagraph{Overpass Service}\label{architektur:Overpass Service}~\\
-Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Stationen in einem gegebenen Umkreis und geografischen Position von ÖV-Stationen basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden.
+Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Haltestellen in einem gegebenen Umkreis und geografischen Position von \glspl{Kante} basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden.
 
 \subparagraph{Geocoding Service}\label{architektur:Geocoding Service}~\\
 Der \emph{GeocodingService} liefert für eine Adresse eine Koordinate.
