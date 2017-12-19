@@ -8,17 +8,16 @@ Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen he
 
 \subsubsection{Verarbeitungszeit}
 \label{criteria:Verarbeitungszeit}
-Der aktuelle Import der \ac{OSM}-Daten der Schweiz ins System Tourpl \cite{hsr_tourpl}, ein Produkt des Geometa Lab der HSR \cite{geometa_lab_hsr}, dauert 2 Stunden. Diese Zeitdauer soll nicht überschritten werden. Die Verarbeitungszeit wird bewertet auf einer Skala von 1 (2 Stunden) bis 5 (0 Minuten).
+Der massgebende Maximalwert ist in der nicht-funktionalen Anforderung \ref{NFA:NFA04} definiert. Die Verarbeitungszeit wird bewertet auf einer Skala von 1 (2 Stunden) bis 5 (0 Minuten).
 
 
 \subsubsection{zusätzliche Datenmenge}
 \label{criteria:zusätzliche Datenmenge}
-Die Algorithmen generieren zusätzliche Geometrien. Da die öffentlichen Plätze nur einen kleinen Teil der Kartendaten bilden, soll die zusätzliche Datenmenge keinen signifikaten Teil ausmachen. Die zusätzliche Datenmenge im Verhältnis zur originalen Datei wird bewertet auf einer Skala von 1 (1\%) bis 5 (0\%).
+Die Algorithmen generieren zusätzliche Geometrien. Da die öffentlichen Plätze nur einen kleinen Teil der Kartendaten bilden, soll die zusätzliche Datenmenge keinen signifikaten Teil ausmachen. Der massgebende Maximalwert ist in der nicht-funktionalen Anforderung \ref{NFA:NFA05} definiert. Die zusätzliche Datenmenge im Verhältnis zur originalen Datei wird bewertet auf einer Skala von 1 (1\%) bis 5 (0\%).
 
 
 \subsubsection{Natürlichkeit}
 \label{criteria:Natürlichkeit}
-% TODO Verweis auf Definition in Graser-Paper
 Für die Natürlichkeit einer Route ist es schwer, messbare Kriterien zu definieren. Als eine natürliche Route versteht man, wenn man auf direktem Weg über den Platz geht und keine Umwege macht. Treten Hindernisse auf dem Platz auf, widerspricht es einem natürlichen Fussgänger-Verhalten, wenn man direkt aufs Hindernis zu läuft und dieses am Rande umgeht. Um trotzdem ein Fazit ziehen zu können, werden 3 Plätze (Helvetiaplatz in Zürich, Fischmarktplatz in Rapperswil-Jona und der Bahnhofplatz in Bern) untersucht. Dabei wird für beide Varianten eine interaktive Routing-Oberfläche an Probanden zu Verfügung gestellt. Die Probanden haben die Möglichkeit, selbst Routen über den Platz zu setzen. In Abbildung \ref{fig:algorithm-example-routes} sind einige Routen beispielhaft dargestellt. Danach bewerten die Probanden die vorhin definierte Natürlichkeit mit Punkten von 1 bis 5. Als massgeblicher Vergleichswert wird der Durchschnitt der Bewertungen aller Probanden genommen.
 
 \begin{figure}[ht]
