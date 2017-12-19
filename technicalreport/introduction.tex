@@ -138,11 +138,11 @@ Die Studienarbeit nimmt sich zu erst dem Problem des Fussgänger-Routing über F
 
 In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an die API von search.ch \cite{search_ch_route_api} übergeben zu können. Aufgabe von search.ch ist es, für n Startpunkte die ÖV-Route zu genieren. So ist es möglich, denn schnellstmöglichen Weg für eine Route in Kombination von Fussweg und öffentlichem Weg zu ermitteln.
 
-Die vorhin aufgeführten Aspekte werden im Kapitel \ref{chap:Technischer Bericht} behandelt.
+Die vorhin aufgeführten Aspekte werden im Teil \ref{chap:Technischer Bericht} behandelt.
 
-In einem zweiten Teil werden die im Teil 1 erarbeiteten Artefakte in einem Prototyp als QGIS-Plugin zusammengeführt. Im QGIS-Plugin wird ein multimodales Routing visuell dargestellt. So ist ein optimiertes Fussgänger-Routing in Kombination mit dem öffentlichen Verkehr möglich.
+In einem zweiten Teil werden die im Teil \ref{chap:Technischer Bericht} erarbeiteten Artefakte in einem Prototyp als QGIS-Plugin zusammengeführt. Im QGIS-Plugin wird ein multimodales Routing visuell dargestellt. So ist ein optimiertes Fussgänger-Routing in Kombination mit dem öffentlichen Verkehr möglich.
 
-Die Ergebnisse werden im Kapitel \ref{chap:SW-Projektdokumentation} beschrieben.
+Die Ergebnisse werden im Teil \ref{chap:SW-Projektdokumentation} beschrieben.
 
 \subsection{Grundlagen und Begriffe}
 \label{Grundlagen und Begriffe}
@@ -152,7 +152,7 @@ Im folgenden werden ausgewählte theoretische Grundlagen und Begriffe eingeführ
 \subsubsection{Fläche}
 \label{Fläche}
 
-Als Fläche werden für diesen Zweck Plätze, Wiesen, etc. verstanden, die von Fussgänger frei begehbar sind. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt in letzterem \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
+Als Fläche werden für diesen Zweck Plätze verstanden, die von Fussgänger frei begehbar sind. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{highway=pedestrian} oder \textit{highway=footway} versehen sind. Fehlt in letzterem \textit{area=yes}, wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
 
 \subsubsection{nicht-motorisierter Individualverkehr}
 \label{nicht-motorisierter Individualverkehr}
@@ -173,16 +173,16 @@ Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen gesc
 \label{fig:multipolygon_osm_example}
 \end{figure}
 
-In GIS hingegen ist ein Multipolygon definiert als mehrere sich nicht überschneidende Polygone. Jedes Polygon wird durch ein oder mehrere geschlossene Pfade beschrieben. Dabei ist der erste Pfad der äussere Rand, alle weiteren Pfade beschreiben innere Ringe. \cite{opengis_simple_features}
+In \ac{GIS} hingegen ist ein Multipolygon definiert als mehrere sich nicht überschneidende Polygone. Jedes Polygon wird durch ein oder mehrere geschlossene Pfade beschrieben. Dabei ist der erste Pfad der äussere Rand, alle weiteren Pfade beschreiben innere Ringe. \cite{opengis_simple_features}
 
 \subsubsection{Hindernisse auf Flächen}
 \label{Hindernisse in Flächen}
 
-Auf Flächen können Hindernisse existieren, durch welche nicht geroutet werden darf. Dazu gehören selbstredend Häuser und dergleichen aber auch Barrieren gekennzeichnet mit dem Attribut \textit{barrier=*} \cite{osm_wiki_barrier}, was beispielsweise ein Mauer oder Hecke beschreiben kann.
+Auf Flächen können Hindernisse existieren, durch welche nicht geroutet werden darf. Dazu gehören selbstredend Gebäude und dergleichen, aber auch Barrieren, die mit  mit dem Attribut \textit{barrier=*} gekennzeichnet sind \cite{osm_wiki_barrier}, was beispielsweise eine Mauer oder Hecke beschreiben kann.
 
 \subsubsection{ÖV-Haltestelle und Kante}
 \label{ÖV-Haltestelle und Kante}
-Eine ÖV-Haltestelle kann mehrere Stationen umfassen. Normalerweise gehören zu einer Haltestelle zwei Stationen, je eine in jede Fahrrichtung. Eine dieser Station wird im folgenden als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle beschränkt sich dabei nicht auf zwei Kanten. Betrachtet man den Bahnhof Stadelhofen in Zürich, sieht man das weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
+Eine ÖV-Haltestelle kann mehrere Stationen umfassen. Normalerweise gehören zu einer Haltestelle zwei Stationen, je eine in jede Fahrtrichtung. Eine dieser Station wird im folgenden als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle beschränkt sich dabei nicht auf zwei Kanten. Betrachtet man den Bahnhof Stadelhofen in Zürich, sieht man, dass weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
 
 \begin{figure}[ht]
 \centering
