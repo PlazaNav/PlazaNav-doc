@@ -1,6 +1,7 @@
 \section{Analyse}
 \label{sec:Analyse}
-% Domain-, Klassen-Modell
+
+In diesem Kapitel werden Abhängigkeiten und Umsysteme analysiert, die für PlazaRoute verwendet werden. Neben der Evaluation der Routing-Engine (\ref{analyse:Evaluation Routing-Engine}) gehören Overpass (\ref{analyse:nächste ÖV-Haltestellen finden}) und Search.ch (\ref{analyse:Search.ch Anbindung}) zu den wichtigsten Systemen in unserer Applikation.
 
 \subsection{Evaluation Routing-Engine}
 \label{analyse:Evaluation Routing-Engine}
@@ -75,19 +76,19 @@ Es ist ebenfalls möglich, eine Umkreissuche mit \code{around} durchzuführen. D
 
 \subsection{Search.ch Anbindung}
 \label{analyse:Search.ch Anbindung}
-Search.ch bietet für Fahrplan-Abfragen eine API\cite{search_ch_route_api} an. So ist es auch eine ÖV-Routensuche möglich. Diese ist zum aktuellen Zeitpunkt über \code{https://timetable.search.ch/api/route.json} verfügbar und nimmt die in Tabelle \ref{serach_ch_route_api_spezfication} spezifizierten und für uns relevanten Parameter entgegen. In einer ersten Version wird nur \emph{from} und \emph{to} verwendet.
+Search.ch bietet für Fahrplan-Abfragen eine API\cite{search_ch_route_api} an. So ist es auch eine ÖV-Routensuche möglich. Diese ist zum aktuellen Zeitpunkt unter \cite{search_ch_route_api} verfügbar und nimmt die in Tabelle \ref{search_ch_route_api_specification} spezifizierten und für uns relevanten Parameter entgegen. In einer ersten Version wird nur \code{from} und \code{to} verwendet.
 
 \begin{table}[ht]
     \centering
-    \caption{Search.ch Route API Spezifikaiton; Teilauszug von \cite{search_ch_route_api}}
-    \label{serach_ch_route_api_spezfication}
+    \caption{Search.ch Route API Spezifikation; Teilauszug von \cite{search_ch_route_api}}
+    \label{search_ch_route_api_specification}
     \begin{tabular}{lllll}
-        \textbf{Paramter}   & \textbf{Zwingend} & \textbf{Beschreibung}                                                                & \textbf{Beispiel}          & \textbf{Default} \\
-        \emph{from}       & true              & Abfahrtsstation                                                                      & Zürich, Sternen Oerlikon   &                  \\
-        \emph{to}         & true              & Abfahrtsstation                                                                      & Zürich, Hallenbad Oerlikon &                  \\
-        \emph{date}       & false             & Datum                                                                                & 29.10.2017                 & today            \\
-        \emph{time}       & false             & Zeit                                                                                 & 15:00                      & now              \\
-        \emph{time\_type} & false             & \begin{tabular}[c]{@{}l@{}}date/time als Abfahrts-  \\ oder Ankuftszeit\end{tabular} & arrival                    & depart          
+        \textbf{Parameter}   & \textbf{Zwingend} & \textbf{Beschreibung}                                                                & \textbf{Beispiel}          & \textbf{Default} \\
+        \code{from}       & \code{true}              & Abfahrtsstation                                                                      & Zürich, Sternen Oerlikon   &                  \\
+        \code{to}         & \code{true}              & Abfahrtsstation                                                                      & Zürich, Hallenbad Oerlikon &                  \\
+        \code{date}       & \code{false}             & Datum                                                                                & 29.10.2017                 & today            \\
+        \code{time}       & \code{false}             & Zeit                                                                                 & 15:00                      & now            \\
+        \code{time\_type} & \code{false}             & \begin{tabular}[c]{@{}l@{}}date/time als Abfahrts-  \\ oder Ankunftszeit\end{tabular} & arrival                    & depart
     \end{tabular}
 \end{table}
 
