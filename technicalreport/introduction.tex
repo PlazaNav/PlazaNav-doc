@@ -147,23 +147,19 @@ Die Ergebnisse werden im Kapitel \ref{chap:SW-Projektdokumentation} beschrieben.
 \subsection{Grundlagen und Begriffe}
 \label{Grundlagen und Begriffe}
 
-Im folgenden werden einige theoretische Grundlagen und Begriffe eingeführt, welche im Laufe des Dokuments auftauchen werden.
-
-% TODO was muss alles noch eingeführt werden?
-
+Im folgenden werden ausgewählte theoretische Grundlagen und Begriffe eingeführt, welche für das Verständnis der Arbeit von Relevanz sind. Für die nicht eingeführten Begriffe kann das Glossar und Abkürzungsverzeichnis zur Hand gezogen werden.
 
 \subsubsection{Fläche}
 \label{Fläche}
 
-Als Fläche werden für diesen Zweck Plätze, Wiesen, etc. verstanden, die von Fussgänger frei begehbar sind. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
-% TODO: Wie genau filtern wir nach Flächen? Area=yes UND highway=pedestrian?
+Als Fläche werden für diesen Zweck Plätze, Wiesen, etc. verstanden, die von Fussgänger frei begehbar sind. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{landuse=*} oder mit \textit{highway=footway} und \textit{area=yes} versehen sind. Fehlt in letzterem \textit{area=yes} wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
 
 \subsubsection{nicht-motorisierter Individualverkehr}
 \label{nicht-motorisierter Individualverkehr}
 
 Zum nicht-motorisierten Individualverkehr gehören unter anderem Fussgänger, Rollstuhlfahrer und Radfahrer.
 
-Zur besseren Lesbarkeit und der Einfachheit halber wird in der Arbeit nur noch von Fussgänger gesprochen.
+Zur besseren Lesbarkeit wird in der Arbeit nur noch von Fussgänger gesprochen.
 
 \subsubsection{Multipolygon}
 \label{Multipolygon}
@@ -182,10 +178,15 @@ In GIS hingegen ist ein Multipolygon definiert als mehrere sich nicht überschne
 \subsubsection{Hindernisse auf Flächen}
 \label{Hindernisse in Flächen}
 
-TODO % wie sieht Datenstruktur aus
+Auf Flächen können Hindernisse existieren, durch welche nicht geroutet werden darf. Dazu gehören selbstredend Häuser und dergleichen aber auch Barrieren gekennzeichnet mit dem Attribut \textit{barrier=*} \cite{osm_wiki_barrier}, was beispielsweise ein Mauer oder Hecke beschreiben kann.
 
+\subsubsection{ÖV-Haltestelle und Kante}
+\label{ÖV-Haltestelle und Kante}
+Eine ÖV-Haltestelle kann mehrere Stationen umfassen. Normalerweise gehören zu einer Haltestelle zwei Stationen, je eine in jede Fahrrichtung. Eine dieser Station wird im folgenden als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle beschränkt sich dabei nicht auf zwei Kanten. Betrachtet man den Bahnhof Stadelhofen in Zürich, sieht man das weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
 
-\subsubsection{Shortest Path}
-\label{Shortest Path}
-
-TODO
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{technicalreport/img/public_transport_stop}
+\caption[Unterschied ÖV-Haltestelle und Kante]{links: ÖV-Haltestelle; rechts: Kante}
+\label{fig:public_transport_stop}
+\end{figure}
