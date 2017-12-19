@@ -121,7 +121,6 @@ Man sieht in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} gut,
 ÖV-Haltestellen werden mit Overpass \cite{wiki:overpass} aus \ac{OSM} bezogen. Dabei wird um den aktuellen Standort eine \gls{BoundingBox} gezogen. Die Bounding Box ist konfigurierbar und entspricht einer zumutbaren Laufdistanz. In dieser Fläche werden Nodes und Relationen mit Tags, welche ÖV-Haltestellen identifizieren (\emph{''public\_transport''=''stop\_position''}, \emph{''type''=''public\_transport''} etc.), gefiltert und deren \emph{uic\_ref} zurückgegeben.
 
 \paragraph{Beste Route eruieren}\label{impl:Plaza Routing Beste Route eruieren}~\\
-% TODO was machen wir eigentlich, wenn zwei Verbindungen die gleichen Kosten haben?
 Aufgrund der möglichen Routen, welche wie in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} gewonnen werden, muss man nun entscheiden, welche Route dem User konkret retourniert wird. Dazu wurde eine Kosten-Matrix erstellt. Diese ist in Tabelle \ref{table:cost-matrix} sichtbar.
 
 \begin{table}[ht]
