@@ -8,13 +8,12 @@ Die heutig gängigen Routing-Engines können effizient über Kanten und Knoten r
 
 \subsubsection{Routing über offene Flächen}
 \label{problem:Routing über offene Flächen}
-% TODO Verweis auf GraphHopper?
-Wie man an in der Abbildung \ref{fig:helvetiaplatz_graphhopper} gut sieht, routet die Routing-Engine GraphHopper den Kanten nach um den Platz herum. Dies ist ein natürliches Verhalten für den motorisierten Individualverkehr. Ein Fussgänger hingegen nimmt den direkten Weg über den Platz. Oft handelt es sich nicht nur um einen leeren Platz, sondern es sind darauf Hindernisse wie Brunnen, Kunstwerke, WCs, etc. stationiert, um welche auf eine natürliche Weise geroutet werden muss. Eine Route, welche direkt auf das Hindernis zusteuert, um dieses dann zu umlaufen, ist zwar ein Fortschritt zur aktuellen Lösung, entspricht aber kaum einem normalen Fussgänger-Verhalten. 
+Wie man an in der Abbildung \ref{fig:helvetiaplatz_graphhopper} gut sieht, routet die Routing-Engine GraphHopper \cite{graphhopper} den Kanten nach um den Platz herum. Dies ist ein natürliches Verhalten für den motorisierten Individualverkehr. Ein Fussgänger hingegen nimmt den direkten Weg über den Platz. Oft handelt es sich nicht nur um einen leeren Platz, sondern es sind darauf Hindernisse wie Brunnen, Kunstwerke, WCs, etc. stationiert, um welche auf eine natürliche Weise geroutet werden muss. Eine Route, welche direkt auf das Hindernis zusteuert, um dieses dann zu umlaufen, ist zwar ein Fortschritt zur aktuellen Lösung, entspricht aber kaum einem normalen Fussgänger-Verhalten. 
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.5\linewidth]{technicalreport/img/helvetiaplatz_graphhopper}
-	\caption[Fussgänger-Routing]{Fussgänger-Routing mit GraphHopper über den Helvetiaplatz, Zürich, Schweiz; Screenshot von openstreetmap.org aufgenommen am 08.10.2017}
+	\caption[Fussgänger-Routing]{Fussgänger-Routing mit GraphHopper \cite{graphhopper} über den Helvetiaplatz, Zürich, Schweiz; Screenshot von openstreetmap.org aufgenommen am 08.10.2017}
 	\label{fig:helvetiaplatz_graphhopper}
 \end{figure}
 
@@ -94,7 +93,6 @@ Es soll eruiert werden, ob für den Platz die eingezeichneten Fussgängerrouten 
 \subsubsection{topologisch nicht verbundene Wege}
 \label{target:topologisch nicht verbundene Wege}
 Dieses Problem ist der Vollständigkeit halber aufgeführt, wird in dieser Arbeit aber nicht weiter verfolgt.
-%TODO bereits Teil der Routing-Engines
 
 \subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 \label{target:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
@@ -113,7 +111,6 @@ Der Start des Fussgänger-Routing ist von überall möglich. Somit soll es mögl
 \label{target:Routing bei zwei benachbarten Flächen}
 
 Es soll geprüft werden, wie Fussgänger-Flächen bearbeitet werden können, die direkt benachbart sind. Wenn die beiden Flächen unabhängig voneinander verarbeitet werden, gibt es unter Umständen eine Kante, die von einem Fussgänger problemlos übergangen werden könnte, logisch aber als eine Abgrenzung interpretiert wird, die in der Route nicht überquert wird.
-
 
 \subsubsection{nächste ÖV-Haltestellen finden}
 \label{target:nächste ÖV-Haltestellen finden}
@@ -139,16 +136,13 @@ Die Backend-Komponente sollen als Docker-Container für eine einfache Portierung
 \label{Vorgehen und Aufbau der Arbeit}
 Die Studienarbeit nimmt sich zu erst dem Problem des Fussgänger-Routing über Flächen im urbanen Raum an. Es wird geklärt, wie momentan die Thematik gehandhabt wird und welche Vorarbeiten und Lösungen in diesem Bereich existieren. Bestehende Lösungsvorschläge werden mit der Hilfe von QGIS in Python implementiert, um so die bestmögliche Variante zu eruieren. Das gleiche Vorgehen wird für das Fussgänger-Routing über Strassen gewählt. Sobald die bestmöglichen Lösungsvarianten identifiziert sind, muss geklärt werden, wie die Vorverarbeitung der Daten (beispielsweise, das Einzeichnen von möglichen Routen über Flächen) an eine bestehende Routing-Engine übergeben werden kann. Damit dies möglich ist, ist zu prüfen, welche Engine die Anforderungen bestmöglich abdecken.
 
-In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an die API von search.ch übergeben zu können. Aufgabe von search.ch ist es, für n Startpunkte die ÖV-Route zu genieren. So ist es möglich, denn schnellstmöglichen Weg für eine Route in Kombination von Fussweg und öffentlichem Weg zu ermitteln.
+In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an die API von search.ch \cite{search_ch_route_api} übergeben zu können. Aufgabe von search.ch ist es, für n Startpunkte die ÖV-Route zu genieren. So ist es möglich, denn schnellstmöglichen Weg für eine Route in Kombination von Fussweg und öffentlichem Weg zu ermitteln.
 
 Die vorhin aufgeführten Aspekte werden im Kapitel \ref{chap:Technischer Bericht} behandelt.
 
-In einem zweiten Teil werden die im Teil 1 erarbeiteten Artefakte zusammengeführt. Es wird in QGIS ein Prototyp implementiert. Die Ergebnisse werden im Kapitel \ref{chap:SW-Projektdokumentation} beschrieben.
+In einem zweiten Teil werden die im Teil 1 erarbeiteten Artefakte in einem Prototyp als QGIS-Plugin zusammengeführt. Im QGIS-Plugin wird ein multimodales Routing visuell dargestellt. So ist ein optimiertes Fussgänger-Routing in Kombination mit dem öffentlichen Verkehr möglich.
 
-% TODO wie sieht Prototyp genau aus
-
-
-% TODO Grafik mit Epics und einigen Unterpunkten was dazu gehört
+Die Ergebnisse werden im Kapitel \ref{chap:SW-Projektdokumentation} beschrieben.
 
 \subsection{Grundlagen und Begriffe}
 \label{Grundlagen und Begriffe}
