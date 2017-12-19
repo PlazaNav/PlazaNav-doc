@@ -7,11 +7,11 @@
 
 Die heutig gängigen Routing-Engines sind für den motorisierten Individualverkehr optimiert. Bei diesem halten sich die Verkehrsteilnehmer an vorgegebene Regeln und Strecken. Fussgänger allerdings optimieren intuitiv ihre Route, so wählen sie zum Beispiel über eine öffentliche Fläche den möglichst kürzesten Weg zum Ziel. Bestehende Routing-Engines navigieren entlang der Kante des Platzes, anstatt ihn direkt zu überqueren.
 
-Es werden bestehende Algorithmen zur Traversierung von offenen Fussgänger-Flächen evaluiert, analysiert und optimiert. Mit einer Vorverarbeitung von OpenStreetMap-Daten wird gezeigt, wie eine Routing-Engine ein natürliches Fussgänger-Routing über offene Flächen unterstützen kann.
+Es werden bestehende Algorithmen, Visibility-Graph und SpiderWeb-Graph, zur Traversierung von offenen Fussgänger-Flächen evaluiert, analysiert und optimiert. Mit einer Vorverarbeitung von OpenStreetMap-Daten wird gezeigt, wie eine Routing-Engine ein natürliches Fussgänger-Routing über offene Flächen unterstützen kann.
 
-Als praktische Umsetzung wird mit Hilfe des Services von search.ch ein Service für ein multimodales Routing mit öffentlichen Verkehrsmitteln erarbeitet. Mit einem eigens entwickelten Plugin für QGIS können die optimierten Routen visualisiert werden.
+Als praktische Umsetzung wird in Python mit Hilfe des Services von search.ch ein Service für ein multimodales Routing mit öffentlichen Verkehrsmitteln erarbeitet. Mit einem eigens entwickelten Plugin für QGIS können die optimierten Routen visualisiert werden.
 
-Durch die Vorverarbeitung von OpenStreetMap-Daten ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen, auf welche gängige Routing-Engines aufsetzen können. Die eingesetzen Algorithmen zeigen deutlich bessere Ergebnisse als die bestehenden Implementationen in den Routing-Engines.
+Durch die Vorverarbeitung von OpenStreetMap-Daten ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen, auf welche gängige Routing-Engines aufsetzen können. In einem visuellen Vergleich zeigen die eingesetzen Algorithmen  deutlich bessere Ergebnisse als die bestehenden Implementationen in den Routing-Engines, während die Datenmenge für die Schweiz um weniger als 0.5\% steigt.
 
 Mit dem entwickelten Backend und einem zugehörigen QGIS-Plugin können Benutzer mit einem beliebigen Start- und Endpunkt ein ÖV-Routing mit optimiertem Verhalten bei Fussgänger-Routen durchführen.
 
