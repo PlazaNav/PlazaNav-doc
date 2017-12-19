@@ -2,6 +2,54 @@
 \label{Einführung}
 Diese Arbeit befasst sich grundlegend mit dem Fussgänger-Routing und Auffinden der nächsten ÖV-Haltestelle, welche einem an ein weiter gelegenes Ziel führen kann. Ziel ist es, von einem gegebenen Punkt die nächste ÖV-Haltestelle, welche zu Fuss erreichbar ist, zu finden. Im folgenden ist die Problemstellung erläutert und es wird eine Abgrenzung gemacht, was Teil dieser Arbeit ist.
 
+\subsection{Grundlagen und Begriffe}
+\label{Grundlagen und Begriffe}
+
+Im folgenden werden ausgewählte theoretische Grundlagen und Begriffe eingeführt, welche für das Verständnis der Arbeit von Relevanz sind. Für die nicht eingeführten Begriffe kann das Glossar und Abkürzungsverzeichnis zur Hand gezogen werden.
+
+\subsubsection{Fläche}
+\label{Fläche}
+
+Als Fläche werden für diesen Zweck Plätze verstanden, die von Fussgänger frei begehbar sind. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{highway=pedestrian} oder \textit{highway=footway} versehen sind. Fehlt in letzterem \textit{area=yes}, wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
+
+\subsubsection{nicht-motorisierter Individualverkehr}
+\label{nicht-motorisierter Individualverkehr}
+
+Zum nicht-motorisierten Individualverkehr gehören unter anderem Fussgänger, Rollstuhlfahrer und Radfahrer.
+
+Zur besseren Lesbarkeit wird in der Arbeit nur noch von Fussgänger gesprochen.
+
+\subsubsection{Multipolygon}
+\label{Multipolygon}
+
+Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen geschlossenen Pfad beschreiben. Jedes Polygon kann entweder als einen äusseren oder inneren Ring dienen. So kann ein innerer Ring eine Teilfläche eines äusseren Rings ausschneiden. Polygone in einem Multipolygon können auch disjunkt sein. \cite{osm_wiki_multipolygon}
+
+\begin{figure}[th]
+\centering
+\includegraphics[width=0.5\linewidth]{technicalreport/img/multipolygon_osm_example.png}
+\caption[Multipolygon OSM Example]{Beispiel eines Multipolygons in \ac{OSM} mit einem äusseren und zwei inneren Ringen. \cite{osm_wiki_multipolygon}}
+\label{fig:multipolygon_osm_example}
+\end{figure}
+
+In \ac{GIS} hingegen ist ein Multipolygon definiert als mehrere sich nicht überschneidende Polygone. Jedes Polygon wird durch ein oder mehrere geschlossene Pfade beschrieben. Dabei ist der erste Pfad der äussere Rand, alle weiteren Pfade beschreiben innere Ringe. \cite{opengis_simple_features}
+
+\subsubsection{Hindernisse auf Flächen}
+\label{Hindernisse in Flächen}
+
+Auf Flächen können Hindernisse existieren, durch welche nicht geroutet werden darf. Dazu gehören selbstredend Gebäude und dergleichen, aber auch Barrieren, die mit  mit dem Attribut \textit{barrier=*} gekennzeichnet sind \cite{osm_wiki_barrier}, was beispielsweise eine Mauer oder Hecke beschreiben kann.
+
+\subsubsection{ÖV-Haltestelle und Kante}
+\label{ÖV-Haltestelle und Kante}
+Eine ÖV-Haltestelle kann mehrere Stationen umfassen. Normalerweise gehören zu einer Haltestelle zwei Stationen, je eine in jede Fahrtrichtung. Eine dieser Station wird im folgenden als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle beschränkt sich dabei nicht auf zwei Kanten. Betrachtet man den Bahnhof Stadelhofen in Zürich, sieht man, dass weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{technicalreport/img/public_transport_stop}
+\caption[Unterschied ÖV-Haltestelle und Kante]{links: ÖV-Haltestelle; rechts: Kante}
+\label{fig:public_transport_stop}
+\end{figure}
+
+
 \subsection{Problemstellung und Vision}
 \label{Problemstellung und Vision}
 Die heutig gängigen Routing-Engines können effizient über Kanten und Knoten routen, um so den schnellstmöglichen Weg finden zu können. Diese wurden stetig für Autofahrer optimiert, da sich diese unter anderem an vorgegebene Regeln halten. Beim nicht-motorisierten Individualverkehr (Fussgänger, Rollstuhlfahrer, Radfahrer, etc.)  ist das nicht immer der Fall. In den folgenden Unterkapiteln werden einige Probleme erläutert, welche immer noch Praxis für den nicht-motorisierten Individualverkehr sind.
@@ -143,50 +191,3 @@ Die vorhin aufgeführten Aspekte werden im Teil \ref{chap:Technischer Bericht} b
 In einem zweiten Teil werden die im Teil \ref{chap:Technischer Bericht} erarbeiteten Artefakte in einem Prototyp als QGIS-Plugin zusammengeführt. Im QGIS-Plugin wird ein multimodales Routing visuell dargestellt. So ist ein optimiertes Fussgänger-Routing in Kombination mit dem öffentlichen Verkehr möglich.
 
 Die Ergebnisse werden im Teil \ref{chap:SW-Projektdokumentation} beschrieben.
-
-\subsection{Grundlagen und Begriffe}
-\label{Grundlagen und Begriffe}
-
-Im folgenden werden ausgewählte theoretische Grundlagen und Begriffe eingeführt, welche für das Verständnis der Arbeit von Relevanz sind. Für die nicht eingeführten Begriffe kann das Glossar und Abkürzungsverzeichnis zur Hand gezogen werden.
-
-\subsubsection{Fläche}
-\label{Fläche}
-
-Als Fläche werden für diesen Zweck Plätze verstanden, die von Fussgänger frei begehbar sind. Flächen sind in \ac{OSM} keine eigenständige Datenelemente. Es handelt sich dabei um Polygone (sprich geschlossene Linien) oder Multipolygone (siehe \ref{Multipolygon}), welche in \ac{OSM} mit den Attributen \textit{highway=pedestrian} oder \textit{highway=footway} versehen sind. Fehlt in letzterem \textit{area=yes}, wird die geschlossene Linie als Rundweg interpretiert, über welche nicht geroutet werden soll. \cite{osm_wiki_area}
-
-\subsubsection{nicht-motorisierter Individualverkehr}
-\label{nicht-motorisierter Individualverkehr}
-
-Zum nicht-motorisierten Individualverkehr gehören unter anderem Fussgänger, Rollstuhlfahrer und Radfahrer.
-
-Zur besseren Lesbarkeit wird in der Arbeit nur noch von Fussgänger gesprochen.
-
-\subsubsection{Multipolygon}
-\label{Multipolygon}
-
-Multipolygone in \ac{OSM} sind ein oder mehrere Polygone, die jeweils einen geschlossenen Pfad beschreiben. Jedes Polygon kann entweder als einen äusseren oder inneren Ring dienen. So kann ein innerer Ring eine Teilfläche eines äusseren Rings ausschneiden. Polygone in einem Multipolygon können auch disjunkt sein. \cite{osm_wiki_multipolygon}
-
-\begin{figure}[th]
-\centering
-\includegraphics[width=0.5\linewidth]{technicalreport/img/multipolygon_osm_example.png}
-\caption[Multipolygon OSM Example]{Beispiel eines Multipolygons in \ac{OSM} mit einem äusseren und zwei inneren Ringen. \cite{osm_wiki_multipolygon}}
-\label{fig:multipolygon_osm_example}
-\end{figure}
-
-In \ac{GIS} hingegen ist ein Multipolygon definiert als mehrere sich nicht überschneidende Polygone. Jedes Polygon wird durch ein oder mehrere geschlossene Pfade beschrieben. Dabei ist der erste Pfad der äussere Rand, alle weiteren Pfade beschreiben innere Ringe. \cite{opengis_simple_features}
-
-\subsubsection{Hindernisse auf Flächen}
-\label{Hindernisse in Flächen}
-
-Auf Flächen können Hindernisse existieren, durch welche nicht geroutet werden darf. Dazu gehören selbstredend Gebäude und dergleichen, aber auch Barrieren, die mit  mit dem Attribut \textit{barrier=*} gekennzeichnet sind \cite{osm_wiki_barrier}, was beispielsweise eine Mauer oder Hecke beschreiben kann.
-
-\subsubsection{ÖV-Haltestelle und Kante}
-\label{ÖV-Haltestelle und Kante}
-Eine ÖV-Haltestelle kann mehrere Stationen umfassen. Normalerweise gehören zu einer Haltestelle zwei Stationen, je eine in jede Fahrtrichtung. Eine dieser Station wird im folgenden als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle beschränkt sich dabei nicht auf zwei Kanten. Betrachtet man den Bahnhof Stadelhofen in Zürich, sieht man, dass weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.7\linewidth]{technicalreport/img/public_transport_stop}
-\caption[Unterschied ÖV-Haltestelle und Kante]{links: ÖV-Haltestelle; rechts: Kante}
-\label{fig:public_transport_stop}
-\end{figure}
