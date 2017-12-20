@@ -5,6 +5,7 @@
 \subsection{PlazaRoute Container}
 \label{impl:PlazaRoute Container}
 
+In diesem Kapitel wird die Implementation der einzelnen Container beschrieben, wie sie in \ref{architektur:PlazaRoute Container} definiert wurden.
 
 \subsubsection{Plaza Vorverarbeitung}
 \label{impl:Plaza Vorverarbeitung}
@@ -59,7 +60,7 @@ Für jedes Plaza werden folgende Schritte ausgeführt:
 \paragraph{Merger}\label{impl:Merger}~\\
 Die Aufgabe des Merger ist es, die vom \nameref{impl:Optimizer} neu erstellten Geometrien wieder mit den originalen \ac{OSM}-Daten zu verschmelzen.
 \begin{enumerate}
-    \item In einem ersten Schritt werden die erstellten Linien im \ac{OSM}-Format als Nodes und Ways in eine temporäre Datei gespeichert.
+    \item In einem ersten Schritt werden die erstellten Linien im \ac{PBF}-Format als Nodes und Ways in eine temporäre Datei gespeichert.
     \item Als nächstes werden die Einstiegspunkte in das Strassennetz eingebunden. Nur wenn unsere Linien einen gemeinsamen Punkt mit dem bestehenden Strassennetz haben, werden sie vom Router überhaupt für das Routing beachtet. Da sich jeder Einstiegspunkt mit einer bestehenden Linie kreuzt, wird dieser jeweils als zusätzlicher Punkt dem \ac{OSM}-Way hinzugefügt.
     \item Die im vorherigen Schritt modifizierten Ways werden ebenfalls in eine temporäre Datei abgespeichert. Dazu wird die Versionsnummer erhöht, damit die bestehenden Ways schlussendlich überschrieben werden.
     \item Nun werden alle in den vorherigen Schritten erstellten temporären \ac{OSM}-Dateien mit der originalen Datei zusammen geschmolzen, die ursprünglich importiert wurde. Dazu wird das externe Tool Osmosis \cite{osmosis} aufgerufen.
@@ -68,7 +69,7 @@ Die Aufgabe des Merger ist es, die vom \nameref{impl:Optimizer} neu erstellten G
 Als Endresultat liegt nun eine \ac{OSM}-Datei mit den kompletten Kartendaten vor, die um zusätzliche Linien für die Optimierung über Fussgänger-Flächen ergänzt wurde. Die Datei kann nun etwa einer Routing-Engine übergeben werden.
 
 \paragraph{Konfiguration}\label{impl:preprocess_konfiguration}~\\
-Um das Plaza Preprocessing möglichst flexibel und erweiterbar zu machen, wird eine Konfigurationsdatei im YAML-Format verwendet. Es ist unter anderem konfigurierbar, welche Algorithmen (Visibility-Graph oder SpiderWeb-Graph) für die Berechnung der Graphen verwendet wird. Es können ebenfalls die \ac{OSM}-Tags bestimmt werden, die der \nameref{impl:Importer} verwendet, um zu klassifizieren, was z.B. als Plaza oder als Hindernis gilt. Listing \ref{listing:preprocess_config} zeigt einen Ausschnitt dieser Konfiguration.
+Um die Vorverarbeitung möglichst flexibel und erweiterbar zu machen, wird eine Konfigurationsdatei im YAML-Format verwendet. Es ist unter anderem konfigurierbar, welche Algorithmen (Visibility-Graph oder SpiderWeb-Graph) für die Berechnung der Graphen verwendet wird. Es können ebenfalls die \ac{OSM}-Tags bestimmt werden, die der \nameref{impl:Importer} verwendet, um zu klassifizieren, was z.B. als Plaza oder als Hindernis gilt. Listing \ref{listing:preprocess_config} zeigt einen Ausschnitt dieser Konfiguration.
 
 \begin{listing}[ht]
     \inputminted{YAML}{projectdoc/listing/preprocess_config.yml}
@@ -89,15 +90,15 @@ Ebenfalls werden hier Error-Handler definiert, welche dafür sorgen, dass der Ko
 \paragraph{api}\label{impl:Plaza Routing api}~\\
 In diesem Abschnitt wird auf die Umsetzung der api-Schicht in Abbildung \ref{fig:package_diagram_plaza_routing} und auf den Abschnitt \nameref{architektur:api-layer} in der Architektur Bezug genommen.
 
-Dabei wird mithilfe von Flask-RESTPlus \cite{flask-restplus}, einer Flask-Extension, eine \ac{REST}-\ac{API} exponiert. Diese besteht aktuell aus einem \ac{REST}-Service, welcher im Abschnitt \nameref{impl:PlazaRouting} genauer erläutert ist. Die Extension hat den Vorteil, dass automatisch eine Swagger-Dokumentation \cite{swagger} generiert wird, mit welcher unter anderem \ac{API}-Clients in verschiedenen Programmiersprachen generiert werden können. Diese ist unter \cite{plaza-routing-api-swaggerui} verfügbar. Ebenfalls ist sofort ersichtlich, wie das Response-Model der \ac{API} aussieht und in welchem Format welche Parameter übergeben werden müssen. Dies Vereinfacht die Handhabung mit der \ac{API} massiv.
+Dabei wird mithilfe von Flask-RESTPlus \cite{flask-restplus}, einer Flask-Extension, eine Web-\ac{API} exponiert. Diese besteht aktuell aus einem \ac{REST}-Service, welcher im Abschnitt \nameref{impl:PlazaRouting} genauer erläutert ist. Die Extension hat den Vorteil, dass automatisch eine Swagger-Dokumentation \cite{swagger} generiert wird, mit welcher unter anderem \ac{API}-Clients in verschiedenen Programmiersprachen generiert werden können. Diese ist unter \cite{plaza-routing-api-swaggerui} verfügbar. Ebenfalls ist sofort ersichtlich, wie das Response-Model der \ac{API} aussieht und in welchem Format welche Parameter übergeben werden müssen. Dies vereinfacht die Handhabung mit der \ac{API} massiv.
 
-Diese Komponenten kann ohne Probleme mit \ac{REST}-Services analog zu \nameref{impl:PlazaRouting} ergänzt werden.
+Diese Komponente kann ohne Probleme mit \ac{REST}-Services analog zu \nameref{impl:PlazaRouting} ergänzt werden.
 
 \subparagraph{PlazaRouting}\label{impl:PlazaRouting}~\\
 In der Komponente \emph{PlazaRouting} wird der \ac{REST}-Service für das Routing exponiert. Im Bezug auf das Maturity Model \cite{maturity_model} von Leonard Richardson befinden wir uns auf Level 2. Im \ac{REST}-Service werden die übergebenen Parameter entgegen genommen, automatisch in das verlangte Format geparsed und geprüft, ob die Parameter, welche zwingend verlangt werden, auch übergeben wurden. Diese Information wird dann weiter an die Business-Schicht gereicht, welche im nächsten Abschnitt aufgeschlüsselt wird. Die Komponente besitzt sonst keine weitere Logik.
 
 \paragraph{Zusammenspiel und Verantwortlichkeit der Business- und Service-Schicht}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit der Business- und Service-Schicht}~\\
-In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen und das Optimieren der besten Route in ein Unter-Sequenz-Diagram in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs}, respektive Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} ausgelagert. Dabei geht es primär nicht um die Logik, die dahinter liegt, sondern um die Verantwortlichkeiten der Services. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich. Aus diesem Grund entsprechen die Diagramme nicht exakt dem Programmcode. 
+In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen und das Optimieren der besten Route in ein Unter-Sequenz-Diagramm in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} respektive Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} ausgelagert. Dabei geht es primär nicht um die Logik, die dahinter liegt, sondern um die Verantwortlichkeiten der Services. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich. Aus diesem Grund entsprechen die Diagramme nicht exakt dem Programmcode. 
 
 Die Ausgangsposition und Destination können entweder als Koordinate oder Adresse übergeben werden. Falls es sich um eine Adresse handelt, wird ein Geocoding durchgeführt, um die Koordinate zu extrahieren. Dies erklärt den zweimaligen Zugriff auf das \emph{Geocoding} im Sequenz-Diagramm \ref{fig:sequence_diagram_plaza_routing_overview}.
 
@@ -135,7 +136,7 @@ Aufgrund der möglichen Routen, welche wie in Abbildung \ref{fig:sequence_diagra
     \label{table:cost-matrix}
 \end{table}
 
-Die Dauer des Fussstrecke wird doppelt gewichtet. Ein einmaliges Umsteigen schlägt mit 7 Minuten ins Gewicht. So lassen sich die Kosten aufgrund der Zeit, welche man für jeden Faktor benötigt, berechnen.
+Die Dauer der Fussstrecke wird doppelt gewichtet. Ein einmaliges Umsteigen schlägt mit 7 Minuten ins Gewicht. So lassen sich die Kosten aufgrund der Zeit, welche man für jeden Faktor benötigt, berechnen.
 
 Eine Verbindung, bei welcher man 5 Minuten geht, 15 Minuten fährt und zwei Mal umsteigen muss, wird mit Totalkosten von $5 * 60 * 2 + 15 * 60 + 2 * 7 * 60 = 2340$ mit den anderen möglichen Verbindungen verglichen. Schlussendlich wird die Verbindung mit den niedrigsten Kosten retourniert.
 
@@ -160,21 +161,21 @@ Aus diesem Grund werden diese Koordinaten nun von Overpass \cite{wiki:overpass} 
 
 Da ÖV-Haltestellen und -Linien in \ac{OSM} jedoch nicht konsistent gemappt sind, wird das Recovery Blocks Pattern \cite{fault_tolerant_software} angewendet, um dem User so oft wie möglich ein genaues Resultat liefern zu können. Mit nicht konsistent meinen wir, dass sie nicht zwingend den Vorgaben in \cite{osm_wiki_relation} folgen. Durch Tests lassen sich jedoch Trends erkennen, wie Mapper grundsätzlich mit ÖV-Haltestellen und -Linien umgehen.
 
-Vorgängig muss klargestellt werden, dass wenn die Rede vo einer ÖV-Linie ist, grundsätzliche eine Buslinie oder ähnliches, welche in \ac{OSM} als Relation \cite{osm_wiki_relation} abgebildet ist, gemeint ist. \glspl{Kante} werden als Node gemappt.
+Vorgängig muss klargestellt werden, dass wenn die Rede vo einer ÖV-Linie ist, grundsätzlich eine Buslinie oder ähnliches, welche in \ac{OSM} als Relation \cite{osm_wiki_relation} abgebildet ist, gemeint ist. \glspl{Kante} werden als Node gemappt.
 
 In einem ersten Schritt werden die Daten über die bekannte ÖV-Linie geladen. Search.ch \cite{search_ch_route_api} liefert eine \emph{uic\_ref} für die initiale ÖV-Haltestelle und eine, bei welcher man aussteigt. Üblicherweise erhält man zwei Relationen zurück, je eine für jede Fahrrichtung. Mit den beiden \emph{uic\_ref}s der ÖV-Haltestellen kann man nun die Members der Relation durchgehen und die ÖV-Linie selektieren, bei welcher die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle kommt. Der Member mit der \emph{uic\_ref} der initialen ÖV-Haltestelle in der selektierten ÖV-Linie entspricht in diesem Fall der gesuchten \glspl{Kante} in die richtige Fahrtrichtung.
-Anmerken muss man, dass es natürlich mit einem Risiko verbunden ist, so die korrekte Koordinate zu eruieren. Entspricht die Reihenfolge der Members nicht der tatsächlichen Reihenfolge der ÖV-Haltestellen in einer ÖV-Linien, kommt aber bei beiden Relationen oder der Falschen die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle, kann es vorkommen, dass man die falsche Kante erwischt. Mit diesem Restrisiko leben wir.
+Anmerken muss man, dass es natürlich mit einem Risiko verbunden ist, so die korrekte Koordinate zu eruieren. Entspricht die Reihenfolge der Members nicht der tatsächlichen Reihenfolge der ÖV-Haltestellen in einer ÖV-Linie, kommt aber bei beiden Relationen oder der Falschen die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle, kann es vorkommen, dass man die falsche Kante erwischt. Mit diesem Restrisiko leben wir.
 
 Ist die erste Variante nicht erfolgreich, werden die Relationen mit der \emph{uic\_ref} der initialen ÖV-Haltestelle geladen. \glspl{Kante} mit der gleichen \emph{uic\_ref} gehören normalerweise zu einer Relation, welche auch selbst diese \emph{uic\_ref} besitzt. Über diese Relation können die möglichen initialen Ausgangskante und die ÖV-Linien geladen werden. In einem weiteren Schritt werden die Ausstiegskanten in einem ähnlichen Verfahren für die \emph{uic\_ref} der Ausstiegshaltestelle geladen. Im idealen Fall hat man nun die Einstiegskanten, ÖV-Linien und Ausstiegskanten für beide Fahrtrichtungen. Mit diesen Daten kann nun die korrekte Einstiegs- und Ausstiegskante der konkreten ÖV-Linie zugeordnet werden (durch ihre Zugehörigkeit als Member). Da man die Einstiegs- und Ausstiegskante separat geladen hat, ist es eine Leichtigkeit, die ÖV-Linie in die richtige Fahrtrichtung zu eruieren.
 
 Führen diese zwei Varianten nicht zum Ziel, wird die Koordinate von search.ch zurückgegeben.
 
-Das verbesserte Resultat von Abbildung \ref{fig:one_coordinate_for_two_stops} ist in Abbildung \ref{fig:one_coordinate_for_two_stops_improved} ersichtlich. In Abbildung \ref{fig:precise_public_transport_stops_comparison} sieht man wie sich die Optimierung auf den konkreten Anwendungsfall auswirkt.
+Das verbesserte Resultat von Abbildung \ref{fig:one_coordinate_for_two_stops} ist in Abbildung \ref{fig:one_coordinate_for_two_stops_improved} ersichtlich. In Abbildung \ref{fig:precise_public_transport_stops_comparison} sieht man, wie sich die Optimierung auf den konkreten Anwendungsfall auswirkt.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\linewidth]{projectdoc/img/one_coordinate_for_two_stops_improved}
-    \caption[mit Overpass geladenen Koordinate]{mit Overpass geladenen Koordinate der Roten Fabrik in Richtung Seerose, Zürich, Schweiz; openstreetmap.org; Screenshots aufgenommen am 25.11.2017}
+    \caption[mit Overpass geladenen Koordinate]{Eine mit Overpass geladenen Koordinate der Roten Fabrik in Richtung Seerose, Zürich, Schweiz; openstreetmap.org; Screenshots aufgenommen am 25.11.2017}
     \label{fig:one_coordinate_for_two_stops_improved}
 \end{figure}
 
@@ -184,7 +185,7 @@ Die erhöhte Genauigkeit kommt nicht ohne Performanzeinbusse. Im Worst-Case wird
 \paragraph{Route-Kombination oder nur Fussgänger-Route}\label{impl:Route-Kombination oder nur Fussgänger-Route}~\\
 Bevor überhaupt ein ÖV-Routing durchgeführt wird, wird geprüft, ob das Ziel in einem konfigurierbaren Grenzwert zu Fuss erreichbar ist. Wenn dies zutrifft, wird nur das Fussgänger-Routing retourniert. Dadurch werden die Drittsysteme geschont und die Abfragezeit ist minimal. Search.ch \cite{search_ch_route_api} gibt für kleinere Routen ebenfalls nur ein Fussgänger-Routing zurück, somit wäre diese Abfrage ohne diesen Grenzwert überflüssig.
 
-Nach dem Durchgeführten Plaza Routing, sprich der Kombination aus dem Fussgänger- und ÖV-Routing, wird überprüft, ob die Dauer des Fussweg vom Start zum Ziel kleiner ist als die Summe aus der Dauer des Fussweg zur Ausgangshaltestelle, der Wartezeit auf die ÖV-Verbindung, des ÖV-Routing und des Fussweg zum Ziel. Ist man zu Fuss schneller, wird das Fussgänger-Routing retourniert. Dies ist in Abbildung \ref{fig:qgis_plugin_plaza_route_walking_public_transport_comparison} dargestellt. In der linken Grafik wird das Routing mit der Startzeit 15:46 Uhr durchgeführt. Bei der retournierten ÖV-Verbindung muss man \emph{240s} warten und hat für das Fussgänger- und ÖV-Routing zusammen \emph{829s}.
+Nach dem durchgeführten Plaza Routing, sprich der Kombination aus dem Fussgänger- und ÖV-Routing, wird überprüft, ob die Dauer des Fussweg vom Start zum Ziel kleiner ist als die Summe aus der Dauer des Fussweg zur Ausgangshaltestelle, der Wartezeit auf die ÖV-Verbindung, des ÖV-Routing und des Fussweg zum Ziel. Ist man zu Fuss schneller, wird das Fussgänger-Routing retourniert. Dies ist in Abbildung \ref{fig:qgis_plugin_plaza_route_walking_public_transport_comparison} dargestellt. In der linken Grafik wird das Routing mit der Startzeit 15:46 Uhr durchgeführt. Bei der retournierten ÖV-Verbindung muss man \emph{240s} warten und hat für das Fussgänger- und ÖV-Routing zusammen \emph{829s}.
 In der rechten Grafik startet man um 14:12 Uhr und wartet auf die gleiche ÖV-Linie \emph{480s}. Zu Fuss ist das Ziel in \emph{1137s} erreichbar. Links erhält man die Gesamtdauer von \emph{1069s} und rechts \emph{1309s}.
 Aus diesem Grund wird rechts nur das Fussgänger-Routing retourniert, da \emph{1309s > 1137s} zutrifft.
 
@@ -203,7 +204,7 @@ Die Konfiguration der \emph{Plaza Routing} Komponente erfolgt durch ein Python-K
 
 \subsection{QGIS Plugin}
 \label{impl:QGIS Plugin}
-Das QGIS Plugin Plaza Route \cite{github:PlazaRoute-qgis-plugin} fügt sich nahtlos als \emph{Dockwidget} in die QGIS-Umgebung ein. Dabei wird über Python-Bindings (PyQt4) mit dem Qt-Framework gearbeitet. In Abbildung \ref{fig:qgis_plugin_plaza_route} sieht man das Plugin in Aktion. Die Basis wurde mit dem QGIS Plugin Builder \cite{qgis_plugin_builder} gelegt. Beim Entwickeln des Plugin wurde Wert darauf gelegt, dass man Funktionalität bietet, welche bei vergleichbaren Produkten verfügbar ist. So lassen sich die Start und die Destination über eine Kontextmenü direkt auf der Karte auswählen. Das Plugin lässt Koordinaten sowie Adressen zu. Die Koordinaten können in einem beliebigen System, welches QGIS kennt, angegeben werden. Dies ermöglicht eine unkomplizierte Anwendung, da das Plugin keine speziellen Anforderungen an das System und den Benutzer stellt. Das Plugin wird installiert, eine Karte wird geöffnet und das Routing kann bereits durchgeführt werden.
+Das QGIS Plugin Plaza Route \cite{github:PlazaRoute-qgis-plugin} fügt sich nahtlos als \emph{Dockwidget} in die QGIS-Umgebung ein. Dabei wird über Python-Bindings (PyQt4) mit dem Qt-Framework gearbeitet. In Abbildung \ref{fig:qgis_plugin_plaza_route} sieht man das Plugin in Aktion. Die Basis wurde mit dem QGIS Plugin Builder \cite{qgis_plugin_builder} gelegt. Beim Entwickeln des Plugin wurde Wert darauf gelegt, dass man Funktionalität bietet, welche bei vergleichbaren Produkten verfügbar ist. So lassen sich die Start und die Destination über ein Kontextmenü direkt auf der Karte auswählen. Das Plugin lässt Koordinaten sowie Adressen zu. Die Koordinaten können in einem beliebigen System, welches QGIS kennt, angegeben werden. Dies ermöglicht eine unkomplizierte Anwendung, da das Plugin keine speziellen Anforderungen an das System und den Benutzer stellt. Das Plugin wird installiert, eine Karte wird geöffnet und das Routing kann bereits durchgeführt werden.
 
 \begin{figure}[ht]
 \centering
@@ -224,7 +225,7 @@ Die Karte wird über \emph{QgsRubberBand} modifiziert. \emph{QgsRubberBand} nutz
     \label{QgsRubberBand Pseudocode}
 \end{listing}
 
-Im Abschnitt \nameref{impl:Plaza Routing Route optimieren} wurde auf die Problematik mit den ungenauen Koordinaten von Search.ch \cite{search_ch_route_api} eingegangen. In Abbildung \ref{fig:precise_public_transport_stops_comparison} ist nun der Unterschied zwischen dem un- und gesetztem \emph{precise public transport stop} Flag sichtbar. Mit dem gesetzten Flag werden die Koordinaten optimiert.
+Im Abschnitt \nameref{impl:Plaza Routing Route optimieren} wurde auf die Problematik mit den ungenauen Koordinaten von Search.ch \cite{search_ch_route_api} eingegangen. In Abbildung \ref{fig:precise_public_transport_stops_comparison} ist nun der Unterschied zwischen dem ungsetzten und gesetzten \emph{precise public transport stop} Flag sichtbar. Mit dem gesetzten Flag werden die Koordinaten optimiert.
 
 \begin{figure}[ht]
 \centering

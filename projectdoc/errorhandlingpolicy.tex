@@ -1,7 +1,7 @@
 
 \section{Error-Handling Policy}
 \label{sec:Error-Handling Policy}
-Grundsätzlich folgt das System dem Motto, dass dem Benutzer keine Internas exponiert werden, sondern im Fehlerfall eine kurze und prägnante Meldung zurückgegeben wird, was schief gelaufen ist. Im folgenden sind dazu die Exception und Logging Policy aufgeführt.
+Grundsätzlich folgt das System dem Motto, dass dem Benutzer keine Internas exponiert werden, sondern im Fehlerfall eine kurze und prägnante Meldung zurückgegeben wird, was schief gelaufen ist. Im Folgenden sind dazu die Exception und Logging Policy aufgeführt.
 
 \subsection{Exception Policy}
 \label{ehp:Exception Policy}
@@ -17,13 +17,13 @@ Die Parameter werden beim Aufruf direkt von \emph{Argparse} validiert, der Benut
 
 \subsubsection{Plaza Routing}
 \label{ehp:Plaza Routing}
-PlazaRouting definiert zwei eigene Typen an Exceptions, namentlich \emph{ValidationError} und \emph{ServiceError} und setzt auf die eingebaute \emph{ValueError}. 
+PlazaRouting definiert zwei eigene Typen an Exceptions, namentlich \emph{ValidationError} und \emph{ServiceError}, und setzt auf die eingebaute \emph{ValueError}. 
 
 \paragraph{ServiceError}\label{ehp:PR:ServiceError}~\\
-ServiceError werden für Fehler beim Aufruf von Fremdsystemen in der \hyperref[architektur:integration-layer]{Integration-Schicht} verwendet. So kann es sein, dass ein Fremdsystem temporär offline ist oder sich Breaking-Changes in der API ereignet haben. In diesem Fall wird die Exception geloggt und eine ServiceError geworfen.
+ServiceError werden für Fehler beim Aufruf von Fremdsystemen in der \hyperref[architektur:integration-layer]{Integration-Schicht} verwendet. So kann es sein, dass ein Fremdsystem temporär offline ist oder sich Breaking-Changes in der \ac{API} ereignet haben. In diesem Fall wird die Exception geloggt und ein ServiceError geworfen.
 
 \paragraph{ValidationError}\label{ehp:PR:ValidationErrorr}~\\
-ValidationError werden für Fehler verwendet, welche aufgrund von Benutzereingaben geworfen werden. Dazu gehört beispielsweise der Aufruf der API mit ungültigen Parameter (Bsp. falsche formatierte Koordinaten). Das Werfen dieser Exception beschränkt sich jedoch nicht nur auf die \hyperref[architektur:business-layer]{Business-Schicht}. Auch die \hyperref[architektur:integration-layer]{Integration-Schicht} kann gebrauch von dieser machen, falls die Parameter für unsere Seite in Ordnung sind, für ein Fremdsystem jedoch nicht. So kann beispielsweise eine Routing-Engine für eine Koordinate den Fehler "Point is out of bounds" werfen, falls die Koordinate nicht auf der Karte gefunden wird, auf welcher die Routing-Engine agiert. Dies tritt beispielsweise auf, wenn man eine Koordinate aus Deutschland dem Service übergibt, die Routing-Engine jedoch nur das \ac{OSM}-File der Schweiz kennt.
+ValidationError wird für Fehler verwendet, welche aufgrund von Benutzereingaben geworfen werden. Dazu gehört beispielsweise der Aufruf des \ac{API} mit ungültigen Parameter (Bsp. falsch formatierte Koordinaten). Das Werfen dieser Exception beschränkt sich jedoch nicht nur auf die \hyperref[architektur:business-layer]{Business-Schicht}. Auch die \hyperref[architektur:integration-layer]{Integration-Schicht} kann gebrauch von dieser machen, falls die Parameter für unsere Seite in Ordnung sind, für ein Fremdsystem jedoch nicht. So kann beispielsweise eine Routing-Engine für eine Koordinate den Fehler "Point is out of bounds" werfen, falls die Koordinate nicht auf der Karte gefunden wird, auf welcher die Routing-Engine agiert. Dies tritt beispielsweise auf, wenn man eine Koordinate aus Deutschland dem Service übergibt, die Routing-Engine jedoch nur das \ac{OSM}-File der Schweiz kennt.
 
 Diese Exception hat die Eigenschaft, dass die Message in der Exception nach aussen, sprich dem Benutzer, exponiert werden kann. Somit muss diese mit klaren und ohne internen Implementierungdetails versehenen Messages versehen werden. Dies wird aus dem Grund gemacht, da der Fehler auf Seiten des Benutzers liegt und er somit sofort sehen kann, wie er das System richtig bedienen kann.
 
@@ -48,7 +48,7 @@ Folgende HTTP Status Codes sollen verwendet werden:
     \item \emph{200 OK}
     \item \emph{400 Bad Request}: Fehler auf Seiten des Benutzer
     \item \emph{500 Internal Server Error}: Fehler auf Seiten PlazaRouting
-    \item \emph{503 Service Unavailable}: Fehler, welche aufgrund fehlerhaften Fremdsystem auftreten (nicht-verfügbar, Änderungen in der API)
+    \item \emph{503 Service Unavailable}: Fehler, welche aufgrund fehlerhaften Fremdsystem auftreten (nicht-verfügbar, Änderungen im API)
 \end{itemize}
 
 
@@ -58,4 +58,4 @@ Beide Komponenten führen ein Log-File, welches zur Information oder im Fehlerfa
 
 Exceptions müssen zwingend mit Stack-Trace protokolliert werden, falls diese nicht korrekt behandelt werden können und ein Fehler-Recovery nicht möglich ist. Das Logging von Exceptions wird dort durchgeführt, wo der Fehler auftritt und gefangen wird.
 
-Dem Entwickler steht es frei die anderen Log-Levels nach Belieben einzusetzen.
+Dem Entwickler steht es frei, die anderen Log-Levels nach Belieben einzusetzen.

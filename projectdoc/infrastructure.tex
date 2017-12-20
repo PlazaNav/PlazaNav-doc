@@ -33,7 +33,7 @@ Die \nameref{impl:Plaza Vorverarbeitung} wird periodisch von Hand oder automatis
 \subsubsection{Plaza Routing}
 \label{deployment:Plaza Routing}
 
-Das \nameref{impl:Plaza Routing} stellt das Backend dar und bietet eine API an, die vom QGIS-Plugin benutzt wird. Neben den Online-Diensten braucht es dazu eine lokale Instanz der Routing-Engine, in unserem Fall Graphhopper \cite{graphhopper}.
+Das \nameref{impl:Plaza Routing} stellt das Backend dar und bietet ein API an, die vom QGIS-Plugin benutzt wird. Neben den Online-Diensten braucht es dazu eine lokale Instanz der Routing-Engine, in unserem Fall Graphhopper \cite{graphhopper}.
 
 Für Plaza Routing und Graphhopper wurde je ein Docker-Image erstellt. Da Flask \cite{flask} nur ein minimaler Applikations-Server mitbringt, wird unsere Flask-Applikation auf einem \emph{uWSGI} \cite{uwsgi} Server gestartet. Als dritter Container benutzen wir \emph{Nginx} \cite{nginx}, der als Reverse Proxy konfiguriert ist und alle Anfragen an den Plaza Routing Container weiterleitet. So ist der Applikations-Server zusätzlich abgeschirmt.
 
