@@ -104,7 +104,7 @@ In diesem Abschnitt wird vertieft in die einzelne Bestandteile des Plaza Routing
 Hierbei handelt es sich um den zentralen Einstiegspunkt in die Komponente \emph{PlazaRouting}. Die Komponenten wird in dieser Schicht konfiguriert und initialisiert.
 
 \paragraph{api}\label{architektur:api-layer}~\\
-In dieser Schicht wird eine \ac{REST}-\ac{API} für den gesamten externen Einstieg in das Plaza Routing exponiert. Diese \ac{API} wird primär vom \nameref{architektur:QGIS Plugin} verwendet. Eine Einschränkung bezüglich der Konsumenten gibt es nicht.
+In dieser Schicht wird eine Web-\ac{API} für den gesamten externen Einstieg in das Plaza Routing exponiert. Diese \ac{API} wird primär vom \nameref{architektur:QGIS Plugin} verwendet. Eine Einschränkung bezüglich der Konsumenten gibt es nicht.
 
 Die \ac{OAS} \cite{open-api-specificaiton} der \ac{API} ist unter \cite{plaza-routing-api-spez} verfügbar. SwaggerUI kann unter \cite{plaza-routing-api-swaggerui} eingesehen werden. Die {API}-Spezifikation wird in einem Git-Repository gehalten. Änderungen werden somit automatisch auf der Github-Page \cite{plaza-routing-api-spez} publiziert. Dies hat die Vorteile, dass es keine Abweichung zwischen Spezifikation und Dokumentation geben kann, mit Swagger \cite{swagger} die Schnittstelle bereits ideal beschrieben ist und die Haltung in einem öffentlichen Repository eine Diskussions-Plattform für Konsumenten bietet.
 

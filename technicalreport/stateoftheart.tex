@@ -4,9 +4,9 @@
 \subsection{Aktuelle Situation}
 \label{sub:Aktuelle Situation}
 
-In \ac{OSM} gibt es mehrere Arten, wie Mapper mit Flächen umgehen. So wirken einige Mapper dem Fussgängerrouting-Problem über Flächen mit zusätzlichen eingezeichneten Wegen entgegen oder die Fläche ist ganz befreit von Wegen.
+In \ac{OSM} gibt es mehrere Arten, wie Mapper mit Flächen umgehen. So wirken einige Mapper dem Fussgängerrouting-Problem über Flächen mit zusätzlichen eingezeichneten Wegen entgegen, oder aber die Fläche ist ganz von Wegen befreit.
 
-In Abbildung \ref{fig:helvetiaplatz_comparison} und Abbildung \ref{fig:sechselaeutenplatz_comparison} ist ein Vergleich gängiger Routing-Engines aufgelistet, welche ein Fussgänger-Profil anbietet. In Abbildung \ref{fig:helvetiaplatz_comparison} sieht man schön, wie es bei \ac{OSM} möglich ist, dass die eingezeichneten Fusswege über denn Platz genutzt werden. Diese Route entspricht offensichtlich nicht einem natürlichen Fussgänger-Verhalten, da normalerweise der direkte Weg über den Platz gewählt wird, sofern keine Hindernisse im Weg sind. An dieser Stelle scheitert Google Maps. Der Vergleich von Google Maps und \ac{OSM} hinkt hier natürlich, da nicht beide auf den genau gleichen Datenbestand zurückgreifen. Betrachtet man in Abbildung \ref{fig:sechselaeutenplatz_comparison} hingegen den Sechseläutenplatz, sieht man, dass ohne eingezeichnete Wege alle getesteten Anbieter um den Platz herum führen.
+In Abbildung \ref{fig:helvetiaplatz_comparison} und Abbildung \ref{fig:sechselaeutenplatz_comparison} ist ein Vergleich gängiger Routing-Engines abgebildet, welche ein Fussgänger-Profil anbietet. In Abbildung \ref{fig:helvetiaplatz_comparison} sieht man schön, wie es bei \ac{OSM} möglich ist, dass die eingezeichneten Fusswege über den Platz genutzt werden. Diese Route entspricht offensichtlich nicht einem natürlichen Fussgänger-Verhalten, da normalerweise der direkte Weg über den Platz gewählt wird, sofern keine Hindernisse im Weg sind. An dieser Stelle scheitert Google Maps. Der Vergleich von Google Maps und \ac{OSM} hinkt hier natürlich, da nicht beide auf den genau gleichen Datenbestand zurückgreifen. Betrachtet man in Abbildung \ref{fig:sechselaeutenplatz_comparison} hingegen den Sechseläutenplatz, sieht man, dass ohne eingezeichnete Wege alle getesteten Anbieter um den Platz herum führen.
 
 \begin{figure}[ht]
 \centering
@@ -23,7 +23,7 @@ In Abbildung \ref{fig:helvetiaplatz_comparison} und Abbildung \ref{fig:sechselae
 \end{figure}
 
 
-Abschliessend kann man sagen, dass alle getesteten Routing-Engines mit den Fussgänger-Profilen mit Stand 13.10.2017 scheitern, wenn keine Wege über die Fläche eingezeichnet sind und so die Dauer und Streckenlänge verfälscht wird.
+Abschliessend kann man sagen, dass alle getesteten Routing-Engines mit den Fussgänger-Profilen mit Stand 13.10.2017 scheitern, wenn keine Wege über die Fläche eingezeichnet sind, und so die Dauer und Streckenlänge verfälscht wird.
 
 \subsection{Lösungsansätze}
 \label{sub:Lösungsansätze}
@@ -35,7 +35,6 @@ Abschliessend kann man sagen, dass alle getesteten Routing-Engines mit den Fussg
 In den folgenden Unterkapitel werden bestehende Lösungsansätze aus der Literatur diskutiert, die das Problem des Routings über offene Flächen, wie in Kapitel \ref{subsub:Routing bei zwei benachbarten Flächen} beschrieben, lösen sollen. Die beiden vielversprechendsten Ansätze Visibility-Graph und SpiderWeb-Graph werden in Kapitel \ref{sec:Bewertung Routing über offene Flächen} tiefergehend miteinander verglichen.
 
 \paragraph{Visibility-Graph}\label{solution:Visibility-Graph}~\\
-
 Ein Ansatz zur Verhinderung von Kollisionen auf Flächen wurde in \cite{lozano-perez_visibility_graph} als Visibility-Graph beschrieben. Dabei wird in einem ersten Schritt für jeden Knotenpunkt einer Fläche eine Verbindung zu jedem anderen Knotenpunkt gezeichnet. Für unsere Zwecke werden dabei alle Knotenpunkte eines Polygons, Hindernisse,  sowie Schnittpunkte mit Strassen und Wegen (\glspl{Einstiegspunkt}) beachtet.
 
 In einem zweiten Schritt werden alle Verbindungen verworfen, die nicht komplett innerhalb der Fläche liegen oder mit einem Hindernis darauf kollidieren.
@@ -55,9 +54,7 @@ Für die Verwendung im Routing beschreibt \cite{graser_visibility_graph} einen A
 \end{figure}
 
 \paragraph{SpiderWeb-Graph}\label{solution:SpiderWeb-Graph}~\\
-
-
-Die Arbeit \cite{dzafic_spider_web_graph} befasst sich mit dem Flächenrouting für Nutzern von Elektrorollstühlen, indem ein Spinnennetz (siehe Abbildung \ref{fig:spiderweb}) über das Polygon gelegt wird. Dies hat den Vorteil, dass auf dem Polygon, sprich der Fläche zusätzliche Linien und Kanten vorhanden sind, wobei statische Hindernisse berücksichtigt werden, welche für das Routing verwendet werden können. Diese Idee und das Grundprinzip wurde im folgenden übernommen.
+Die Arbeit \cite{dzafic_spider_web_graph} befasst sich mit dem Flächenrouting für Nutzern von Elektrorollstühlen, indem ein Spinnennetz (siehe Abbildung \ref{fig:spiderweb}) über das Polygon gelegt wird. Dies hat den Vorteil, dass auf der Fläche zusätzliche Linien und Kanten vorhanden sind (wobei statische Hindernisse berücksichtigt werden), welche für das Routing verwendet werden können. Diese Idee und das Grundprinzip wurde im Folgenden übernommen.
 
 \begin{figure}[ht]
 \centering
@@ -66,7 +63,7 @@ Die Arbeit \cite{dzafic_spider_web_graph} befasst sich mit dem Flächenrouting f
 \label{fig:spiderweb}
 \end{figure}
 
-Zur Verdeutlichung der Idee ist der Pseudocode \ref{SpiderWeb Pseudocode} in zu betrachten.
+Auf dem Spinnennetz wird ähnlich wie beim \nameref{solution:Visibility-Graph} zwischen allen \glspl{Einstiegspunkt}n der Shortest-Path berechnet. Für die weitere Verarbeitung werden nur noch diese optimierten Pfade verwendet. Zur Verdeutlichung der Idee ist der Pseudocode in Listing \ref{SpiderWeb Pseudocode} zu betrachten.
 
 \begin{listing}[ht]
     \inputminted{python}{technicalreport/listing/spiderweb_pseudocode.py}
@@ -78,7 +75,7 @@ Damit ein Spinnennetz über eine Fläche gezeichnet werden kann, muss eine Bound
 
 Vor dem Zeichnen des Spinnennetz ist es möglich, den Abstand zwischen Spalten und den Zeilen (Spacing) zu definieren. Dies hat hohe Auswirkung auf die Anzahl Zeilen und Spalten und somit auf die gezeichneten Pfade über die Fläche, da mit einem kleineren Spacing eine "Glättung" der Pfade möglich ist. Die gezeichneten Pfade widerspiegeln so eher das Verhalten eines Fussgängers. Ein Abstrich des kleiner Spacings ist sofort ersichtlich, wenn man das Spinnennetz in der Abbildung \ref{fig:spiderweb} betrachtet. Man kann annehmen, dass dieses Spinnennetz über eine Fläche von 4*4 cm mit einem Spacing von einem 1 cm gezeichnet wird. Verkleinert man nun das Spacing auf 0.5 cm, steigt die Anzahl der zu zeichnenden Linien von 72 auf 272. Halbiert man ein weiteres Mal, ist man bereits bei 1056 Linien. Damit ein Routing über das Spinnennetz und somit Abzweigungen möglich sind, kann nicht eine Line pro Zeile oder Spalte genutzt werden.
 
-Das Zeichnen des Spinnennetzes hat eine Effizienz von \(O(NxM)\), wobei N und M die Anzahl Spalten und Zeilen sind. Die Anzahl der Zeilen und Spalten erfahren beim Halbieren des Spacings jeweils ein quadratisches Wachstum. Durch ein kleineres Spacing steigen auch die Anzahl möglicher Pfade über die Fläche an, was Auswirkung auf die Dauer der Generierung des Shortest Paths hat. 
+Das Zeichnen des Spinnennetzes hat eine Effizienz von $O(N\timesM)$, wobei N und M die Anzahl Spalten und Zeilen sind. Die Anzahl der Zeilen und Spalten erfahren beim Halbieren des Spacings jeweils ein quadratisches Wachstum. Durch ein kleineres Spacing steigen auch die Anzahl möglicher Pfade über die Fläche an, was Auswirkung auf die Dauer der Generierung des Shortest Paths hat. 
 
 Betrachtet man das Resultat in Abbildung \ref{fig:spiderweb_result}, sieht man in Schwarz den generierten Shortest Path über die Fläche.
 
@@ -100,7 +97,6 @@ Es wurde ebenfalls geprüft, ob die Rotation des Spinnennetz auf die Gegebenheit
 \end{figure}
 
 \paragraph{Straight Skeleton}~\\
-
 Die Methode vom \emph{Straight Skeleton} wurde erstmals in \cite{aichholzer_skeleton} eingeführt. Dabei werden Schritt für Schritt die Kanten des Polygons zur Mitte zusammen geführt, es entstehen Verbindungen mit scharfen Ecken zu den Eckpunkten des Polygons. In Abbildung \ref{fig:skeleton_example} ist beispielhaft ein Graph aufgezeichnet.
 
 Die Andwendung dieser Methode für Flächenrouting wurde bereits in \cite{graser_visibility_graph} diskutiert. Es stellt sich heraus, dass die \emph{Straight Skeleton} Methode keine natürlichen Routen für Fussgänger ergibt, da sie tendenziell zur Mitte der Fläche gehen und sich dabei scharfe Kurven ergeben. Aus diesen Gründen wird dieser Ansatz nicht weiter behandelt.
@@ -119,7 +115,7 @@ Die Andwendung dieser Methode für Flächenrouting wurde bereits in \cite{graser
 Wie in \ref{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)} beschrieben, ergeben sich beim Überqueren von offenen Landflächen wie Berge oder Strände andere Fragestellungen. Hier spielt die Unterlage eine grössere Rolle, Faktoren wie Höhe oder Beschaffenheit des Untergrunds sind nun relevant. Für diese Problematik wird ein technischer Lösungsansatz vorgestellt und bewertet.
 
 \paragraph{Technischer Ansatz mit Cost Path Analyse}~\\
-Ein Ansatz für die Berechnung von Routen durch freie Flächen ist die Cost Path Analyse \cite{cost_path_analysis}. Dieses Verfahren wird oft angewendet, um in einer Fläche Korridore zu finden, um darin beispielsweise neue Strassen zu erschliessen \cite{gis-wiki:cost-path-analysis}.
+Ein Ansatz für die Berechnung von Routen über offene Flächen ist die Cost Path Analyse \cite{cost_path_analysis}. Dieses Verfahren wird oft angewendet, um in einer Fläche Korridore zu finden, um darin beispielsweise neue Strassen zu erschliessen \cite{gis-wiki:cost-path-analysis}.
 
 In einem ersten Schritt wird ein Raster über die Fläche gelegt. Jeder Kachel wird ein Wert zugewiesen, der den Kosten entspricht, um diese Fläche zu traversieren. Die Kosten können zusammen gesetzt sein aus mehreren Faktoren wie die Steigung oder Beschaffenheit des Untergrunds. So bekäme etwa ein Sandstrand höhere Kosten als eine Asphalt-Fläche. Dieses Raster wird auch Cost Surface genannt. \cite{gid_fundamentals}
 
@@ -178,7 +174,7 @@ Wie in \ref{target:Routing bei zwei benachbarten Flächen} beschrieben, gibt es 
 Im Rahmen unserer Arbeit haben wir in der Literatur keine entsprechende Diskussion dazu gefunden. Wir haben für die Lösung des Problems zwei Ansätze überlegt:
 
 \begin{enumerate}
-    \item Die beiden Flächen miteinander kombinieren: Wenn sich zwei Fussgänger-Flächen berühren, können sie geometrisch vereint und als eine einzige Fussgänger-Fläche angesehen werden.
+    \item Die beiden Flächen miteinander kombinieren: Wenn sich zwei Fussgänger-Flächen berühren, können sie geometrisch vereint und als eine einzige Fläche angesehen werden.
     \item Gemeinsame \glspl{Einstiegspunkt} zwischen den Flächen definieren: An der Kante, wo sich zwei Flächen berühren, werden künstlich in einem regelmässigen Abstand Einstiegspunkte eingefügt, wo für das Routing der Fussgänger die Kante überqueren kann.
 \end{enumerate}
 
@@ -190,7 +186,7 @@ Für die in Kapitel \ref{sub:Lösungsansätze} diskutierten Ansätze für Routin
 \subsubsection{Einstiegspunkte}
 \label{subsub:Verbesserung_Einstiegspunkte}
 
-Sowohl der \nameref{solution:SpiderWeb-Graph} wie auch der \nameref{solution:Visibility-Graph} benutzen beide \glspl{Einstiegspunkt}, um die kürztesten Pfade zu finden und den Graphen mit dem bestehenden Strassennetz zu verbinden. Es kommt allerdings oft vor, dass es auf einer Fussgängerfläche keinen oder nur einen einzigen Einstiegspunkt gibt, wodurch auch kein Graph berechnet werden kann. In der Realität könnte es aber trotzdem möglich sein, eine solche Fläche zu Fuss zu überqueren, auch wenn keine Strasse daran angrenzt.
+Sowohl der \nameref{solution:SpiderWeb-Graph} wie auch der \nameref{solution:Visibility-Graph} benutzen \glspl{Einstiegspunkt}, um die kürztesten Pfade zu finden und den Graphen mit dem bestehenden Strassennetz zu verbinden. Es kommt allerdings oft vor, dass es auf einer Fussgängerfläche keinen oder nur einen einzigen Einstiegspunkt gibt, wodurch auch kein Graph berechnet werden kann. In der Realität könnte es aber trotzdem möglich sein, eine solche Fläche zu Fuss zu überqueren, auch wenn keine Strasse daran angrenzt.
 
 Eine mögliche Lösung dieses Problems könnte sein, die Umgebung der Fussgänger-Fläche zu analysieren und künstliche \glspl{Einstiegspunkt} dort einzufügen, wo ein Fussgänger die Fläche betreten kann. Dies könnte von einer angrenzenden Fussgänger-Fläche aus sein (siehe Kap. \ref{subsub:Routing bei zwei benachbarten Flächen}) oder von einer anderen Fläche, wobei der Zutritt zur Fussgänger-Fläche nicht durch ein Hinderniss verunmöglicht werden soll.
 
@@ -199,4 +195,4 @@ Eine mögliche Lösung dieses Problems könnte sein, die Umgebung der Fussgänge
 
 Ein Problem des SpiderWeb-Graphen ist die Auflösung des Gitters (SpiderWebs), die gewählt werden muss, um optimale Routen zu erhalten. Bei einer zu kleinen Auflösung macht die Route viele Kurven, da sie ständig dem Gitter entlang fahren muss. Eine sehr grosse Auflösung des SpiderWebs ist aber für die Praxis sehr rechenaufwändig, da die benötigte Rechenzeit quadratisch mit einer höheren Auflösung steigt.
 
-Eine mögliche Verbesserung für dieses Problem ist die Anwendung einer Glättung auf die erzeugte Route. Damit wird die Anzahl der Kurven verringert und so einen natürlicheren Pfad erzeugt. Ein Ansatz dafür bietet der Douglas-Peucker Algorithmus \cite{douglas-peucker_algorithm}, der eine Linien-Geometrie vereinfachen kann. Dabei muss allerdings sichergestellt werden, dass die Glättung der Route nicht mit einem Hinderniss kollidiert oder ausserhalb der Fläche fällt. Mit Hilfe der Glättung kann so eine grössere Auflösung für das SpiderWeb gewählt werden, was zusätzlich Rechenzeit spart.
+Eine mögliche Verbesserung für dieses Problem ist die Anwendung einer Glättung auf die erzeugte Route. Damit wird die Anzahl der Kurven verringert und so einen natürlicheren Pfad erzeugt. Ein Ansatz dafür bietet der Douglas-Peucker Algorithmus \cite{douglas-peucker_algorithm}, der eine Linien-Geometrie vereinfachen kann. Dabei muss allerdings sichergestellt werden, dass die Glättung der Route nicht mit einem Hinderniss kollidiert oder ausserhalb der Fläche fällt. Mit Hilfe der Glättung kann so eine kleinere Auflösung für das SpiderWeb gewählt werden, was zusätzlich Rechenzeit spart.
