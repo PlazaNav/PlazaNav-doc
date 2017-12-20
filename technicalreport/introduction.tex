@@ -40,7 +40,8 @@ Auf Flächen können Hindernisse existieren, durch welche nicht geroutet werden 
 
 \subsubsection{ÖV-Haltestelle und Kante}
 \label{ÖV-Haltestelle und Kante}
-Eine ÖV-Haltestelle kann mehrere Stationen umfassen. Normalerweise gehören zu einer Haltestelle zwei Stationen, je eine in jede Fahrtrichtung. Eine dieser Station wird im folgenden als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle beschränkt sich dabei nicht auf zwei Kanten. Betrachtet man den Bahnhof Stadelhofen in Zürich, sieht man, dass weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
+% same explanation is used in the glossary
+Eine ÖV-Haltestelle kann mehrere Plattformen umfassen. Normalerweise gehören zu einer ÖV-Haltestelle zwei Plattformen, je eine in jede Fahrtrichtung. Eine dieser Plattform wird im folgenden allgemein als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle beschränkt sich dabei nicht auf zwei Kanten. Betrachtet man den Bahnhof Stadelhofen in Zürich, Schweiz, sieht man, dass weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
 
 \begin{figure}[ht]
 \centering
@@ -119,9 +120,9 @@ Es kann vorkommen, dass zwei Flächen unmittelbar nebeneinander liegen. Dies ist
 \label{fig:bundesplatz_baerenplatz}
 \end{figure}
 
-\subsubsection{mehrere ÖV-Stationen mit dem gleichen Namen}
-\label{problem:mehrere ÖV-Stationen mit dem gleichen Namen}
-In den meisten Fällen gibt es an einem Standort mit einer ÖV-Station zwei Stationen mit dem gleichen Namen, je eine für die jeweilige Fahrtrichtung. In manchen Fällen ist es so, dass diese Stationen ein Stück voneinander entfernt liegen. Die Entscheidung zur welchen ÖV-Station geroutet wird, muss getroffen werden.
+\subsubsection{mehrere Kanten mit dem gleichen Namen}
+\label{problem:mehrere Kanten mit dem gleichen Namen}
+In den meisten Fällen gibt es an einem Standort mit einer ÖV-Haltestelle zwei \glspl{Kante} mit dem gleichen Namen, je eine für die jeweilige Fahrtrichtung. In manchen Fällen ist es so, dass diese Kanten ein Stück voneinander entfernt liegen. Die Entscheidung zur welche Kante geroutet werden soll, muss getroffen werden.
 	
 \subsection{Ziele und Unterziele}
 \label{Ziele und Unterziele}
@@ -164,9 +165,9 @@ Es soll geprüft werden, wie Fussgänger-Flächen bearbeitet werden können, die
 \label{target:nächste ÖV-Haltestellen finden}
 Der Fokus der Arbeit liegt auf dem Finden und Erreichen der nächsten ÖV-Haltestelle, welche einem ans gewünschte Ziel führt. So soll eruiert werden, wie von einem bestehenden Startpunkt aus die nächsten ÖV-Haltestellen identifiziert werden, um diese an search.ch für das weitere Routing zu übergeben.
 
-\subsubsection{mehrere ÖV-Stationen mit dem gleichen Namen}
-\label{target:mehrere ÖV-Stationen mit dem gleichen Namen}
-Wurde die nächste Haltestelle wie in \ref{target:nächste ÖV-Haltestellen finden} beschrieben, eruiert, so gilt es zur ÖV-Station in die richtige Fahrtrichtung zu routen.
+\subsubsection{mehrere Kanten mit dem gleichen Namen}
+\label{target:mehrere Kanten mit dem gleichen Namen}
+Wurde die nächste ÖV-Haltestelle wie in \ref{target:nächste ÖV-Haltestellen finden} beschrieben, eruiert, so gilt es zur \gls{Kante} in die richtige Fahrtrichtung zu routen.
 
 \subsubsection{Prototyp und Deliverables}
 \label{target:Prototyp und Deliverables}
