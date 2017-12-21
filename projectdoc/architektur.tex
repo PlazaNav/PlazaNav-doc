@@ -2,7 +2,7 @@
 \section{Architektur}
 \label{sec:Architektur}
 
-In diesem Kapitel wird die Architektur unserer Applikation und die Schnittstellen zu den Umsystemen besprochen. Als Anhaltspunkt wird das C4 Modell \cite{c4model} von Simon Brown verwendet. In einem ersten Schritt wird unsere Applikation in den Kontext des grösseren Systems gesetzt. Anschliessend teilen wir das System \emph{PlazaRoute} in einzelne Container und den zentralen Container \emph{Plaza Routing} in einzelne Komponenten auf.
+In diesem Kapitel wird die Architektur unserer Applikation und die Schnittstellen zu den Umsystemen besprochen. Als Anhaltspunkt wird das C4 Modell \cite{c4model} von Simon Brown verwendet. In einem ersten Schritt wird unsere Applikation in den Kontext des grösseren Systems gesetzt. Anschliessend teilen wir das System PlazaRoute in einzelne Container und den zentralen Container Plaza Routing in einzelne Komponenten auf.
 
 \subsection{Systemkontext}
 \label{architektur:Systemkontext}
@@ -16,7 +16,7 @@ In diesem Kapitel wird die Architektur unserer Applikation und die Schnittstelle
 
 Abbildung \ref{fig:system_context_diagram} zeigt das System PlazaRoute mit den Umsystemen auf. Beim Betrachten der C4-Diagramme ist zu beachten, dass diese nicht der \acs{UML}-Spezifikation folgen. Gestrichelte Pfeile bedeuten, dass eine Anfrage in Richtung der Pfeilspitze an ein System geht. Der Datenfluss läuft in die entgegengesetzte Richtung der Pfeile.
 
-Der User bedient die QGIS Desktop Applikation mit dem von uns entwickelten Plugin. Dieses leitet die die Eingabe der Start- und Zielkoordinaten an das System PlazaRoute weiter. Als Antwort sendet PlazaRoute eine Routenbeschreibung an das QGIS-Plugin zurück, das es im QGIS darstellt.
+Der User bedient die QGIS Desktop Applikation mit dem von uns entwickelten Plugin. Dieses leitet die die Eingabe der Start- und Zielkoordinaten an das System PlazaRoute weiter. Als Antwort sendet PlazaRoute eine Routenbeschreibung an das QGIS-Plugin zurück, welche diese im QGIS darstellt.
 
 \subsection{PlazaRoute Container}
 \label{architektur:PlazaRoute Container}
@@ -36,7 +36,7 @@ In den nachfolgenden Abschnitten werden die drei Container näher beleuchtet.
 \subsubsection{Plaza Vorverarbeitung}
 \label{architektur:Plaza Vorverarbeitung}
 
-Bevor die Routing Engine ihre Routing-Funktion ausführen kann, muss diese zuerst aus dem \ac{OSM}-Datensatz einen Routing-Graph generieren. Unsere Hauptaufgabe besteht darin, diesen Routing-Graphen für Fussgänger-Routing über Flächen zu optimieren. Ein Ansatz wäre, den Graphen nach dem Generieren zu verändern. Dies ist aber schwer realisierbar, da die meisten Routing-Engines die Graphen in eigenen (binären) Datenstrukturen ablegen. So wär unsere Implementation auch stark an eine einzelne Routing-Engine gekoppelt.
+Bevor die Routing-Engine ihre Routing-Funktion ausführen kann, muss diese zuerst aus dem \ac{OSM}-Datensatz einen Routing-Graph generieren. Unsere Hauptaufgabe besteht darin, diesen Routing-Graphen für Fussgänger-Routing über Flächen im urbanen Raum zu optimieren. Ein Ansatz wäre, den Graphen nach dem Generieren zu verändern. Dies ist aber schwer realisierbar, da die meisten Routing-Engines die Graphen in eigenen (binären) Datenstrukturen ablegen. So wär unsere Implementation auch stark an eine einzelne Routing-Engine gekoppelt.
 
 Ein zweiter Ansatz die Integration unserer Optimierung in die Verarbeitung der Routing-Engines selbst. Auch da wären wir wieder stark an eine spezifische Routing-Engine gekoppelt.
 Wir haben uns stattdessen entschieden, beim Input der \ac{OSM}-Daten anzusetzen. Dazu werden die Rohdaten zuerst eingelesen und nach Fussgänger-Flächen abgesucht (\nameref{par:OSM Importer}). Mit unserem Algorithmus werden neue Fusswege eingetragen (\nameref{par:Plaza Optimizer}). Diese neu erzeugten Kartendaten werden dann wieder mit den ursprünglichen Rohdaten verschmelzt (\nameref{par:OSM Merger}). Erst dann generiert die Routing-Engine daraus den Routing-Graphen. Das Vorgehen ist in Abbildung \ref{fig:dataflow_vorverarbeitung} schematisch aufgezeigt.
@@ -85,7 +85,7 @@ Die durch unseren Algorithmus erzeugten Wege durch Flächen (in Shapely Datenstr
 
 In einem weiteren Schritt müssen unsere optimierten Wege in das bestehende Strassennetz eingebunden werden, damit die Routing-Engine diese auch beachtet. Dazu werden die \glspl{Einstiegspunkt} der von uns erzeugten Fusswege in den bestehenden Strassen und Wegen referenziert, die an diesem Punkt auf die Fläche treffen. Somit werden sie topologisch direkt miteinander verbunden.
 
-Als letzten Schritt führen wir die erzeugten Fusswege und die modifizierten Strassen wieder zusammen mit der "grossen" \ac{OSM}-Datei, die ganz am Anfang importiert wurde. Dazu wird das Commandline-Tool Osmosis \cite{osmosis} verwendet.
+Als letzten Schritt führen wir die erzeugten Fusswege und die modifizierten Strassen wieder mit der "grossen" \ac{OSM}-Datei zusammen, welche ganz am Anfang importiert wurde. Dazu wird das Command-Line-Tool Osmosis \cite{osmosis} verwendet.
 
 \subsubsection{Plaza Routing}
 \label{architektur:Plaza Routing}
@@ -106,7 +106,7 @@ Hierbei handelt es sich um den zentralen Einstiegspunkt in die Komponente \emph{
 \paragraph{api}\label{architektur:api-layer}~\\
 In dieser Schicht wird eine Web-\ac{API} für den gesamten externen Einstieg in das Plaza Routing exponiert. Diese \ac{API} wird primär vom \nameref{architektur:QGIS Plugin} verwendet. Eine Einschränkung bezüglich der Konsumenten gibt es nicht.
 
-Die \ac{OAS} \cite{open-api-specificaiton} der \ac{API} ist unter \cite{plaza-routing-api-spez} verfügbar. SwaggerUI kann unter \cite{plaza-routing-api-swaggerui} eingesehen werden. Die {API}-Spezifikation wird in einem Git-Repository gehalten. Änderungen werden somit automatisch auf der Github-Page \cite{plaza-routing-api-spez} publiziert. Dies hat die Vorteile, dass es keine Abweichung zwischen Spezifikation und Dokumentation geben kann, mit Swagger \cite{swagger} die Schnittstelle bereits ideal beschrieben ist und die Haltung in einem öffentlichen Repository eine Diskussions-Plattform für Konsumenten bietet.
+Die \ac{OAS} \cite{open-api-specificaiton} der \ac{API} ist unter \cite{plaza-routing-api-spez} verfügbar. SwaggerUI kann unter \cite{plaza-routing-api-swaggerui} eingesehen werden. Die {API}-Spezifikation wird in einem Git-Repository gehalten \cite{github:PlazaRoute-api}. Änderungen werden somit automatisch auf der Github-Page \cite{plaza-routing-api-spez} publiziert. Dies hat die Vorteile, dass es keine Abweichung zwischen Spezifikation und Dokumentation geben kann, mit Swagger \cite{swagger} die Schnittstelle bereits ideal beschrieben ist und die Haltung in einem öffentlichen Repository eine Diskussions-Plattform für Konsumenten bietet.
 
 \paragraph{business}\label{architektur:business-layer}~\\
 In der Business-Schicht ist die Business-Logik der \ac{API}-Abfragen vorhanden. Das PlazaRouting wird logisch in zwei Bereiche \emph{PublicTransportConnectionFinder} und \emph{WalkingRouteFinder} aufgeteilt. Die Koordination übernimmt dabei \emph{PlazaRouteFinder}. So wird das Design-Prinzip \emph{Separation of Concerns} ideal umgesetzt, da \emph{PublicTransportConnectionFinder} nur mit Services kommuniziert, welche für das ÖV-Routing notwendig sind und \emph{WalkingRouteFinder} die Kommunikation mit der Routing-Engine übernimmt.
@@ -118,18 +118,23 @@ In den nachfolgenden Abschnitten sind die Integration-Services und ihre Notwendi
 Der \emph{SearchChService} kommuniziert mit dem Fahrplan-\ac{API} von search.ch \cite{search_ch_route_api} und bezieht die Fahrplan-Daten für eine bestimmte Ausgangsstation und Destination.
 
 \subparagraph{Overpass Service}\label{architektur:Overpass Service}~\\
-Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Haltestellen in einem gegebenen Umkreis und geografischen Position von \glspl{Kante} basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden.
+Der \emph{OverpassService} übernimmt mithilfe der \ac{QL} die Kommunikation mit Overpass \cite{wiki:overpass}. Der Hauptfokus liegt auf dem Extrahieren von ÖV-Haltestellen in einem gegebenen Umkreis und der geografischen Position von \glspl{Kante} basierend auf Daten, welche aus dem \nameref{architektur:Search.ch Service} gewonnen werden.
 
 \subparagraph{Geocoding Service}\label{architektur:Geocoding Service}~\\
-Der \emph{GeocodingService} liefert für eine Adresse eine Koordinate und für eine Koordinate die zugehörende Adresse.
+Der \emph{GeocodingService} liefert mithilfe von Nominatim \cite{nominatim_osm} für eine Adresse eine Koordinate.
 
 \subparagraph{Routing-Engine Service}\label{architektur:Routing-Engine Service}~\\
 Der \emph{RoutingEngineService} ist für das Fussgänger-Routing zuständig und kommuniziert mit einer Routing-Engine. Die Architektur ist mit dem Strategy-Pattern \cite{gof_patterns} so gewählt, dass die Routing-Engine einfach ausgetauscht werden kann.
 
-\subsection{QGIS Plugin}
+\subsubsection{Routing-Engine}
+\label{architektur:Routing-Engine}
+In diesem Container ist die Routing-Engine angesiedelt, welche im Kapitel \ref{analyse:Evaluation Routing-Engine} evaluiert wurde.
+Sie ist reiner Lieferant und operiert auf den \ac{OSM}-Daten, welche der Container \nameref{architektur:Plaza Vorverarbeitung} liefert.
+
+\subsection{QGIS-Plugin}
 \label{architektur:QGIS Plugin}
 
-Das QGIS-Plugin ist unabhängig vom System PlazaRoute und läuft auf dem Client des Benutzers. Die Kommunikation mit dem Container Plaza Routing erfolgt über einen REST-Service. Das Plugin ist reiner Konsument und zeigt auf, welchen Mehrwert PlazaRoute bieten kann. In Abbildung \ref{fig:class_diagram_plaza_route_qgis_plugin} ist das Klassen-Diagramm zu sehen. Herausheben kann man, dass das Plugin in fünf Komponente zerlegt wird. \emph{PlazaRouteRoutingService} kommuniziert mit dem REST-Service (siehe Abschnitt \nameref{architektur:api-layer}). \emph{PlazaRouteMapTool} übernimmt die Interaktion mit der Karte und führt das Zeichnen der Route mit \emph{PlazaRouteRouteDrawer} durch. \emph{PlazaRouteDirectionsGenerator} generiert ein Routing für die zurückgelieferte Route. Die zentrale Steuerung übernimmt das Dockwidget.
+Das QGIS-Plugin ist unabhängig vom System PlazaRoute und läuft auf dem Client des Benutzers. Die Kommunikation mit dem Container \nameref{architektur:Plaza Routing} erfolgt über einen REST-Service auf Level 2 des Maturity Model \cite{maturity_model}. Das Plugin ist reiner Konsument und zeigt auf, welchen Mehrwert PlazaRoute bieten kann. In Abbildung \ref{fig:class_diagram_plaza_route_qgis_plugin} ist das Klassen-Diagramm zu sehen. Herausheben kann man, dass das Plugin in fünf Komponente zerlegt wird. \emph{PlazaRouteRoutingService} kommuniziert mit dem REST-Service (siehe Abschnitt \nameref{architektur:api-layer}). \emph{PlazaRouteMapTool} übernimmt die Interaktion mit der Karte und führt das Zeichnen der Route mit \emph{PlazaRouteRouteDrawer} durch. \emph{PlazaRouteDirectionsGenerator} generiert eine Navigationsanweisung für die zurückgelieferte Route. Die zentrale Steuerung übernimmt das Dockwidget.
 
 \begin{figure}[th]
     \centering
