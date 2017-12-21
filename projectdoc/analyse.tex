@@ -62,7 +62,7 @@ Für die Anforderung \ref{target:nächste ÖV-Haltestellen finden} bietet sich O
 
 Für eine einfache Intergration in Python gibt es Overpass Wrapper. Dabei wurden zwei Libraries berücksichtigt, namentlich \emph{overpass-api-python-wrapper} und \emph{OverPy}. Die Libraries haben einen ähnlich häufigen Updatezyklus. Für beide wurde ein Proof of Concept implementiert, welcher die ÖV-Haltestellen im einem kleinen Umkreis vom Stadelhofen, Zürich, Schweiz abfragt.
 
-Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere Dokumentation und dass OverPy Klassen für \glspl{Node}, Relations, \gls{Way}, Area, etc. und Hilfsfunktionen, welche das Ganze übersichtlich halten, anbietet. Bei \emph{overpass-api-python-wrapper} besteht der Nachteil, dass das JSON-Resultat der Abfrage selber geparsed und verarbeitet werden muss.
+Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere Dokumentation und dass OverPy Klassen für \glspl{Node}, \glspl{Way}, etc. und Hilfsfunktionen, welche das Ganze übersichtlich halten, anbietet. Bei \emph{overpass-api-python-wrapper} besteht der Nachteil, dass das JSON-Resultat der Abfrage selber geparsed und verarbeitet werden muss.
 
 \begin{listing}[ht]
     \inputminted{python}{projectdoc/listing/get_public_transport_stops_overpass.py}
