@@ -33,8 +33,8 @@ Die \nameref{impl:Plaza Vorverarbeitung} wird periodisch von Hand oder automatis
 \subsubsection{Plaza Routing}
 \label{deployment:Plaza Routing}
 
-Das \nameref{impl:Plaza Routing} stellt das Backend dar und bietet ein API an, die vom QGIS-Plugin benutzt wird. Neben den Fremdsystemen braucht es dazu eine lokale Instanz der Routing-Engine, in unserem Fall Graphhopper \cite{graphhopper}.
+Das \nameref{impl:Plaza Routing} stellt das Backend dar und bietet ein API an, die vom QGIS-Plugin benutzt wird. Neben den Fremdsystemen braucht es dazu eine lokale Instanz der \gls{Routing-Engine}, in unserem Fall GraphHopper \cite{graphhopper}.
 
-Für Plaza Routing und Graphhopper wurde je ein Docker-Image erstellt. Da Flask \cite{flask} nur ein minimaler Applikations-Server mitbringt, wird unsere Flask-Applikation auf einem \emph{uWSGI} \cite{uwsgi} Server gestartet. Als dritter Container benutzen wir \emph{Nginx} \cite{nginx}, der als Reverse Proxy konfiguriert ist und alle Anfragen an den Plaza Routing Container weiterleitet. So ist der Applikations-Server zusätzlich abgeschirmt.
+Für Plaza Routing und GraphHopper wurde je ein Docker-Image erstellt. Da Flask \cite{flask} nur ein minimaler Applikations-Server mitbringt, wird unsere Flask-Applikation auf einem \emph{uWSGI} \cite{uwsgi} Server gestartet. Als dritter Container benutzen wir \emph{Nginx} \cite{nginx}, der als Reverse Proxy konfiguriert ist und alle Anfragen an den Plaza Routing Container weiterleitet. So ist der Applikations-Server zusätzlich abgeschirmt.
 
 Um das Management der drei Container zu vereinfachen, wurde Docker Compose \cite{docker-compose} verwendet. Die Benutzung ist im Github Repository \cite{github:PlazaRoute} dokumentiert.

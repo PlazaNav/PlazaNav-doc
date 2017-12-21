@@ -8,7 +8,7 @@
 \chapter*{Management Summary}\addcontentsline{toc}{chapter}{Management Summary}
 
 \paragraph{Ausgangslage}~\\
-Die heute gängigen Routing-Engines können effizient über Knoten und Kanten routen und wurden konkret für den motorisierten Individualverkehr optimiert. Für den nicht-motorisierten Individualverkehr (Fussgänger, Rollstuhlfahrer, Radfahrer, etc.) sieht die Lage drastisch anders aus. Der motorisierte Individualverkehr hält sich durchwegs an vorgegebene Regeln und Strecken. Ein Fussgänger hingegen verhält sich grundlegend auf eine andere Art und Weise. Wo ein Autofahrer an die Streckenführung gebunden ist, optimiert ein Fussgänger intuitiv. So überquert er einen Platz auf direktem Weg und läuft nicht an der Strasse um den Platz herum, wie es ein Autofahrer tun muss. Dies ist in den Routing-Engines jedoch Status quo. In Abbildung \ref{fig:compare_fischmarktplatz} ist sichtbar, wie über den Fischmarktplatz in Rapperswil-Jona, Schweiz geroutet wird. Es liegt in der Natur des Menschen, den Platz ressourcenschonend zu überqueren, was momentan nicht der Fall ist.
+Die heute gängigen \glspl{Routing-Engine} können effizient über Knoten und Kanten routen und wurden konkret für den motorisierten Individualverkehr optimiert. Für den nicht-motorisierten Individualverkehr (Fussgänger, Rollstuhlfahrer, Radfahrer, etc.) sieht die Lage drastisch anders aus. Der motorisierte Individualverkehr hält sich durchwegs an vorgegebene Regeln und Strecken. Ein Fussgänger hingegen verhält sich grundlegend auf eine andere Art und Weise. Wo ein Autofahrer an die Streckenführung gebunden ist, optimiert ein Fussgänger intuitiv. So überquert er einen Platz auf direktem Weg und läuft nicht an der Strasse um den Platz herum, wie es ein Autofahrer tun muss. Dies ist in den Routing-Engines jedoch Status quo. In Abbildung \ref{fig:compare_fischmarktplatz} ist sichtbar, wie über den Fischmarktplatz in Rapperswil-Jona, Schweiz geroutet wird. Es liegt in der Natur des Menschen, den Platz ressourcenschonend zu überqueren, was momentan nicht der Fall ist.
 
 Die Problematik beschränkt sich nicht nur auf Flächen wie Plätze und Parks, sondern umfasst auch Strassen und weitere Arten von offenen Flächen wie Berge und Strände.
 
@@ -25,25 +25,25 @@ Ein Fussgänger ist in vielen Fällen auf die öffentlichen Verkehrsmittel angew
 
 
 \paragraph{Ziele, Vorgehen und Technologien}~\\
-Im Kontext der Arbeit \emph{PlazaRoute} wird die Problematik des Fussgänger-Routings über offene Flächen im urbanen Raum aufgegriffen. Kurz zusammengefasst heisst das, dass eine Routing-Engine ein natürliches Fussgänger-Routing generieren kann.
+Im Kontext der Arbeit \emph{PlazaRoute} wird die Problematik des Fussgänger-Routings über offene Flächen im urbanen Raum aufgegriffen. Kurz zusammengefasst heisst das, dass eine \gls{Routing-Engine} ein natürliches Fussgänger-Routing generieren kann.
 
 In Kombination mit dem ÖV-Routing soll ein multimodales Routing möglich sein, welches von einem beliebigen Startpunkt aus an eine Zieldestination routet und dabei ÖV-Haltestellen genau ansteuert.
 
-Um diese Anforderungen erfüllen zu können, werden Algorithmen zum Traversieren von offenen Fussgänger-Flächen evaluiert, analysiert, getestet und optimiert. Nach Abschluss dieser Tätigkeit wird es möglich sein, eine \ac{OSM} Datei so aufbereiten zu können, dass Routing-Engines dem Fussgänger ein natürliches Routing bieten können. Die durch die Algorithmen erzeugten Graphen werden mit Shortest-Path-Algorithmen vereinfacht, um die zusätzliche Datenmenge zu minimieren.
+Um diese Anforderungen erfüllen zu können, werden Algorithmen zum Traversieren von offenen Fussgänger-Flächen evaluiert, analysiert, getestet und optimiert. Nach Abschluss dieser Tätigkeit wird es möglich sein, eine \ac{OSM} Datei so aufbereiten zu können, dass \glspl{Routing-Engine} dem Fussgänger ein natürliches Routing bieten können. Die durch die Algorithmen erzeugten Graphen werden mit \gls{Shortest-Path}-Algorithmen vereinfacht, um die zusätzliche Datenmenge zu minimieren.
 
-Um die Optimierung an einem praktischen Beispiel zeigen zu können, wird parallel in Kombination mit dem Service von search.ch ein Backend für ein multimodales Routing entwickelt. Dies wird durch eine visuelle Darstellung in einem QGIS-Plugin abgerundet, welche den Mehrwert für einen Fussgänger konkret aufzeigen wird.
+Um die Optimierung an einem praktischen Beispiel zeigen zu können, wird parallel in Kombination mit dem Service von search.ch ein Backend für ein multimodales Routing entwickelt. Dies wird durch eine visuelle Darstellung in einem \gls{QGIS}-Plugin abgerundet, welche den Mehrwert für einen Fussgänger konkret aufzeigen wird.
 
 Die zugrundeliegende Technologie ist Python.
 
 \paragraph{Ergebnisse}~\\
-Durch die Umsetzung einer Vorverarbeitung mit einem Visibility-Graph oder SpiderWeb-Graph in Kombination mit einem Shortest-Path-Algorithmus (Dijkstra oder A*) ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen, auf welcher gängige Routing-Engines und andere Interessenten operieren oder auf der Implementation aufsetzen können.
+Durch die Umsetzung einer Vorverarbeitung mit einem Visibility-Graph oder SpiderWeb-Graph in Kombination mit einem \gls{Shortest-Path}-Algorithmus (Dijkstra oder A*) ist die Grundlage für ein natürliches Fussgänger-Routing geschaffen, auf welcher gängige Routing-Engines und andere Interessenten operieren oder auf der Implementation aufsetzen können.
 
 Fussgänger können zu jedem Zeitpunkt und von jeder Position aus ein Routing durchführen, welches ihrem Verhalten entspricht.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{technicalreport/img/proprecessing_optimization_comparison.png}
-    \caption[Vergleich Preprocessing mit und ohne Optimierung]{Vergleich der Algorithmen Visibility-Graph (oben) und SpiderWeb-Graph (unten), vor und nach der Optimierung durch Shortest-Path-Algorithmen}
+    \caption[Vergleich Preprocessing mit und ohne Optimierung]{Vergleich der Algorithmen Visibility-Graph (oben) und SpiderWeb-Graph (unten), vor und nach der Optimierung durch \gls{Shortest-Path}-Algorithmen}
     \label{fig:proprecessing_optimization_comparison}
 \end{figure}
 

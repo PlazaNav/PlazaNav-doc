@@ -41,7 +41,7 @@ Auf Flächen können Hindernisse existieren, durch welche nicht geroutet werden 
 \subsubsection{ÖV-Haltestelle und Kante}
 \label{ÖV-Haltestelle und Kante}
 % same explanation is used in the glossary
-Eine ÖV-Haltestelle kann mehrere Plattformen umfassen. Normalerweise gehören zu einer ÖV-Haltestelle zwei Plattformen, je eine in jede Fahrtrichtung. Eine dieser Plattform wird im folgenden allgemein als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle muss sich dabei nicht auf zwei Kanten beschränken. Betrachtet man den Bahnhof Stadelhofen in Zürich, Schweiz, sieht man, dass weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
+Eine ÖV-Haltestelle kann mehrere Plattformen umfassen. Normalerweise gehören zu einer ÖV-Haltestelle zwei Plattformen, je eine in jede Fahrtrichtung. Eine dieser Plattform wird im folgenden allgemein als Kante bezeichnet. Der Unterschied ist in Abbildung \ref{fig:public_transport_stop} ersichtlich. Eine ÖV-Haltestelle muss sich dabei nicht auf zwei \glspl{Kante} beschränken. Betrachtet man den Bahnhof Stadelhofen in Zürich, Schweiz, sieht man, dass weit mehr als zwei Kanten zu einer ÖV-Haltestelle gehören können.
 
 \begin{figure}[ht]
 \centering
@@ -53,7 +53,7 @@ Eine ÖV-Haltestelle kann mehrere Plattformen umfassen. Normalerweise gehören z
 
 \subsection{Problemstellung und Vision}
 \label{Problemstellung und Vision}
-Die heute gängigen Routing-Engines können effizient über Graph-Kanten und Knoten routen, um so den schnellstmöglichen Weg finden zu können. Diese wurden stetig für den motorisierten Individualverkehr optimiert, da sich diese unter anderem an vorgegebene Regeln halten und bisher einen grösseren Markt geboten haben. Bei Fussgänger ist das nicht immer der Fall. In den folgenden Unterkapiteln werden einige Probleme erläutert, welche immer noch Praxis für Fussgänger sind.
+Die heute gängigen \glspl{Routing-Engine} können effizient über Graph-Kanten und Knoten routen, um so den schnellstmöglichen Weg finden zu können. Diese wurden stetig für den motorisierten Individualverkehr optimiert, da sich diese unter anderem an vorgegebene Regeln halten und bisher einen grösseren Markt geboten haben. Bei Fussgänger ist das nicht immer der Fall. In den folgenden Unterkapiteln werden einige Probleme erläutert, welche immer noch Praxis für Fussgänger sind.
 
 \subsubsection{Routing über offene Flächen}
 \label{problem:Routing über offene Flächen}
@@ -87,7 +87,7 @@ Wenn man die gleiche Abbildung \ref{fig:helvetiaplatz_graphhopper} nochmals betr
 \label{fig:topologisch_nicht_verbundener_graph}
 \end{figure}
 
-In Abbildung \ref{fig:topologisch_nicht_verbundener_graph} ist ein topologisch nicht verbundener Graph zu sehen. In \ac{OSM} kann es vorkommen, dass solche Wege auf eine offene Fläche treffen, mit dieser aber nicht topologisch verbunden sind. Eine Routing-Engine muss in der Lage sein, dies zu erkennen und aufzuräumen, so dass vom auftreffenden Weg über die offene Fläche geroutet werden kann.
+In Abbildung \ref{fig:topologisch_nicht_verbundener_graph} ist ein topologisch nicht verbundener Graph zu sehen. In \ac{OSM} kann es vorkommen, dass solche Wege auf eine offene Fläche treffen, mit dieser aber nicht topologisch verbunden sind. Eine \gls{Routing-Engine} muss in der Lage sein, dies zu erkennen und aufzuräumen, so dass vom auftreffenden Weg über die offene Fläche geroutet werden kann.
 
 \subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 \label{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
@@ -99,7 +99,7 @@ Beim Fussgänger-Routing über Strassen ergeben sich andere Anforderungen als be
 
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{problem:Start-/Endpunkt auf der Fläche}
-Beginnt das Routing oder ist der Zielort auf einer Fläche, so ziehen die aktuellen Routing-Engines, falls keine Wege wie in \ref{problem:eingezeichnete Fussgängerrouten über offene Flächen} beschrieben eingezeichnet sind, eine Mittelsenkrechte zur nächsten Polygonkante der Fläche und routen von dort weiter. Dies ist gut auf dem Sechseläutenplatz in Abbildung \ref{fig:start_endpoint_on_area} sichtbar. Falls bereits Wege auf der Fläche eingezeichnet sind, wird über diese geroutet.
+Beginnt das Routing oder ist der Zielort auf einer Fläche, so ziehen die aktuellen \glspl{Routing-Engine}, falls keine Wege wie in \ref{problem:eingezeichnete Fussgängerrouten über offene Flächen} beschrieben eingezeichnet sind, eine Mittelsenkrechte zur nächsten Polygonkante der Fläche und routen von dort weiter. Dies ist gut auf dem Sechseläutenplatz in Abbildung \ref{fig:start_endpoint_on_area} sichtbar. Falls bereits Wege auf der Fläche eingezeichnet sind, wird über diese geroutet.
 
 \begin{figure}[ht]
     \centering
@@ -128,11 +128,11 @@ In den meisten Fällen gibt es an einem Standort mit einer ÖV-Haltestelle zwei 
 
 \subsubsection{Routing über offene Flächen}
 \label{target:Routing über offene Flächen}
-Das Problem wie in \ref{problem:Routing über offene Flächen} beschrieben wurde bereits in einigen Arbeiten aufgegriffen \cite{graser_visibility_graph} \cite{dzafic_spider_web_graph}. Diese beiden Ansätze (Visibility-Graph und SpiderWeb-Graph) werden analysiert, dazu Tests in QGIS implementiert und mit Probanden getestet. Ziel ist es, die optimale Variante zu eruieren, um über offene Flächen routen zu können. Diese Variante soll so aufbereitet werden, dass eine \ac{OSM}-Datei so verarbeitet werden kann, dass danach eine Routing-Engine auf diesen Daten operieren kann.
+Das Problem wie in \ref{problem:Routing über offene Flächen} beschrieben wurde bereits in einigen Arbeiten aufgegriffen \cite{graser_visibility_graph} \cite{dzafic_spider_web_graph}. Diese beiden Ansätze (Visibility-Graph und SpiderWeb-Graph) werden analysiert, dazu Tests in \gls{QGIS} implementiert und mit Probanden getestet. Ziel ist es, die optimale Variante zu eruieren, um über offene Flächen routen zu können. Diese Variante soll so aufbereitet werden, dass eine \ac{OSM}-Datei so verarbeitet werden kann, dass danach eine Routing-Engine auf diesen Daten operieren kann.
 
 \subsubsection{Routing-Engine evaluieren}
 \label{target:Routing-Enginge evaluieren}
-Die "grösseren" Routing-Engines sollen analysiert und es soll festgehalten werden, welche sich für den Hauptzweck dieser Arbeit am besten eignet. Zusätzlich wird geprüft, wie die verarbeitenden Daten aus \ref{target:Routing über offene Flächen} in die bestehenden Routing-Engines eingehängt werden können.
+Die "grösseren" \glspl{Routing-Engine} sollen analysiert und es soll festgehalten werden, welche sich für den Hauptzweck dieser Arbeit am besten eignet. Zusätzlich wird geprüft, wie die verarbeitenden Daten aus \ref{target:Routing über offene Flächen} in die bestehenden Routing-Engines eingehängt werden können.
 
 \subsubsection{eingezeichnete Fussgängerrouten über offene Flächen}
 \label{target:eingezeichnete Fussgängerrouten über offene Flächen}
@@ -149,7 +149,7 @@ Im Kontext dieser Arbeit wird kurz ein theoretischer Ansatz aufgezeigt, wie man 
 \subsubsection{Datenaufbereitung für das Fussgänger-Routing über Strassen}
 \label{target:Datenaufbereitung für das Fussgänger-Routing über Strassen}
 
-In dieser Arbeit wird der aktuelle Stand und die Herausforderungen für die Datenaufbereitung für allgemeines Fussgänger-Routings aufgezeigt. Für das Routing über offene Flächen sind diese Probleme allerdings nicht weiter relevant. Wir gehen davon aus, dass die verwendeten Routing-Engines ein genügend gutes Verhalten für Fussgänger-Routing über Strassen aufzeigen.
+In dieser Arbeit wird der aktuelle Stand und die Herausforderungen für die Datenaufbereitung für allgemeines Fussgänger-Routings aufgezeigt. Für das Routing über offene Flächen sind diese Probleme allerdings nicht weiter relevant. Wir gehen davon aus, dass die verwendeten \glspl{Routing-Engine} ein genügend gutes Verhalten für Fussgänger-Routing über Strassen aufzeigen.
 
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{target:Start-/Endpunkt auf der Fläche}
@@ -170,7 +170,7 @@ Wurde die nächste ÖV-Haltestelle wie in \ref{target:nächste ÖV-Haltestellen 
 
 \subsubsection{Prototyp und Deliverables}
 \label{target:Prototyp und Deliverables}
-Das Resultat besteht aus zwei Teilen. Einerseits wird es möglich sein, \ac{OSM}-Daten vorzuverarbeiten, welche an eine Routing-Engine übergeben werden können, um das Fussgänger-Routing im urbanen Raum sicherzustellen. Andererseits wird ein Backend entwickelt, welches ein multimodales Routing, sprich Fussgänger- in Kombination mit einem ÖV-Routing anbietet. In einem weiteren Schritt wird die Vorverarbeitung und das multimodale Routing in einem QGIS-Plugin sichtbar gemacht. Die detaillierten Anforderungen sind im Teil \ref{chap:SW-Projektdokumentation} Kapitel \ref{sec:Anforderungsspezifikation} beschrieben.
+Das Resultat besteht aus zwei Teilen. Einerseits wird es möglich sein, \ac{OSM}-Daten vorzuverarbeiten, welche an eine \gls{Routing-Engine} übergeben werden können, um das Fussgänger-Routing im urbanen Raum sicherzustellen. Andererseits wird ein Backend entwickelt, welches ein multimodales Routing, sprich Fussgänger- in Kombination mit einem ÖV-Routing anbietet. In einem weiteren Schritt wird die Vorverarbeitung und das multimodale Routing in einem QGIS-Plugin sichtbar gemacht. Die detaillierten Anforderungen sind im Teil \ref{chap:SW-Projektdokumentation} Kapitel \ref{sec:Anforderungsspezifikation} beschrieben.
 	
 \subsection{Rahmenbedingungen, Umfeld, Definitionen und Abgrenzungen}
 \label{Rahmenbedingungen, Umfeld, Definitionen, Abgrenzungen}
@@ -182,7 +182,7 @@ Die Backend-Komponente sollen als Docker-Container für eine einfache Portierung
 
 \subsection{Vorgehen und Aufbau der Arbeit}
 \label{Vorgehen und Aufbau der Arbeit}
-Die Studienarbeit nimmt sich zu erst dem Problem des Fussgänger-Routing über Flächen im urbanen Raum an. Es wird geklärt, wie der Stand der Technik ist und welche Vorarbeiten und Lösungen in diesem Bereich existieren. Bestehende Lösungsvorschläge werden in Python implementiert und in QGIS getestet, um so die bestmögliche Variante zu eruieren. Sobald die optimale Lösungsvarianten identifiziert sind, muss geklärt werden, wie die Vorverarbeitung der Daten (beispielsweise das Einzeichnen von möglichen Routen über Flächen) an eine bestehende Routing-Engine übergeben werden kann. Damit dies möglich ist, ist zu prüfen, welche Routing-Engine die Anforderungen bestmöglich abdeckt.
+Die Studienarbeit nimmt sich zu erst dem Problem des Fussgänger-Routing über Flächen im urbanen Raum an. Es wird geklärt, wie der Stand der Technik ist und welche Vorarbeiten und Lösungen in diesem Bereich existieren. Bestehende Lösungsvorschläge werden in Python implementiert und in \gls{QGIS} getestet, um so die bestmögliche Variante zu eruieren. Sobald die optimale Lösungsvarianten identifiziert sind, muss geklärt werden, wie die Vorverarbeitung der Daten (beispielsweise das Einzeichnen von möglichen Routen über Flächen) an eine bestehende Routing-Engine übergeben werden kann. Damit dies möglich ist, ist zu prüfen, welche Routing-Engine die Anforderungen bestmöglich abdeckt.
 
 In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an das \ac{API} von search.ch \cite{search_ch_route_api} übergeben zu können. Aufgabe von search.ch ist es, für einen Start und eine Destination die ÖV-Route zu genieren. So kann der schnellstmögliche Weg von einem beliebigen Punkt an ein beliebiges Ziel in Kombination mit Fussweg und öffentlichem Verkehr ermittelt werden.
 
