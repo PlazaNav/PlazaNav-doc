@@ -5,7 +5,7 @@ Diese Arbeit befasst sich grundlegend mit dem Fussgänger-Routing über offene F
 \subsection{Grundlagen und Begriffe}
 \label{Grundlagen und Begriffe}
 
-Im weiteren werden ausgewählte theoretische Grundlagen und Begriffe eingeführt, welche für das Verständnis der Arbeit von Relevanz sind. Für die nicht eingeführten Begriffe kann das Glossar und Abkürzungsverzeichnis zur Hand gezogen werden.
+Im Weiteren werden ausgewählte theoretische Grundlagen und Begriffe eingeführt, welche für das Verständnis der Arbeit von Relevanz sind. Für die nicht eingeführten Begriffe kann das Glossar und Abkürzungsverzeichnis zur Hand gezogen werden.
 
 \subsubsection{Fläche}
 \label{Fläche}
@@ -53,7 +53,7 @@ Eine ÖV-Haltestelle kann mehrere Plattformen umfassen. Normalerweise gehören z
 
 \subsection{Problemstellung und Vision}
 \label{Problemstellung und Vision}
-Die heute gängigen Routing-Engines können effizient über Graph-Kanten und Knoten routen, um so den schnellstmöglichen Weg finden zu können. Diese wurden stetig für den motorisierten Individualverkehr optimiert, da sich diese unter anderem an vorgegebene Regeln halten und bisher einen grössern Markt geboten haben. Bei Fussgänger ist das nicht immer der Fall. In den folgenden Unterkapiteln werden einige Probleme erläutert, welche immer noch Praxis für Fussgänger sind.
+Die heute gängigen Routing-Engines können effizient über Graph-Kanten und Knoten routen, um so den schnellstmöglichen Weg finden zu können. Diese wurden stetig für den motorisierten Individualverkehr optimiert, da sich diese unter anderem an vorgegebene Regeln halten und bisher einen grösseren Markt geboten haben. Bei Fussgänger ist das nicht immer der Fall. In den folgenden Unterkapiteln werden einige Probleme erläutert, welche immer noch Praxis für Fussgänger sind.
 
 \subsubsection{Routing über offene Flächen}
 \label{problem:Routing über offene Flächen}
@@ -68,7 +68,7 @@ Wie in der Abbildung \ref{fig:helvetiaplatz_graphhopper} erkennbar is, routet di
 
 \subsubsection{eingezeichnete Fussgängerrouten über offene Flächen}
 \label{problem:eingezeichnete Fussgängerrouten über offene Flächen}
-Wenn man die gleiche Abbildung \ref{fig:helvetiaplatz_graphhopper} nochmals betrachtet, sieht man, dass Mapper bereits einige Fussgängerwege auf dem Platz eingezeichnet haben, um dem Routing-Problem über offene Flächen entgegen zu steuern. Dies kann in einigen Situationen wie dem Helvetiaplatz kontraproduktiv, aber in anderen wieder von Vorteil sein. Betrachtet man beispielsweise den Central Park in New York in Abbildung \ref{fig:central_park}, macht es Sinn, dass das Routing den vorgegebenen Wegen folgt. Eine Wiese gilt als offene Fläche, eignet sich aber nicht immer als vorteilhafter Bewegungsuntergrund. 
+Wenn man die gleiche Abbildung \ref{fig:helvetiaplatz_graphhopper} nochmals betrachtet, sieht man, dass Mapper bereits einige Fusswege auf dem Platz eingezeichnet haben, um dem Routing-Problem über offene Flächen entgegen zu steuern. Dies kann in einigen Situationen wie dem Helvetiaplatz kontraproduktiv, aber in anderen wieder von Vorteil sein. Betrachtet man beispielsweise den Central Park in New York in Abbildung \ref{fig:central_park}, macht es Sinn, dass das Routing den vorgegebenen Wegen folgt. Eine Wiese gilt als offene Fläche, eignet sich aber nicht immer als vorteilhafter Bewegungsuntergrund. 
 
 \begin{figure}[ht]
 \centering
@@ -162,7 +162,7 @@ Es soll geprüft werden, wie Fussgänger-Flächen bearbeitet werden können, die
 
 \subsubsection{nächste ÖV-Haltestellen finden}
 \label{target:nächste ÖV-Haltestellen finden}
-Ein weiterer Fokus der Arbeit liegt auf dem Finden und Erreichen der nächsten ÖV-Haltestelle, von welcher ein ÖV-Routing durchgeführt werden kann. So soll eruiert werden, wie von einem bestehenden Startpunkt aus die nächsten ÖV-Haltestellen identifiziert werden kann, um diese an search.ch für das weitere ÖV-Routing zu übergeben.
+Ein weiterer Fokus der Arbeit liegt auf dem Finden und Erreichen der nächsten ÖV-Haltestelle, von welcher ein ÖV-Routing durchgeführt werden kann. So soll eruiert werden, wie von einem bestehenden Startpunkt aus die nächsten ÖV-Haltestellen identifiziert werden können, um diese an search.ch für das weitere ÖV-Routing zu übergeben.
 
 \subsubsection{mehrere Kanten mit dem gleichen Namen}
 \label{target:mehrere Kanten mit dem gleichen Namen}
@@ -184,7 +184,7 @@ Die Backend-Komponente sollen als Docker-Container für eine einfache Portierung
 \label{Vorgehen und Aufbau der Arbeit}
 Die Studienarbeit nimmt sich zu erst dem Problem des Fussgänger-Routing über Flächen im urbanen Raum an. Es wird geklärt, wie der Stand der Technik ist und welche Vorarbeiten und Lösungen in diesem Bereich existieren. Bestehende Lösungsvorschläge werden in Python implementiert und in QGIS getestet, um so die bestmögliche Variante zu eruieren. Sobald die optimale Lösungsvarianten identifiziert sind, muss geklärt werden, wie die Vorverarbeitung der Daten (beispielsweise das Einzeichnen von möglichen Routen über Flächen) an eine bestehende Routing-Engine übergeben werden kann. Damit dies möglich ist, ist zu prüfen, welche Routing-Engine die Anforderungen bestmöglich abdeckt.
 
-In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an das \ac{API} von search.ch \cite{search_ch_route_api} übergeben zu können. Aufgabe von search.ch ist es, für einen Start und eine Destination die ÖV-Route zu genieren. So kann der schnellstmöglichen Weg von einem beliebigen Punkt an ein beliebiges Ziel in Kombination mit Fussweg und öffentlichem Verkehr ermittelt werden.
+In einem weiteren Schritt soll ermittelt werden, wie die nächsten ÖV-Haltestellen eruiert werden können, um diese Punkte an das \ac{API} von search.ch \cite{search_ch_route_api} übergeben zu können. Aufgabe von search.ch ist es, für einen Start und eine Destination die ÖV-Route zu genieren. So kann der schnellstmögliche Weg von einem beliebigen Punkt an ein beliebiges Ziel in Kombination mit Fussweg und öffentlichem Verkehr ermittelt werden.
 
 Die vorhin aufgeführten Aspekte werden im Teil \ref{chap:Technischer Bericht} behandelt.
 
