@@ -6,7 +6,7 @@
 \subsection{Resultate}
 \label{sub:Resultate}
 
-Mit unserer Implementation und Optimierung der Algorithmen zur Flächen-Traversierung kann gezeigt werden, wie ein natürlicheres Routing für Fussgänger, insbesondere über offene Flächen im urbanen Raum, erreicht werden kann. Mit dem Plaza Routing Backend wurde dabei eine praktische Anwendung umgesetzt, die das Routing mit öffentlichen Transportmitteln zusammen mit optimiertem Fussgänger-Routing ermöglicht. Insbesondere haben wir Ansätze gezeigt, wie für ÖV-Haltestellen genaue Koordinaten berechnet werden können. Die Routen können mit dem QGIS-Plugin bezogen und visualisiert werden.
+Mit unserer Implementation und Optimierung der Algorithmen zur Flächen-Traversierung kann gezeigt werden, wie ein natürlicheres Routing für Fussgänger, insbesondere über offene Flächen im urbanen Raum, erreicht werden kann. Mit dem Plaza Routing Backend wurde dabei eine praktische Anwendung umgesetzt, die das Routing mit öffentlichen Transportmitteln zusammen mit optimiertem Fussgänger-Routing ermöglicht. Insbesondere haben wir Ansätze gezeigt, wie für ÖV-Haltestellen genaue Koordinaten berechnet werden können. Die Routen können mit dem \gls{QGIS}-Plugin bezogen und visualisiert werden.
 
 \subsection{Möglichkeiten der Weiterentwicklung}
 \label{sub:Möglichkeiten der Weiterentwicklung}
@@ -15,7 +15,7 @@ Mit unserer Implementation und Optimierung der Algorithmen zur Flächen-Traversi
 \subsubsection{Plaza Vorverarbeitung}
 \label{subsub:Weiterentwicklung_Vorverarbeitung}
 
-In Zukunft könnte unsere Implementation der Vorverarbeitung dazu dienen, die Optimierung auf Fussgänger-Routing in die Graphen-Berechnung von bestehenden Routing-Engines einzubinden. Somit würde der separate Schritt der Vorverarbeitung von \ac{OSM}-Daten entfallen, was durch den ersparten Aufwand des Lesens und Schreibens von \ac{OSM}-Daten die Effizienz deutlich steigern würde.
+In Zukunft könnte unsere Implementation der Vorverarbeitung dazu dienen, die Optimierung auf Fussgänger-Routing in die Graphen-Berechnung von bestehenden \glspl{Routing-Engine} einzubinden. Somit würde der separate Schritt der Vorverarbeitung von \ac{OSM}-Daten entfallen, was durch den ersparten Aufwand des Lesens und Schreibens von \ac{OSM}-Daten die Effizienz deutlich steigern würde.
 
 In der jetzigen Implementation werden die kürzesten Wege nur zwischen Paaren von \glspl{Einstiegspunkt}n berechnet. Dies hat zur Folge, dass auf einer Fläche mindestens zwei Einstiegspunkte vorhanden sein müssen, um Pfade berechnen zu können. Es gibt aber einige Fussgänger-Flächen, wo keine Strasse oder Weg den Platz angrenzt oder schneidet, wodurch keine Einstiegspunkte gefunden werden. In der Realität wäre der Platz aber mit grosser Wahrscheinlichkeit problemlos begehbar. Eine mögliche Lösung ist in Kapitel \ref{subsub:Verbesserung_Einstiegspunkte} beschrieben.
 

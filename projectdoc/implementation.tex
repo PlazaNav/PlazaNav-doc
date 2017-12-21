@@ -31,7 +31,7 @@ In Abbildung \ref{fig:sequence_diagram_plaza_preprocessing} ist der Ablauf in ei
 Im Folgenden wird auf die einzelnen Komponenten eingegangen.
 
 \paragraph{Importer}\label{impl:Importer}~\\
-Das Importer-Package liest aus einer gegebenen \ac{OSM}-Datei (Dateityp \ac{OSM} oder \ac{PBF}) die für uns relevanten Daten mit Hilfe von Pyosmium \cite{pyosmium} ein. Während dem Einlesen werden die benötigten Daten direkt heraus gefiltert. Für uns relevant sind vor allem Plazas, die anhand von konfigurierbaren Tags bestimmt werden. Dies ist in Listing \ref{osmium_import_code} veranschaulicht. Zusätzlich werden alle Strassen benötigt, um die Plazas später wieder an das Strassennetz anzuschliessen (siehe Abschnitt \nameref{impl:Merger}). Punkte und Gebäude werden für die Berechnung von Hindernissen auf den Plazas genutzt.
+Das Importer-Package liest aus einer gegebenen \ac{OSM}-Datei (Dateityp \ac{OSM} oder \ac{PBF}) die für uns relevanten Daten mit Hilfe von Pyosmium \cite{pyosmium} ein. Während dem Einlesen werden die benötigten Daten direkt heraus gefiltert. Für uns relevant sind vor allem Plazas, die anhand von konfigurierbaren \glspl{Tag} bestimmt werden. Dies ist in Listing \ref{osmium_import_code} veranschaulicht. Zusätzlich werden alle Strassen benötigt, um die Plazas später wieder an das Strassennetz anzuschliessen (siehe Abschnitt \nameref{impl:Merger}). Punkte und Gebäude werden für die Berechnung von Hindernissen auf den Plazas genutzt.
 
 Alle ausgelesenen Daten werden in ein \code{OSMHolder} Objekt verpackt und zurück gegeben.
 
@@ -44,9 +44,9 @@ Alle ausgelesenen Daten werden in ein \code{OSMHolder} Objekt verpackt und zurü
 \paragraph{Optimizer}\label{impl:Optimizer}~\\
 Der Optimizer übernimmt die Kernfunktion der Vorverarbeitung, die Optimierung von Fussgänger-Flächen.
 
-Das \code{OSMHolder}-Objekt aus dem \nameref{impl:Importer} wird dem Optimizer übergeben. Als erstes wird für Strassen, Punkte und Gebäude je ein R-Tree \cite{rtree_Guttman} Index erstellt. Dies erlaubt es uns, effizient geometrische Objekte zu finden, die sich mit dem Plaza schneiden. Ohne einen Index müsste für jedes Objekt (Linie, Punkt oder Gebäude) jeweils der komplette Datensatz durchsucht werden ($O(n)$). Mit einer Index-Suche ($O(\log n)$) werden die Datensätze auf ein paar wenige mögliche Treffer eingegrenzt.
+Das \code{OSMHolder}-Objekt aus dem \nameref{impl:Importer} wird dem Optimizer übergeben. Als erstes wird für Strassen, Punkte und Gebäude je ein R-Tree \cite{rtree_Guttman} Index erstellt. Dies erlaubt es uns, effizient geometrische Objekte zu finden, die sich mit dem \gls{Plaza} schneiden. Ohne einen Index müsste für jedes Objekt (Linie, Punkt oder Gebäude) jeweils der komplette Datensatz durchsucht werden ($O(n)$). Mit einer Index-Suche ($O(\log n)$) werden die Datensätze auf ein paar wenige mögliche Treffer eingegrenzt.
 
-Für jedes Plaza werden folgende Schritte ausgeführt:
+Für jedes \gls{Plaza} werden folgende Schritte ausgeführt:
 \begin{enumerate}
     \item Es werden alle \glspl{Einstiegspunkt} berechnet. Dazu werden alle Linien gesucht, die das Plaza schneiden oder dieses berühren. Der Schnittpunkt dieser Linien mit dem äusseren Polygon der Fläche bildet jeweils einen Einstiegspunkt. Um Rechenfehler auszugleichen, werden die Schnittpunkte mit einem Buffer von einigen Zentimeter um das Polygon herum gesucht. Plazas, die weniger als zwei Einstiegspunkte haben, werden direkt verworfen, da auf diesen mit unserem Algorithmus gar keine kürzesten Wege berechnet werden könnten.
     \item Linien, die das Plaza schneiden und einen \gls{Einstiegspunkt} bilden, werden mit der \ac{OSM}-ID zwischengespeichert. Die jeweiligen \glspl{Einstiegspunkt} werden später vom \nameref{impl:Merger} in diese Linien eingefügt.
@@ -60,16 +60,16 @@ Für jedes Plaza werden folgende Schritte ausgeführt:
 \paragraph{Merger}\label{impl:Merger}~\\
 Die Aufgabe des Merger ist es, die vom \nameref{impl:Optimizer} neu erstellten Geometrien wieder mit den originalen \ac{OSM}-Daten zu verschmelzen.
 \begin{enumerate}
-    \item In einem ersten Schritt werden die erstellten Linien im \ac{PBF}-Format als Nodes und Ways in eine temporäre Datei gespeichert.
-    \item Als nächstes werden die Einstiegspunkte in das Strassennetz eingebunden. Nur wenn unsere Linien einen gemeinsamen Punkt mit dem bestehenden Strassennetz haben, werden sie vom Router überhaupt für das Routing beachtet. Da sich jeder Einstiegspunkt mit einer bestehenden Linie kreuzt, wird dieser jeweils als zusätzlicher Punkt dem \ac{OSM}-Way hinzugefügt.
-    \item Die im vorherigen Schritt modifizierten Ways werden ebenfalls in eine temporäre Datei abgespeichert. Dazu wird die Versionsnummer erhöht, damit die bestehenden Ways schlussendlich überschrieben werden.
+    \item In einem ersten Schritt werden die erstellten Linien im \ac{PBF}-Format als \glspl{Node} und \glspl{Way} in eine temporäre Datei gespeichert.
+    \item Als nächstes werden die \glspl{Einstiegspunkt} in das Strassennetz eingebunden. Nur wenn unsere Linien einen gemeinsamen Punkt mit dem bestehenden Strassennetz haben, werden sie vom Router überhaupt für das Routing beachtet. Da sich jeder Einstiegspunkt mit einer bestehenden Linie kreuzt, wird dieser jeweils als zusätzlicher Punkt dem \ac{OSM}-\gls{Way} hinzugefügt.
+    \item Die im vorherigen Schritt modifizierten \glspl{Way} werden ebenfalls in eine temporäre Datei abgespeichert. Dazu wird die Versionsnummer erhöht, damit die bestehenden \glspl{Way} schlussendlich überschrieben werden.
     \item Nun werden alle in den vorherigen Schritten erstellten temporären \ac{OSM}-Dateien mit der originalen Datei zusammen geschmolzen, die ursprünglich importiert wurde. Dazu wird das externe Tool Osmosis \cite{osmosis} aufgerufen.
 \end{enumerate}
 
-Als Endresultat liegt nun eine \ac{OSM}-Datei mit den kompletten Kartendaten vor, die um zusätzliche Linien für die Optimierung über Fussgänger-Flächen ergänzt wurde. Die Datei kann nun etwa einer Routing-Engine übergeben werden.
+Als Endresultat liegt nun eine \ac{OSM}-Datei mit den kompletten Kartendaten vor, die um zusätzliche Linien für die Optimierung über Fussgänger-Flächen ergänzt wurde. Die Datei kann nun etwa einer \gls{Routing-Engine} übergeben werden.
 
 \paragraph{Konfiguration}\label{impl:preprocess_konfiguration}~\\
-Um die Vorverarbeitung möglichst flexibel und erweiterbar zu machen, wird eine Konfigurationsdatei im YAML-Format verwendet. Es ist unter anderem konfigurierbar, welche Algorithmen (Visibility-Graph oder SpiderWeb-Graph) für die Berechnung der Graphen verwendet wird. Es können ebenfalls die \ac{OSM}-Tags bestimmt werden, die der \nameref{impl:Importer} verwendet, um zu klassifizieren, was z.B. als Plaza oder als Hindernis gilt. Listing \ref{listing:preprocess_config} zeigt einen Ausschnitt dieser Konfiguration.
+Um die Vorverarbeitung möglichst flexibel und erweiterbar zu machen, wird eine Konfigurationsdatei im YAML-Format verwendet. Es ist unter anderem konfigurierbar, welche Algorithmen (Visibility-Graph oder SpiderWeb-Graph) für die Berechnung der Graphen verwendet wird. Es können ebenfalls die \ac{OSM}-\glspl{Tag} bestimmt werden, die der \nameref{impl:Importer} verwendet, um zu klassifizieren, was z.B. als Plaza oder als Hindernis gilt. Listing \ref{listing:preprocess_config} zeigt einen Ausschnitt dieser Konfiguration.
 
 \begin{listing}[ht]
     \inputminted{YAML}{projectdoc/listing/preprocess_config.yml}
@@ -100,7 +100,7 @@ In der Komponente \emph{PlazaRouting} wird der \ac{REST}-Service für das Routin
 \paragraph{Zusammenspiel und Verantwortlichkeit der Business- und Service-Schicht}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit der Business- und Service-Schicht}~\\
 In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen und das Optimieren der besten Route in ein Unter-Sequenz-Diagramm in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} respektive Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} ausgelagert. Es geht primär um die Verantwortlichkeiten der Services und nicht um die Logik, die dahinter liegt. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich. Aus diesem Grund entsprechen die Diagramme nicht exakt dem Programmcode. 
 
-Die Ausgangsposition und Destination können entweder als Koordinate oder Adresse übergeben werden. Falls es sich um eine Adresse handelt, wird ein Geocoding durchgeführt, um die Koordinate zu extrahieren. Dies erklärt den zweimaligen Zugriff auf das \emph{Geocoding} im Sequenz-Diagramm \ref{fig:sequence_diagram_plaza_routing_overview}.
+Die Ausgangsposition und Destination können entweder als Koordinate oder Adresse übergeben werden. Falls es sich um eine Adresse handelt, wird ein \gls{Geocoding} durchgeführt, um die Koordinate zu extrahieren. Dies erklärt den zweimaligen Zugriff auf das \emph{Geocoding} im Sequenz-Diagramm \ref{fig:sequence_diagram_plaza_routing_overview}.
 
 \begin{figure}[ht]
     \centering
@@ -119,7 +119,7 @@ Die Ausgangsposition und Destination können entweder als Koordinate oder Adress
 Man sieht in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} gut, dass im Loop für eine Ausgangs-ÖV-Haltestelle die Verbindung von search.ch \cite{search_ch_route_api} geholt (siehe Abschnitt \nameref{impl:Plaza Routing ÖV-Haltestellen eruieren}) und zwei Mal eine Fussgänger-Routing durchgeführt wird, jeweils vom aktuellen Standort zur ersten \gls{Kante} und von der letzten Kante zur Destination. Diese Daten sind die Grundlagen für die Entscheidungsfindung der besten Route, welche in Abschnitt \nameref{impl:Plaza Routing Beste Route eruieren} beschrieben ist. \emph{Optimize Route Combination} ist im Abschnitt \nameref{impl:Plaza Routing Route optimieren} genauer beschrieben.
 
 \paragraph{ÖV-Haltestellen eruieren}\label{impl:Plaza Routing ÖV-Haltestellen eruieren}~\\
-ÖV-Haltestellen werden mit Overpass \cite{wiki:overpass} aus \ac{OSM} bezogen. Dabei wird um den aktuellen Standort eine \gls{BoundingBox} gezogen. Die Bounding Box ist konfigurierbar und entspricht einer zumutbaren Laufdistanz. In dieser Fläche werden Nodes und Relationen mit Tags, welche ÖV-Haltestellen identifizieren (\emph{''public\_transport''=''stop\_position''}, \emph{''type''=''public\_transport''} etc.), gefiltert und deren \emph{uic\_ref} zurückgegeben.
+ÖV-Haltestellen werden mit Overpass \cite{wiki:overpass} aus \ac{OSM} bezogen. Dabei wird um den aktuellen Standort eine \gls{BoundingBox} gezogen. Die \gls{BoundingBox} ist konfigurierbar und entspricht einer zumutbaren Laufdistanz. In dieser Fläche werden \glspl{Node} und Relationen mit \glspl{Tag}, welche ÖV-Haltestellen identifizieren (\emph{''public\_transport''=''stop\_position''}, \emph{''type''=''public\_transport''} etc.), gefiltert und deren \emph{uic\_ref} zurückgegeben.
 
 \paragraph{Beste Route eruieren}\label{impl:Plaza Routing Beste Route eruieren}~\\
 Aufgrund der möglichen Routen, welche wie in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} gewonnen werden, muss man nun entscheiden, welche Route dem User konkret retourniert wird. Dazu wurde eine Kosten-Matrix erstellt. Diese ist in Tabelle \ref{table:cost-matrix} sichtbar.
@@ -161,7 +161,7 @@ Aus diesem Grund werden diese Koordinaten nun von Overpass \cite{wiki:overpass} 
 
 Da ÖV-Haltestellen und -Linien in \ac{OSM} jedoch nicht konsistent gemappt sind, wird das Recovery Blocks Pattern \cite{fault_tolerant_software} angewendet, um dem User so oft wie möglich ein genaues Resultat liefern zu können. Mit nicht konsistent meinen wir, dass sie nicht zwingend den Vorgaben in \cite{osm_wiki_relation} folgen. Durch Tests lassen sich jedoch Trends erkennen, wie Mapper grundsätzlich mit ÖV-Haltestellen und -Linien umgehen.
 
-Vorgängig muss klargestellt werden, dass wenn die Rede vo einer ÖV-Linie ist, grundsätzlich eine Buslinie oder ähnliches, welche in \ac{OSM} als Relation \cite{osm_wiki_relation} abgebildet ist, gemeint ist. \glspl{Kante} werden als Node gemappt.
+Vorgängig muss klargestellt werden, dass wenn die Rede vo einer ÖV-Linie ist, grundsätzlich eine Buslinie oder ähnliches, welche in \ac{OSM} als Relation \cite{osm_wiki_relation} abgebildet ist, gemeint ist. \glspl{Kante} werden als \gls{Node} gemappt.
 
 In einem ersten Schritt werden die Daten über die bekannte ÖV-Linie geladen. Search.ch \cite{search_ch_route_api} liefert eine \emph{uic\_ref} für die initiale ÖV-Haltestelle und eine, bei welcher man aussteigt. Üblicherweise erhält man zwei Relationen zurück, je eine für jede Fahrrichtung. Mit den beiden \emph{uic\_ref}s der ÖV-Haltestellen kann man nun die Members der Relation durchgehen und die ÖV-Linie selektieren, bei welcher die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle kommt. Der Member mit der \emph{uic\_ref} der initialen ÖV-Haltestelle in der selektierten ÖV-Linie entspricht in diesem Fall der gesuchten \gls{Kante} in die richtige Fahrtrichtung.
 Anmerken muss man, dass es natürlich mit einem Risiko verbunden ist, so die korrekte Koordinate zu eruieren. Entspricht die Reihenfolge der Members nicht der tatsächlichen Reihenfolge der ÖV-Haltestellen in einer ÖV-Linie, kommt aber bei der Falschen die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle, kann es vorkommen, dass man die falsche Kante erwischt. Mit diesem Restrisiko leben wir. Falls bei beiden Relationen die gleiche \emph{uic\_ref} zuerst kommt oder die gemappten \ac{OSM}-Daten für dieses Vorgehen nicht ausreichen, wird auf eine alternative Variante ausgewichen. 
@@ -202,14 +202,14 @@ Im Kapitel \ref{sub:Möglichkeiten der Weiterentwicklung} wird darauf eingegange
 \paragraph{Konfiguration}\label{impl:PlazaRouting_Konfiguration}~\\
 Die Konfiguration der Plaza Routing Komponente erfolgt durch ein Python-Konfigurationsfile im Root-Verzeichnis des Python-Packages. Dort können unter anderem die \ac{API}s zu den benötigten Services angepasst werden. Ausserdem ist konfigurierbar, welche Grenzwerte für das Finden der besten Route (siehe Abschnitt \nameref{impl:Plaza Routing Beste Route eruieren}) verwendet werden und mit welchem Buffer die Bouding Box für das Beziehen der ÖV-Haltestellen berechnet wird (siehe Abschnitt \nameref{impl:Plaza Routing ÖV-Haltestellen eruieren}).
 
-\subsection{QGIS Plugin}
-\label{impl:QGIS Plugin}
-Das QGIS Plugin Plaza Route \cite{github:PlazaRoute-qgis-plugin} fügt sich nahtlos als \emph{Dockwidget} in die QGIS-Umgebung ein. Dabei wird über Python-Bindings (PyQt4) mit dem Qt-Framework gearbeitet. In Abbildung \ref{fig:qgis_plugin_plaza_route} sieht man das Plugin in Aktion. Die Basis wurde mit dem QGIS Plugin Builder \cite{qgis_plugin_builder} gelegt. Beim Entwickeln des Plugin wurde Wert darauf gelegt, dass man Funktionalität bietet, welche bei vergleichbaren Produkten verfügbar ist. So lassen sich die Start und die Destination über ein Kontextmenü direkt auf der Karte auswählen. Das Plugin lässt Koordinaten sowie Adressen zu. Die Koordinaten können in einem beliebigen System, welches QGIS kennt, angegeben werden. Dies ermöglicht eine unkomplizierte Anwendung, da das Plugin keine speziellen Anforderungen an das System und den Benutzer stellt. Das Plugin wird installiert, eine Karte wird geöffnet und das Routing kann bereits durchgeführt werden.
+\subsection{QGIS-Plugin}
+\label{impl:QGIS-Plugin}
+Das \gls{QGIS}-Plugin Plaza Route \cite{github:PlazaRoute-qgis-plugin} fügt sich nahtlos als \emph{Dockwidget} in die QGIS-Umgebung ein. Dabei wird über Python-Bindings (PyQt4) mit dem Qt-Framework gearbeitet. In Abbildung \ref{fig:qgis_plugin_plaza_route} sieht man das Plugin in Aktion. Die Basis wurde mit dem QGIS-Plugin Builder \cite{qgis_plugin_builder} gelegt. Beim Entwickeln des Plugin wurde Wert darauf gelegt, dass man Funktionalität bietet, welche bei vergleichbaren Produkten verfügbar ist. So lassen sich die Start und die Destination über ein Kontextmenü direkt auf der Karte auswählen. Das Plugin lässt Koordinaten sowie Adressen zu. Die Koordinaten können in einem beliebigen System, welches QGIS kennt, angegeben werden. Dies ermöglicht eine unkomplizierte Anwendung, da das Plugin keine speziellen Anforderungen an das System und den Benutzer stellt. Das Plugin wird installiert, eine Karte wird geöffnet und das Routing kann bereits durchgeführt werden.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1.0\linewidth]{projectdoc/img/qgis_plugin_plaza_route}
-\caption[QGIS Plugin Plaza Route]{QGIS Plugin Plaza Route}
+\caption[QGIS-Plugin Plaza Route]{QGIS-Plugin Plaza Route}
 \label{fig:qgis_plugin_plaza_route}
 \end{figure}
 
@@ -239,7 +239,7 @@ Neben der Route wird dem Benutzer auch eine einfache Navigationsanweisung (siehe
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.7\linewidth]{projectdoc/img/qgis_plugin_plaza_route_routing}
-\caption[QGIS Plugin Plaza Route mit Navigationsanweisung]{QGIS Plugin Plaza Route mit Navigationsanweisung}
+\caption[QGIS-Plugin Plaza Route mit Navigationsanweisung]{QGIS-Plugin Plaza Route mit Navigationsanweisung}
 \label{fig:qgis_plugin_plaza_route_routing}
 \end{figure}
 

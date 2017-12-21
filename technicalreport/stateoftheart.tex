@@ -6,7 +6,7 @@
 
 In \ac{OSM} gibt es mehrere Arten, wie Mapper mit Flächen umgehen. So wirken einige Mapper dem Fussgängerrouting-Problem über Flächen mit zusätzlichen eingezeichneten Wegen entgegen, oder aber die Fläche ist ganz von Wegen befreit.
 
-In Abbildung \ref{fig:helvetiaplatz_comparison} und \ref{fig:sechselaeutenplatz_comparison} ist ein Vergleich gängiger Routing-Engines abgebildet, welche ein Fussgänger-Profil anbieten. In Abbildung \ref{fig:helvetiaplatz_comparison} sieht man schön, wie auf openstreetmap.org die eingezeichneten Fusswege über den Platz genutzt werden. Diese Route entspricht offensichtlich nicht einem natürlichen Fussgänger-Verhalten, da normalerweise der direkte Weg über den Platz gewählt wird, sofern keine Hindernisse im Weg sind. Betrachtet man in Abbildung \ref{fig:sechselaeutenplatz_comparison} hingegen den Sechseläutenplatz, sieht man, dass ohne eingezeichnete Wege alle getesteten Anbieter um den Platz herum führen.
+In Abbildung \ref{fig:helvetiaplatz_comparison} und \ref{fig:sechselaeutenplatz_comparison} ist ein Vergleich gängiger \glspl{Routing-Engine} abgebildet, welche ein Fussgänger-Profil anbieten. In Abbildung \ref{fig:helvetiaplatz_comparison} sieht man schön, wie auf openstreetmap.org die eingezeichneten Fusswege über den Platz genutzt werden. Diese Route entspricht offensichtlich nicht einem natürlichen Fussgänger-Verhalten, da normalerweise der direkte Weg über den Platz gewählt wird, sofern keine Hindernisse im Weg sind. Betrachtet man in Abbildung \ref{fig:sechselaeutenplatz_comparison} hingegen den Sechseläutenplatz, sieht man, dass ohne eingezeichnete Wege alle getesteten Anbieter um den Platz herum führen.
 
 \begin{figure}[ht]
 \centering
@@ -23,7 +23,7 @@ In Abbildung \ref{fig:helvetiaplatz_comparison} und \ref{fig:sechselaeutenplatz_
 \end{figure}
 
 
-Abschliessend kann man sagen, dass alle getesteten Routing-Engines mit den Fussgänger-Profilen mit Stand 13.10.2017 scheitern, wenn keine Wege über die Fläche eingezeichnet sind, und so die Dauer und Streckenlänge verfälscht wird.
+Abschliessend kann man sagen, dass alle getesteten \glspl{Routing-Engine} mit den Fussgänger-Profilen mit Stand 13.10.2017 scheitern, wenn keine Wege über die Fläche eingezeichnet sind, und so die Dauer und Streckenlänge verfälscht wird.
 
 \subsection{Lösungsansätze}
 \label{sub:Lösungsansätze}
@@ -67,7 +67,7 @@ Damit ein Spinnennetz über eine Fläche gezeichnet werden kann, muss eine Bound
 
 Vor dem Zeichnen des Spinnennetz ist es möglich, den Abstand zwischen Spalten und den Zeilen (Spacing) zu definieren. Dies hat hohe Auswirkung auf die Anzahl Zeilen und Spalten und somit auf die gezeichneten Pfade über die Fläche, da mit einem kleineren Spacing eine "Glättung" der Pfade möglich ist. Die gezeichneten Pfade widerspiegeln so eher das Verhalten eines Fussgängers. Ein Abstrich des kleiner Spacings ist sofort ersichtlich, wenn man das Spinnennetz in der Abbildung \ref{fig:spiderweb} betrachtet. Man kann annehmen, dass dieses Spinnennetz über eine Fläche von 4*4 cm mit einem Spacing von einem 1 cm gezeichnet wird. Verkleinert man nun das Spacing auf 0.5 cm, steigt die Anzahl der zu zeichnenden Linien von 72 auf 272. Halbiert man ein weiteres Mal, ist man bereits bei 1056 Linien. Damit ein Routing über das Spinnennetz und somit Abzweigungen möglich sind, kann nicht eine Linie pro Zeile oder Spalte genutzt werden.
 
-Auf dem Spinnennetz wird ähnlich wie beim \nameref{solution:Visibility-Graph} zwischen allen \glspl{Einstiegspunkt}n der Shortest-Path berechnet. Für die weitere Verarbeitung werden nur noch diese optimierten Pfade verwendet. Zur Verdeutlichung der Idee ist der Pseudocode in Listing \ref{SpiderWeb Pseudocode} zu betrachten.
+Auf dem Spinnennetz wird ähnlich wie beim \nameref{solution:Visibility-Graph} zwischen allen \glspl{Einstiegspunkt}n der \gls{Shortest-Path} berechnet. Für die weitere Verarbeitung werden nur noch diese optimierten Pfade verwendet. Zur Verdeutlichung der Idee ist der Pseudocode in Listing \ref{SpiderWeb Pseudocode} zu betrachten.
 
 \begin{listing}[ht]
     \inputminted{python}{technicalreport/listing/spiderweb_pseudocode.py}
@@ -137,7 +137,7 @@ Bei offenen Landflächen in Bergen ist es ausserdem schwierig zu entscheiden, ob
 \subsubsection{Datenaufbereitung für das Fussgänger-Routing über Strassen}
 \label{subsub:Datenaufbereitung für das Fussgänger-Routing über Strassen}
 
-Damit eine Routing-Engine die Kartendaten für das Routing nutzen kann, müssen diese zuerst zu einem Graphen aufbereitet werden. Für das Fussgänger-Routing ergeben sich dabei andere Herausforderungen als für das Routing des motorisierten Individualverkehrs. So muss etwa beim Fussgänger-Routing beachtet werden, wann ein Fussgänger eine Strasse überqueren kann. Dafür müssen gewisse Annahmen getroffen werden. Eine kaum befahrene Strasse in einem ländlichen Gebiet kann höchstwahrscheinlich jederzeit überquert werden, während in einem städtischen Gebiet eher Fussgängerstreifen verwendet werden sollten.
+Damit eine \gls{Routing-Engine} die Kartendaten für das Routing nutzen kann, müssen diese zuerst zu einem Graphen aufbereitet werden. Für das Fussgänger-Routing ergeben sich dabei andere Herausforderungen als für das Routing des motorisierten Individualverkehrs. So muss etwa beim Fussgänger-Routing beachtet werden, wann ein Fussgänger eine Strasse überqueren kann. Dafür müssen gewisse Annahmen getroffen werden. Eine kaum befahrene Strasse in einem ländlichen Gebiet kann höchstwahrscheinlich jederzeit überquert werden, während in einem städtischen Gebiet eher Fussgängerstreifen verwendet werden sollten.
 
 Ein wichtiger Bestandteil der Datenaufbereitung ist der Einbezug von Bürgersteige. Diese werde in OpenStreetMap auf unterschiedliche Weise gemappt \cite{osm_wiki_sidewalks}. Sie können als eigene Wege oder als Eigenschaft der Strasse definiert werden. In \cite{pedestrian_navigation_lang} wurde ein Datenmodell für Fussgänger-Routing entwickelt. Dabei ist die Datenqualität der \ac{OSM}-Daten bei Bürgersteigen weiterhin ein Problem. In den letzten Jahren gab es Bemühungen, die Datenqualität von Bürgersteige \cite{mapbox_sidewalk_improving} und Fussgängerstreifen \cite{crosswalks_aerial_extraction} durch die Analyse von Sattelitenbilder zu verbessern.
 
@@ -146,7 +146,7 @@ Abschliessend kann man sagen, dass die Datenaufbereitung für Fussgänger-Routin
 
 \subsubsection{Start-/Endpunkt auf der Fläche}
 \label{subsub:Start-/Endpunkt auf der Fläche}
-Ein Spezialfall des Fussgänger-Routings entsteht, wenn der Start- oder Endpunkt auf einer Fussgänger-Fläche liegt. Wie in \ref{problem:Start-/Endpunkt auf der Fläche} beschrieben ist es üblich, dass Routing-Engines eine Mittelsenkrechte zum nächten Punkt auf dem Strassennetz ziehen.
+Ein Spezialfall des Fussgänger-Routings entsteht, wenn der Start- oder Endpunkt auf einer Fussgänger-Fläche liegt. Wie in \ref{problem:Start-/Endpunkt auf der Fläche} beschrieben ist es üblich, dass \glspl{Routing-Engine} eine Mittelsenkrechte zum nächten Punkt auf dem Strassennetz ziehen.
 
 In unserem Prototyp erfolgt die komplette Berechnung der kürzesten Wege über Fussgänger-Flächen im Voraus. Zur Laufzeit (bei einer Anfrage des Benutzers) werden die neu berechneten Fusswege lediglich von der Routing-Engine verwendet. Für unsere Zwecke ergeben sich so zwei mögliche Ansätze:
 
@@ -158,7 +158,7 @@ In unserem Prototyp erfolgt die komplette Berechnung der kürzesten Wege über F
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{technicalreport/img/vergleich_start-punkt-auf-flaeche}
-    \caption[Vergleich der Ansätze wenn Startpunkt auf Fläche]{Vergleich einer beispielhaften Route mit dem Ansatz 1 (links) und Ansatz 2 (rechts); Gezeigt auf dem Fischmarktplatz, St. Gallen, Rapperswil; Screenshot von Graphhopper \cite{graphhopper}}
+    \caption[Vergleich der Ansätze wenn Startpunkt auf Fläche]{Vergleich einer beispielhaften Route mit dem Ansatz 1 (links) und Ansatz 2 (rechts); Gezeigt auf dem Fischmarktplatz, St. Gallen, Rapperswil; Screenshot von GraphHopper \cite{graphhopper}}
     \label{fig:vergleich_start-punkt_auf_fläche}
 \end{figure}
 

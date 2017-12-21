@@ -1,11 +1,11 @@
 \section{Analyse}
 \label{sec:Analyse}
 
-In diesem Kapitel werden Abhängigkeiten und Umsysteme analysiert, die potentiell benötigt werden. Neben der Evaluation der Routing-Engine (\ref{analyse:Evaluation Routing-Engine}) gehören Overpass (\ref{analyse:nächste ÖV-Haltestellen finden}) und search.ch (\ref{analyse:Search.ch Anbindung}) zu den wichtigsten Systemen in unserer Applikation.
+In diesem Kapitel werden Abhängigkeiten und Umsysteme analysiert, die potentiell benötigt werden. Neben der Evaluation der \gls{Routing-Engine} (\ref{analyse:Evaluation Routing-Engine}) gehören Overpass (\ref{analyse:nächste ÖV-Haltestellen finden}) und search.ch (\ref{analyse:Search.ch Anbindung}) zu den wichtigsten Systemen in unserer Applikation.
 
 \subsection{Evaluation Routing-Engine}
 \label{analyse:Evaluation Routing-Engine}
-Eine Evaluation der gängigen \ac{OSM}-Routing-Engines wurde in \cite{eval_routing_engine} ausgiebig durchgeführt. Bei unserer Evaluation beschränken wir uns auf die drei "grössten" Routing-Engines \emph{OSRM}\cite{osrm}, \emph{Valhalla}\cite{valhalla} und \emph{GraphHopper}\cite{graphhopper}. Die Auswahl fiel auf diese drei, weil sie von den in \cite{eval_routing_engine} evaluierten Routing-Engines anhand der Github-Metriken mit Abstand die grösste Verbreitung haben.
+Eine Evaluation der gängigen \ac{OSM}-\glspl{Routing-Engine} wurde in \cite{eval_routing_engine} ausgiebig durchgeführt. Bei unserer Evaluation beschränken wir uns auf die drei "grössten" Routing-Engines \emph{OSRM}\cite{osrm}, \emph{Valhalla}\cite{valhalla} und \emph{GraphHopper}\cite{graphhopper}. Die Auswahl fiel auf diese drei, weil sie von den in \cite{eval_routing_engine} evaluierten Routing-Engines anhand der Github-Metriken mit Abstand die grösste Verbreitung haben.
 
 Bei einem Test mit einer von uns vorverarbeiteten \ac{OSM}-Datei gab es bei \emph{Valhalla} sofort Probleme, weil wir negative \ac{OSM}-IDs verwenden, um Konflikte mit bestehenden und zukünftigen Daten zu vermeiden. Für die weitere Evaluation beschränken wir uns daher auf die beiden Routing-Engines \emph{GraphHopper} und \emph{OSRM}.
 
@@ -13,9 +13,9 @@ Die Engines werden an folgenden Kriterien gemessen:
 
 \subsubsection{Infrastruktur-Integration}
 \label{analyse:Infrastruktur-Integration}
-Es wird analysiert, wie einfach die Routing-Engine aufgesetzt werden kann. Ziel ist es, dass die Routing-Engine in einem eigenen Docker-Image (siehe \nameref{NFA:NFA01}) auf dem Server läuft.
+Es wird analysiert, wie einfach die \gls{Routing-Engine} aufgesetzt werden kann. Ziel ist es, dass die Routing-Engine in einem eigenen Docker-Image (siehe \nameref{NFA:NFA01}) auf dem Server läuft.
 
-\emph{Graphhopper} und \emph{OSRM} sind bereits als Docker-Image verfügbar und können somit einfach auf einem beliebigen Server gestartet und verwendet werden.
+\emph{GraphHopper} und \emph{OSRM} sind bereits als Docker-Image verfügbar und können somit einfach auf einem beliebigen Server gestartet und verwendet werden.
 
 
 \subsubsection{Applikation-Anbindung}
@@ -28,29 +28,29 @@ Beide Routing-Engines bieten zusätzlich ein fertiges HTTP-Backend an, welches f
 \label{analyse:OSM-Daten-Integration}
 Für die Flächentraversierung müssen eigene \ac{OSM}-Daten generiert werden. Diese vorverarbeiteten \ac{OSM}-Daten müssen der Routing-Engine übergeben werden.
 
-Sowohl \emph{OSRM} als auch \emph{Graphhopper} können beim Starten der Graphen-Aufbereitung eine \ac{OSM}-Datei übergeben werden.
+Sowohl \emph{OSRM} als auch \emph{GraphHopper} können beim Starten der Graphen-Aufbereitung eine \ac{OSM}-Datei übergeben werden.
 
 \subsubsection{Geschwindigkeit der Vorverarbeitung}
 \label{analyse:Geschwindigkeit der Vorverarbeitung}
-Die von uns erzeugte \ac{OSM}-Datei wird der Routing-Engine zur Verarbeitung übergeben, um daraus einen Routing-Graphen zu generieren. Da dieser Prozess für jeden Durchlauf unserer Plaza-Vorverarbeitung aufs Neue geschehen muss, soll dies möglichst schnell sein.
+Die von uns erzeugte \ac{OSM}-Datei wird der \gls{Routing-Engine} zur Verarbeitung übergeben, um daraus einen Routing-Graphen zu generieren. Da dieser Prozess für jeden Durchlauf unserer Plaza-Vorverarbeitung aufs Neue geschehen muss, soll dies möglichst schnell sein.
 
-Bei einem Test mit einer von uns vorverarbeiteten OSM-Datei brauchte \emph{Graphhopper} nur wenige Minuten, während \emph{OSRM} über 30 Minuten für die Verarbeitung beanspruchte.
+Bei einem Test mit einer von uns vorverarbeiteten OSM-Datei brauchte \emph{GraphHopper} nur wenige Minuten, während \emph{OSRM} über 30 Minuten für die Verarbeitung beanspruchte.
 
 \subsubsection{Konfigurationsmöglichkeiten}
 \label{analyse:Konfigurationsmöglichkeiten}
-Für unsere Zwecke ist es sinnvoll, wenn wir die Routing-Engines auf das Fussgänger-Routing konfigurieren können. So sind z.B. Contraction Hierarchies nicht notwendig, da wir keine grossen Routen berechnen.
+Für unsere Zwecke ist es sinnvoll, wenn wir die Routing-Engines auf das Fussgänger-Routing konfigurieren können. So sind z.B. \gls{Contraction Hierarchies} nicht notwendig, da wir keine grossen Routen berechnen.
 
-\emph{Graphhopper} bietet die meisten Konfigurationsmöglichkeiten. Contraction Hierarchies können deaktiviert werden und für die Shortest-Path-Berechnung werden die A*- und Dijkstra-Algorithmen \cite{astar} \cite{dijkstra_algorithm} unterstützt. \emph{OSRM} bietet ebenfalls einen Modus ohne Contraction Hierarchies, allerdings nur mit dem Dijkstra-Algorithmus.
+\emph{GraphHopper} bietet die meisten Konfigurationsmöglichkeiten. \gls{Contraction Hierarchies} können deaktiviert werden und für die \gls{Shortest-Path}-Berechnung werden die A*- und Dijkstra-Algorithmen \cite{astar} \cite{dijkstra_algorithm} unterstützt. \emph{OSRM} bietet ebenfalls einen Modus ohne \gls{Contraction Hierarchies}, allerdings nur mit dem Dijkstra-Algorithmus.
 
 \subsubsection{Fussgänger-Profil}
 \label{analyse:Fussgänger-Profil}
-Für das Routing werden bestimmte Profile verwendet, um das Routing für verschiedene Anwender wie Autofahrer oder Fussgänger zu optimieren. Für uns ist es von Vorteil, wenn eine Routing-Engine bereits ein vorkonfiguriertes Profil für Fussgänger mitbringt.
+Für das Routing werden bestimmte Profile verwendet, um das Routing für verschiedene Anwender wie Autofahrer oder Fussgänger zu optimieren. Für uns ist es von Vorteil, wenn eine \gls{Routing-Engine} bereits ein vorkonfiguriertes Profil für Fussgänger mitbringt.
 
-\emph{Graphhopper} und \emph{OSRM} bringen beide bereits ein vorkonfiguriertes Fussgänger-Profil mit.
+\emph{GraphHopper} und \emph{OSRM} bringen beide bereits ein vorkonfiguriertes Fussgänger-Profil mit.
 
 \subsubsection{Resultat}
 \label{analyse:Resulat}
-Bezüglich der Integration unterscheiden sich \emph{Graphhopper} und \emph{OSRM} kaum. Der Entscheid fiel auf \emph{Graphhopper}, da die Vorverarbeitung deutlich schneller ist und die Konfigurationsmöglichkeiten uns mehr Freiheiten bieten. Mit der Auswahl zwischen Dijkstra \cite{dijkstra_algorithm} und A* \cite{astar} können wir auch vergleichen, welcher Algorithmus besser für Flächen-Traversierungen geeignet ist.
+Bezüglich der Integration unterscheiden sich \emph{GraphHopper} und \emph{OSRM} kaum. Der Entscheid fiel auf \emph{GraphHopper}, da die Vorverarbeitung deutlich schneller ist und die Konfigurationsmöglichkeiten uns mehr Freiheiten bieten. Mit der Auswahl zwischen Dijkstra \cite{dijkstra_algorithm} und A* \cite{astar} können wir auch vergleichen, welcher Algorithmus besser für Flächen-Traversierungen geeignet ist.
 
 
 \subsection{nächste ÖV-Haltestellen finden}
@@ -58,11 +58,11 @@ Bezüglich der Integration unterscheiden sich \emph{Graphhopper} und \emph{OSRM}
 
 Das grundlegende Ziel ist es, von einem Startpunkt aus eine Destination zu Fuss und mit dem öffentlichen Verkehr zu erreichen. Dabei sollen die ÖV-Haltestellen in einem zu Fuss machbaren Umkreis berücksichtigt werden. Von diesen ÖV-Haltestellen ausgehend wird das ÖV-Routing an die Zieldestination durchgeführt.
 
-Für die Anforderung \ref{target:nächste ÖV-Haltestellen finden} bietet sich Overpass an. Overpass ermöglicht es, über eine umfassende \ac{API} selektiv Daten von \ac{OSM} zu beziehen. Dabei besteht die Option, die Overpass \ac{QL} oder XML-Abfragen zu verwenden. Die Suche lässt sich nach allem einschränken, was der Mapper in den \ac{OSM}-Daten spezifizieren kann. So ist das Filtern nach Objekttyp, Keys, Tags, etc. unbeschränkt möglich und bietet so eine hohe Flexibilität. Overpass liefert die Resultate im JSON- oder XML-Format. 
+Für die Anforderung \ref{target:nächste ÖV-Haltestellen finden} bietet sich Overpass an. Overpass ermöglicht es, über eine umfassende \ac{API} selektiv Daten von \ac{OSM} zu beziehen. Dabei besteht die Option, die Overpass \ac{QL} oder XML-Abfragen zu verwenden. Die Suche lässt sich nach allem einschränken, was der Mapper in den \ac{OSM}-Daten spezifizieren kann. So ist das Filtern nach Objekttyp, Keys, \glspl{Tag}, etc. unbeschränkt möglich und bietet so eine hohe Flexibilität. Overpass liefert die Resultate im JSON- oder XML-Format. 
 
 Für eine einfache Intergration in Python gibt es Overpass Wrapper. Dabei wurden zwei Libraries berücksichtigt, namentlich \emph{overpass-api-python-wrapper} und \emph{OverPy}. Die Libraries haben einen ähnlich häufigen Updatezyklus. Für beide wurde ein Proof of Concept implementiert, welcher die ÖV-Haltestellen im einem kleinen Umkreis vom Stadelhofen, Zürich, Schweiz abfragt.
 
-Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere Dokumentation und dass OverPy Klassen für Nodes, Relations, Way, Area, etc. und Hilfsfunktionen, welche das Ganze übersichtlich halten, anbietet. Bei \emph{overpass-api-python-wrapper} besteht der Nachteil, dass das JSON-Resultat der Abfrage selber geparsed und verarbeitet werden muss.
+Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere Dokumentation und dass OverPy Klassen für \glspl{Node}, \glspl{Way}, etc. und Hilfsfunktionen, welche das Ganze übersichtlich halten, anbietet. Bei \emph{overpass-api-python-wrapper} besteht der Nachteil, dass das JSON-Resultat der Abfrage selber geparsed und verarbeitet werden muss.
 
 \begin{listing}[ht]
     \inputminted{python}{projectdoc/listing/get_public_transport_stops_overpass.py}
@@ -70,7 +70,7 @@ Die Entscheidung fiel dabei auf OverPy. Ausschlaggebend war die ausführlichere 
     \label{get_public_transport_stops_overpass}
 \end{listing}
 
-In Listing \ref{get_public_transport_stops_overpass} ist zu sehen, wie für eine Bounding Box, welche im Süden durch den minimalen Breitengrad, im Westen durch den minimalen Längengrad, im Norden durch den maximalen Breitengrad und im Osten durch den maximalen Längengrad begrenzt ist, die ÖV-Haltestellen abgefragt werden. Die Werte der Bounding Box werden dabei aufgrund eines Ausgangspunkt und einem konfigurierbaren Buffer berechnet. In diesem Beispiel wird für die Abfrage die erwähnte Overpass QL verwendet.
+In Listing \ref{get_public_transport_stops_overpass} ist zu sehen, wie für eine \gls{BoundingBox}, welche im Süden durch den minimalen Breitengrad, im Westen durch den minimalen Längengrad, im Norden durch den maximalen Breitengrad und im Osten durch den maximalen Längengrad begrenzt ist, die ÖV-Haltestellen abgefragt werden. Die Werte der Bounding Box werden dabei aufgrund eines Ausgangspunkt und einem konfigurierbaren Buffer berechnet. In diesem Beispiel wird für die Abfrage die erwähnte Overpass QL verwendet.
 
 Es ist ebenfalls möglich, eine Umkreissuche mit \code{around} durchzuführen. Dies hat Performance-Nachteile und es gibt keine entscheidenden Gründe, warum es vorteilhafter sein sollte, wenn man einen Kreis statt ein Rechteck um einen Ausgangspunkt zieht.
 
@@ -92,7 +92,7 @@ Search.ch bietet für Fahrplan-Abfragen eine API \cite{search_ch_route_api} an. 
     \end{tabular}
 \end{table}
 
-Also Antwort erhält man ein JSON-Objekt, welches eine Liste an möglichen Verbindungen beinhaltet. In einer zurückgelieferten Verbindung sind alle Teilstrecken definiert. Die erste Teilstrecke bestimmt den Ausgangspunkt der ÖV-Verbindung. Diese ist von besonderer Relevanz. In \ref{problem:mehrere Kanten mit dem gleichen Namen} wurde aufgezeigt, dass es normalerweise mehrere \glspl{Kante} mit dem gleichen Namen geben kann und nun zur richtigen geroutet werden muss. So kann mithilfe der \code{stopid} der Start- und Ausstiegshaltestelle, welche dem \acs{OSM}-Tag \code{uic\_ref} entspricht, und Overpass die Kante in die richte Fahrtrichtung ermittelt werden.
+Also Antwort erhält man ein JSON-Objekt, welches eine Liste an möglichen Verbindungen beinhaltet. In einer zurückgelieferten Verbindung sind alle Teilstrecken definiert. Die erste Teilstrecke bestimmt den Ausgangspunkt der ÖV-Verbindung. Diese ist von besonderer Relevanz. In \ref{problem:mehrere Kanten mit dem gleichen Namen} wurde aufgezeigt, dass es normalerweise mehrere \glspl{Kante} mit dem gleichen Namen geben kann und nun zur richtigen geroutet werden muss. So kann mithilfe der \code{stopid} der Start- und Ausstiegshaltestelle, welche dem \acs{OSM}-\gls{Tag} \code{uic\_ref} entspricht, und Overpass die Kante in die richte Fahrtrichtung ermittelt werden.
 
 \subsubsection{Einschränkungen}
 \label{analyse:search.ch Einschränkungen}
