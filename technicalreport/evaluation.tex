@@ -1,24 +1,24 @@
 \section{Bewertung Routing über offene Flächen}
 \label{sec:Bewertung Routing über offene Flächen}
 
-Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen hervorgebracht, namentlich \nameref{solution:Visibility-Graph} und \nameref{solution:SpiderWeb-Graph}, welche im Folgenden analysiert werden. Dazu werden messbare Kriterien definiert, gewichtet und die beiden Varianten daran gemessen. Am Ende wird den Varianten eine Punktzahl auf einer linearen Skala von 1 bis 5 zugewiesen.
+Das Kapitel \ref{solution:Routing über offene Flächen} hat zwei Algorithmen hervorgebracht, namentlich \nameref{solution:Visibility-Graph} und \nameref{solution:SpiderWeb-Graph}, welche im Folgenden bewertet werden. Dazu werden messbare Kriterien definiert, gewichtet und die beiden Varianten daran gemessen. Am Ende wird den Varianten eine Punktzahl auf einer linearen Skala von 1 bis 5 zugewiesen und ein Fazit gezogen.
 
 \subsection{Kriterien}
 \label{sub:Kriterien}
 
 \subsubsection{Verarbeitungszeit}
 \label{criteria:Verarbeitungszeit}
-Der massgebende Maximalwert ist in der nicht-funktionalen Anforderung \ref{NFA:NFA04} definiert. Die Verarbeitungszeit wird bewertet auf einer Skala von 1 (2 Stunden) bis 5 (0 Minuten).
+Der massgebende Maximalwert von \emph{2 Stunden} ist in der nicht-funktionalen Anforderung \ref{NFA:NFA04} im Teil \ref{chap:SW-Projektdokumentation} definiert. Die Verarbeitungszeit wird bewertet auf einer Skala von 1 (2 Stunden) bis 5 (0 Minuten).
 
 
 \subsubsection{zusätzliche Datenmenge}
 \label{criteria:zusätzliche Datenmenge}
-Die Algorithmen generieren zusätzliche Geometrien. Da die öffentlichen Plätze nur einen kleinen Teil der Kartendaten bilden, soll die zusätzliche Datenmenge keinen signifikaten Teil ausmachen. Der massgebende Maximalwert ist in der nicht-funktionalen Anforderung \ref{NFA:NFA05} definiert. Die zusätzliche Datenmenge im Verhältnis zur originalen Datei wird bewertet auf einer Skala von 1 (1\%) bis 5 (0\%).
+Die Algorithmen generieren zusätzliche Geometrien. Da die öffentlichen Plätze nur einen kleinen Teil der Kartendaten bilden, soll die zusätzliche Datenmenge keinen signifikaten Teil ausmachen. Der massgebende Maximalwert \emph{1\%} ist in der nicht-funktionalen Anforderung \ref{NFA:NFA05} im Teil \ref{chap:SW-Projektdokumentation} definiert. Die zusätzliche Datenmenge im Verhältnis zur originalen Datei wird bewertet auf einer Skala von 1 (1\%) bis 5 (0\%).
 
 
 \subsubsection{Natürlichkeit}
 \label{criteria:Natürlichkeit}
-Für die Natürlichkeit einer Route ist es schwer, messbare Kriterien zu definieren. Als eine natürliche Route versteht man, wenn man auf direktem Weg über den Platz geht und keine Umwege macht. Treten Hindernisse auf dem Platz auf, widerspricht es einem natürlichen Fussgänger-Verhalten, wenn man direkt aufs Hindernis zu läuft und dieses am Rande umgeht. Um trotzdem ein Fazit ziehen zu können, werden 3 Plätze (Helvetiaplatz in Zürich, Fischmarktplatz in Rapperswil-Jona und der Bahnhofplatz in Bern) untersucht. Dabei wird für beide Varianten eine interaktive Routing-Oberfläche an Probanden zu Verfügung gestellt. Die Probanden haben die Möglichkeit, selbst Routen über den Platz zu setzen. In Abbildung \ref{fig:algorithm-example-routes} sind einige Routen beispielhaft dargestellt. Danach bewerten die Probanden die vorhin definierte Natürlichkeit mit Punkten von 1 bis 5. Als massgeblicher Vergleichswert wird der Durchschnitt der Bewertungen aller Probanden genommen.
+Für die Natürlichkeit einer Route ist es schwer, messbare Kriterien zu definieren. Als eine natürliche Route versteht man, wenn man auf direktem Weg über den Platz geht und keine Umwege macht. Treten Hindernisse auf dem Platz auf, widerspricht es einem natürlichen Fussgänger-Verhalten, wenn man direkt aufs Hindernis zu läuft und dieses am Rande umgeht. Um trotzdem ein Fazit ziehen zu können, werden 3 Plätze (Helvetiaplatz in Zürich, Fischmarktplatz in Rapperswil-Jona und der Bahnhofplatz in Bern) untersucht. Dabei wird für beide Varianten eine interaktive Routing-Oberfläche Probanden zu Verfügung gestellt. Die Probanden haben die Möglichkeit, selbst über den Platz zu routen. In Abbildung \ref{fig:algorithm-example-routes} sind einige Routen beispielhaft dargestellt. Danach bewerten diese die Natürlichkeit mit Punkten von 1 bis 5. Als massgeblicher Vergleichswert wird der Durchschnitt der Bewertungen aller Probanden genommen.
 
 \begin{figure}[ht]
     \centering

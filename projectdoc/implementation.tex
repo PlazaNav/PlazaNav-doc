@@ -22,11 +22,11 @@ Angestossen wird die Vorverarbeitung vom \code{\_\_main\_\_.py} file, das vom Be
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{projectdoc/img/sequence_diagram_plaza_preprocessing.png}
-    \caption[Sequenz Diagramm Plaza Vorverarbeitung]{Sequenz Diagramm Plaza Vorverarbeitung}
+    \caption[Sequenz-Diagramm Plaza Vorverarbeitung]{Sequenz-Diagramm Plaza Vorverarbeitung}
     \label{fig:sequence_diagram_plaza_preprocessing}
 \end{figure}
 
-In Abbildung \ref{fig:sequence_diagram_plaza_preprocessing} ist der Ablauf in einem Sequenzdiagramm dargestellt. Dies entspricht nicht komplett dem Programmcode, sondern soll nur zur Veranschaulichung des Zusammenspiels der einzelnen Komponenten dienen.
+In Abbildung \ref{fig:sequence_diagram_plaza_preprocessing} ist der Ablauf in einem Sequenz-Diagramm dargestellt. Dies entspricht nicht komplett dem Programmcode, sondern soll nur zur Veranschaulichung des Zusammenspiels der einzelnen Komponenten dienen.
 
 Im Folgenden wird auf die einzelnen Komponenten eingegangen.
 
@@ -44,12 +44,12 @@ Alle ausgelesenen Daten werden in ein \code{OSMHolder} Objekt verpackt und zurü
 \paragraph{Optimizer}\label{impl:Optimizer}~\\
 Der Optimizer übernimmt die Kernfunktion der Vorverarbeitung, die Optimierung von Fussgänger-Flächen.
 
-Das \code{OSMHolder}-Objekt aus dem \nameref{impl:Importer} wird de Optimizer übergeben. Als erstes wird für Strassen, Punkte und Gebäude je ein R-Tree \cite{rtree_Guttman} Index erstellt. Dies erlaubt es uns, effizient geometrische Objekte zu finden, die sich mit dem Plaza schneiden. Ohne einen Index müsste für jedes Objekt (Linie, Punkt oder Gebäude) jeweils der komplette Datensatz durchsucht werden ($O(n)$). Mit einer Index-Suche ($O(\log n)$) werden die Datensätze auf ein paar wenige mögliche Treffer eingegrenzt.
+Das \code{OSMHolder}-Objekt aus dem \nameref{impl:Importer} wird dem Optimizer übergeben. Als erstes wird für Strassen, Punkte und Gebäude je ein R-Tree \cite{rtree_Guttman} Index erstellt. Dies erlaubt es uns, effizient geometrische Objekte zu finden, die sich mit dem Plaza schneiden. Ohne einen Index müsste für jedes Objekt (Linie, Punkt oder Gebäude) jeweils der komplette Datensatz durchsucht werden ($O(n)$). Mit einer Index-Suche ($O(\log n)$) werden die Datensätze auf ein paar wenige mögliche Treffer eingegrenzt.
 
 Für jedes Plaza werden folgende Schritte ausgeführt:
 \begin{enumerate}
     \item Es werden alle \glspl{Einstiegspunkt} berechnet. Dazu werden alle Linien gesucht, die das Plaza schneiden oder dieses berühren. Der Schnittpunkt dieser Linien mit dem äusseren Polygon der Fläche bildet jeweils einen Einstiegspunkt. Um Rechenfehler auszugleichen, werden die Schnittpunkte mit einem Buffer von einigen Zentimeter um das Polygon herum gesucht. Plazas, die weniger als zwei Einstiegspunkte haben, werden direkt verworfen, da auf diesen mit unserem Algorithmus gar keine kürzesten Wege berechnet werden könnten.
-    \item Linien, die das Plaza schneiden und einen \gls{Einstiegspunkt} bilden, werden mit der \ac{OSM} ID zwischengespeichert. Die jeweiligen \glspl{Einstiegspunkt} werden später vom \nameref{impl:Merger} in diese Linien eingefügt.
+    \item Linien, die das Plaza schneiden und einen \gls{Einstiegspunkt} bilden, werden mit der \ac{OSM}-ID zwischengespeichert. Die jeweiligen \glspl{Einstiegspunkt} werden später vom \nameref{impl:Merger} in diese Linien eingefügt.
     \item Alle Hindernisse auf dem Plaza werden ausgeschnitten. Dies kann ein Gebäude sein, das auf dem Platz steht, oder ein Hindernis wie z.B. ein Brunnen. Solche Hindernisse werden mit einem Quadrat mit konfigurierbaren Radius ausgeschnitten. Sollte nach diesem Schritt das Plaza komplett von Gebäuden oder Hindernissen verdeckt sein, wird es verworfen.
     \item Nun findet die eigentliche Optimierung statt, das Berechnen eines Graphen über das Plaza. Als Knotenpunkte des Graphen werden die \glspl{Einstiegspunkt} sowie alle Eckpunkte des Polygons (dementsprechend auch von Hindernissen) beachtet. Es sind die beiden Verfahren SpiderWeb-Graph und Visibility-Graph implementiert. Das Verfahren kann über das Strategy-Pattern \cite{gof_patterns} konfiguriert werden.
     \item Um die Anzahl Kanten des Graphen zu verringern, werden aus den generierten Graphen alle kürzesten Wege von jedem Einstiegspunkt zu jedem anderen Einstiegspunkt berechnet. Dies kann mit dem Dijkstra- \cite{dijkstra_algorithm} oder A*-Algorithmus \cite{astar} durchgeführt werden. Alle Kanten, die nicht auf diesen kürzesten Pfade sind, werden verworfen.
@@ -92,13 +92,13 @@ In diesem Abschnitt wird auf die Umsetzung der api-Schicht in Abbildung \ref{fig
 
 Dabei wird mithilfe von Flask-RESTPlus \cite{flask-restplus}, einer Flask-Extension, eine Web-\ac{API} exponiert. Diese besteht aktuell aus einem \ac{REST}-Service, welcher im Abschnitt \nameref{impl:PlazaRouting} genauer erläutert ist. Die Extension hat den Vorteil, dass automatisch eine Swagger-Dokumentation \cite{swagger} generiert wird, mit welcher unter anderem \ac{API}-Clients in verschiedenen Programmiersprachen generiert werden können. Diese ist unter \cite{plaza-routing-api-swaggerui} verfügbar. Ebenfalls ist sofort ersichtlich, wie das Response-Model der \ac{API} aussieht und in welchem Format welche Parameter übergeben werden müssen. Dies vereinfacht die Handhabung mit der \ac{API} massiv.
 
-Diese Komponente kann ohne Probleme mit \ac{REST}-Services analog zu \nameref{impl:PlazaRouting} ergänzt werden.
+Diese Komponente kann ohne Probleme mit zusätzlichen \ac{REST}-Services analog zu \nameref{impl:PlazaRouting} ergänzt werden.
 
 \subparagraph{PlazaRouting}\label{impl:PlazaRouting}~\\
-In der Komponente \emph{PlazaRouting} wird der \ac{REST}-Service für das Routing exponiert. Im Bezug auf das Maturity Model \cite{maturity_model} von Leonard Richardson befinden wir uns auf Level 2. Im \ac{REST}-Service werden die übergebenen Parameter entgegen genommen, automatisch in das verlangte Format geparsed und geprüft, ob die Parameter, welche zwingend verlangt werden, auch übergeben wurden. Diese Information wird dann weiter an die Business-Schicht gereicht, welche im nächsten Abschnitt aufgeschlüsselt wird. Die Komponente besitzt sonst keine weitere Logik.
+In der Komponente \emph{PlazaRouting} wird der \ac{REST}-Service für das Routing exponiert. Im Bezug auf das Maturity Model \cite{maturity_model} von Leonard Richardson befinden wir uns auf Level 2. Im \ac{REST}-Service werden die übergebenen Parameter entgegen genommen, automatisch in das verlangte Format geparsed und geprüft, ob die Parameter, welche zwingend verlangt werden, auch übergeben wurden. Diese Information wird dann weiter an die Business-Schicht gereicht, welche im nächsten Abschnitt aufgeschlüsselt wird.
 
 \paragraph{Zusammenspiel und Verantwortlichkeit der Business- und Service-Schicht}\label{impl:Plaza Routing Zusammenspielund Verantwortlichkeit der Business- und Service-Schicht}~\\
-In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen und das Optimieren der besten Route in ein Unter-Sequenz-Diagramm in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} respektive Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} ausgelagert. Dabei geht es primär nicht um die Logik, die dahinter liegt, sondern um die Verantwortlichkeiten der Services. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich. Aus diesem Grund entsprechen die Diagramme nicht exakt dem Programmcode. 
+In Abbildung \ref{fig:sequence_diagram_plaza_routing_overview} sind die Interaktionen zwischen den Komponenten in einem Sequenz-Diagramm aufgeschlüsselt. Dabei wurde zur Wahrung der Übersichtlichkeit das Holen aller möglichen Routen und das Optimieren der besten Route in ein Unter-Sequenz-Diagramm in Abbildung \ref{fig:sequence_diagram_plaza_routing_route_combs} respektive Abbildung \ref{fig:sequence_diagram_plaza_routing_optimize_route_comb} ausgelagert. Es geht primär um die Verantwortlichkeiten der Services und nicht um die Logik, die dahinter liegt. Wann sie ins Spiel kommen und für was sie benötigt werden, ist so gut ersichtlich. Aus diesem Grund entsprechen die Diagramme nicht exakt dem Programmcode. 
 
 Die Ausgangsposition und Destination können entweder als Koordinate oder Adresse übergeben werden. Falls es sich um eine Adresse handelt, wird ein Geocoding durchgeführt, um die Koordinate zu extrahieren. Dies erklärt den zweimaligen Zugriff auf das \emph{Geocoding} im Sequenz-Diagramm \ref{fig:sequence_diagram_plaza_routing_overview}.
 
@@ -146,7 +146,7 @@ Search.ch \cite{search_ch_route_api} liefert in einer ÖV-Verbindung für zwei g
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.5\linewidth]{projectdoc/img/one_coordinate_for_two_stops}
-\caption[eine Koordinate für zwei Kanten]{eine Koordinate für zwei Kanten der Roten Fabrik, Zürich, Schweiz; openstreetmap.org; Screenshots aufgenommen am 25.11.2017}
+\caption[Eine Koordinate für zwei Kanten]{eine Koordinate für zwei Kanten der Roten Fabrik, Zürich, Schweiz; openstreetmap.org; Screenshots aufgenommen am 25.11.2017}
 \label{fig:one_coordinate_for_two_stops}
 \end{figure}
 
@@ -163,8 +163,8 @@ Da ÖV-Haltestellen und -Linien in \ac{OSM} jedoch nicht konsistent gemappt sind
 
 Vorgängig muss klargestellt werden, dass wenn die Rede vo einer ÖV-Linie ist, grundsätzlich eine Buslinie oder ähnliches, welche in \ac{OSM} als Relation \cite{osm_wiki_relation} abgebildet ist, gemeint ist. \glspl{Kante} werden als Node gemappt.
 
-In einem ersten Schritt werden die Daten über die bekannte ÖV-Linie geladen. Search.ch \cite{search_ch_route_api} liefert eine \emph{uic\_ref} für die initiale ÖV-Haltestelle und eine, bei welcher man aussteigt. Üblicherweise erhält man zwei Relationen zurück, je eine für jede Fahrrichtung. Mit den beiden \emph{uic\_ref}s der ÖV-Haltestellen kann man nun die Members der Relation durchgehen und die ÖV-Linie selektieren, bei welcher die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle kommt. Der Member mit der \emph{uic\_ref} der initialen ÖV-Haltestelle in der selektierten ÖV-Linie entspricht in diesem Fall der gesuchten \glspl{Kante} in die richtige Fahrtrichtung.
-Anmerken muss man, dass es natürlich mit einem Risiko verbunden ist, so die korrekte Koordinate zu eruieren. Entspricht die Reihenfolge der Members nicht der tatsächlichen Reihenfolge der ÖV-Haltestellen in einer ÖV-Linie, kommt aber bei beiden Relationen oder der Falschen die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle, kann es vorkommen, dass man die falsche Kante erwischt. Mit diesem Restrisiko leben wir.
+In einem ersten Schritt werden die Daten über die bekannte ÖV-Linie geladen. Search.ch \cite{search_ch_route_api} liefert eine \emph{uic\_ref} für die initiale ÖV-Haltestelle und eine, bei welcher man aussteigt. Üblicherweise erhält man zwei Relationen zurück, je eine für jede Fahrrichtung. Mit den beiden \emph{uic\_ref}s der ÖV-Haltestellen kann man nun die Members der Relation durchgehen und die ÖV-Linie selektieren, bei welcher die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle kommt. Der Member mit der \emph{uic\_ref} der initialen ÖV-Haltestelle in der selektierten ÖV-Linie entspricht in diesem Fall der gesuchten \gls{Kante} in die richtige Fahrtrichtung.
+Anmerken muss man, dass es natürlich mit einem Risiko verbunden ist, so die korrekte Koordinate zu eruieren. Entspricht die Reihenfolge der Members nicht der tatsächlichen Reihenfolge der ÖV-Haltestellen in einer ÖV-Linie, kommt aber bei der Falschen die \emph{uic\_ref} der initialen ÖV-Haltestelle vor der \emph{uic\_ref} der Ausstiegshaltestelle, kann es vorkommen, dass man die falsche Kante erwischt. Mit diesem Restrisiko leben wir. Falls bei beiden Relationen die gleiche \emph{uic\_ref} zuerst kommt oder die gemappten \ac{OSM}-Daten für dieses Vorgehen nicht ausreichen, wird auf eine alternative Variante ausgewichen. 
 
 Ist die erste Variante nicht erfolgreich, werden die Relationen mit der \emph{uic\_ref} der initialen ÖV-Haltestelle geladen. \glspl{Kante} mit der gleichen \emph{uic\_ref} gehören normalerweise zu einer Relation, welche auch selbst diese \emph{uic\_ref} besitzt. Über diese Relation können die möglichen initialen Ausgangskante und die ÖV-Linien geladen werden. In einem weiteren Schritt werden die Ausstiegskanten in einem ähnlichen Verfahren für die \emph{uic\_ref} der Ausstiegshaltestelle geladen. Im idealen Fall hat man nun die Einstiegskanten, ÖV-Linien und Ausstiegskanten für beide Fahrtrichtungen. Mit diesen Daten kann nun die korrekte Einstiegs- und Ausstiegskante der konkreten ÖV-Linie zugeordnet werden (durch ihre Zugehörigkeit als Member). Da man die Einstiegs- und Ausstiegskante separat geladen hat, ist es eine Leichtigkeit, die ÖV-Linie in die richtige Fahrtrichtung zu eruieren.
 
@@ -185,9 +185,9 @@ Die erhöhte Genauigkeit kommt nicht ohne Performanzeinbusse. Im Worst-Case wird
 \paragraph{Route-Kombination oder nur Fussgänger-Route}\label{impl:Route-Kombination oder nur Fussgänger-Route}~\\
 Bevor überhaupt ein ÖV-Routing durchgeführt wird, wird geprüft, ob das Ziel in einem konfigurierbaren Grenzwert zu Fuss erreichbar ist. Wenn dies zutrifft, wird nur das Fussgänger-Routing retourniert. Dadurch werden die Drittsysteme geschont und die Abfragezeit ist minimal. Search.ch \cite{search_ch_route_api} gibt für kleinere Routen ebenfalls nur ein Fussgänger-Routing zurück, somit wäre diese Abfrage ohne diesen Grenzwert überflüssig.
 
-Nach dem durchgeführten Plaza Routing, sprich der Kombination aus dem Fussgänger- und ÖV-Routing, wird überprüft, ob die Dauer des Fussweg vom Start zum Ziel kleiner ist als die Summe aus der Dauer des Fussweg zur Ausgangshaltestelle, der Wartezeit auf die ÖV-Verbindung, des ÖV-Routing und des Fussweg zum Ziel. Ist man zu Fuss schneller, wird das Fussgänger-Routing retourniert. Dies ist in Abbildung \ref{fig:qgis_plugin_plaza_route_walking_public_transport_comparison} dargestellt. In der linken Grafik wird das Routing mit der Startzeit 15:46 Uhr durchgeführt. Bei der retournierten ÖV-Verbindung muss man \emph{240s} warten und hat für das Fussgänger- und ÖV-Routing zusammen \emph{829s}.
-In der rechten Grafik startet man um 14:12 Uhr und wartet auf die gleiche ÖV-Linie \emph{480s}. Zu Fuss ist das Ziel in \emph{1137s} erreichbar. Links erhält man die Gesamtdauer von \emph{1069s} und rechts \emph{1309s}.
-Aus diesem Grund wird rechts nur das Fussgänger-Routing retourniert, da \emph{1309s > 1137s} zutrifft.
+Nach dem durchgeführten multimodalen Routing, sprich der Kombination aus dem Fussgänger- und ÖV-Routing, wird überprüft, ob die Dauer des Fussweg vom Start zum Ziel kleiner ist als die Summe aus der Dauer des Fussweg zur Ausgangshaltestelle, der Wartezeit auf die ÖV-Verbindung, des ÖV-Routing und des Fussweg zum Ziel. Ist man zu Fuss schneller, wird das Fussgänger-Routing retourniert. Dies ist in Abbildung \ref{fig:qgis_plugin_plaza_route_walking_public_transport_comparison} dargestellt. In der linken Grafik wird das Routing mit der Startzeit 15:46 Uhr durchgeführt. Bei der retournierten ÖV-Verbindung muss man \emph{240 s} warten und hat für das Fussgänger- und ÖV-Routing zusammen \emph{829 s}.
+In der rechten Grafik startet man um 14:12 Uhr und wartet auf die gleiche ÖV-Linie \emph{480 s}. Zu Fuss ist das Ziel in \emph{1137 s} erreichbar. Links erhält man die Gesamtdauer von \emph{1069 s} und rechts \emph{1309 s}.
+Aus diesem Grund wird rechts nur das Fussgänger-Routing retourniert, da \emph{1309 s > 1137 s} zutrifft.
 
 Es lässt sich nun darüber streiten, ob man dies dem Benutzer zumuten kann. Wir haben entschieden, dass wir die schnellstmögliche Variante anbieten möchten und nicht die Bequemste.
 Im Kapitel \ref{sub:Möglichkeiten der Weiterentwicklung} wird darauf eingegangen, dass man in einer weiteren Version die Benutzer-Präferenzen definieren kann.
@@ -195,12 +195,12 @@ Im Kapitel \ref{sub:Möglichkeiten der Weiterentwicklung} wird darauf eingegange
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1.0\linewidth]{projectdoc/img/qgis_plugin_plaza_route_walking_public_transport_comparison}
-    \caption[Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird]{Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137s, Links: Startzeit 15:46, Kombination 829s, Wartezeit 240s, Total 1069s, Rechts: Startzeit 14:12, Kombination 829s, Wartezeit 480s, Total 1309s}
+    \caption[Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird]{Entscheidung, ob Route-Kombination oder nur Fussgänger-Route retourniert wird; Dauer des Fussweg: 1137 s, Links: Startzeit 15:46, Kombination 829 s, Wartezeit 240 s, Total 1069 s, Rechts: Startzeit 14:12, Kombination 829 s, Wartezeit 480 s, Total 1309 s}
     \label{fig:qgis_plugin_plaza_route_walking_public_transport_comparison}
 \end{figure}
 
 \paragraph{Konfiguration}\label{impl:PlazaRouting_Konfiguration}~\\
-Die Konfiguration der \emph{Plaza Routing} Komponente erfolgt durch ein Python-Konfigurationsfile im Root-Verzeichnis des Python-Packages. Dort können unter anderem die \ac{API}s zu den benötigten Services angepasst werden. Ausserdem ist konfigurierbar, welche Grenzwerte für das Finden der besten Route (siehe Abschnitt \nameref{impl:Plaza Routing Beste Route eruieren}) verwendet werden.
+Die Konfiguration der Plaza Routing Komponente erfolgt durch ein Python-Konfigurationsfile im Root-Verzeichnis des Python-Packages. Dort können unter anderem die \ac{API}s zu den benötigten Services angepasst werden. Ausserdem ist konfigurierbar, welche Grenzwerte für das Finden der besten Route (siehe Abschnitt \nameref{impl:Plaza Routing Beste Route eruieren}) verwendet werden und mit welchem Buffer die Bouding Box für das Beziehen der ÖV-Haltestellen berechnet wird (siehe Abschnitt \nameref{impl:Plaza Routing ÖV-Haltestellen eruieren}).
 
 \subsection{QGIS Plugin}
 \label{impl:QGIS Plugin}
@@ -225,7 +225,7 @@ Die Karte wird über \emph{QgsRubberBand} modifiziert. \emph{QgsRubberBand} nutz
     \label{QgsRubberBand Pseudocode}
 \end{listing}
 
-Im Abschnitt \nameref{impl:Plaza Routing Route optimieren} wurde auf die Problematik mit den ungenauen Koordinaten von Search.ch \cite{search_ch_route_api} eingegangen. In Abbildung \ref{fig:precise_public_transport_stops_comparison} ist nun der Unterschied zwischen dem ungsetzten und gesetzten \emph{precise public transport stop} Flag sichtbar. Mit dem gesetzten Flag werden die Koordinaten optimiert.
+Im Abschnitt \nameref{impl:Plaza Routing Route optimieren} wurde auf die Problematik mit den ungenauen Koordinaten von search.ch \cite{search_ch_route_api} eingegangen. In Abbildung \ref{fig:precise_public_transport_stops_comparison} ist nun der Unterschied zwischen dem ungsetzten und gesetzten \emph{precise public transport stop} Flag sichtbar. Mit dem gesetzten Flag werden die Koordinaten optimiert.
 
 \begin{figure}[ht]
 \centering
@@ -234,12 +234,12 @@ Im Abschnitt \nameref{impl:Plaza Routing Route optimieren} wurde auf die Problem
 \label{fig:precise_public_transport_stops_comparison}
 \end{figure}
 
-Neben der Route wird dem Benutzer auch ein einfaches Routing (siehe Abbildung \ref{fig:qgis_plugin_plaza_route_routing}) angezeigt, welche aus der erhaltenen Response generiert wird.
+Neben der Route wird dem Benutzer auch eine einfache Navigationsanweisung (siehe Abbildung \ref{fig:qgis_plugin_plaza_route_routing}) angezeigt, welche aus der erhaltenen Response generiert wird.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.7\linewidth]{projectdoc/img/qgis_plugin_plaza_route_routing}
-\caption[QGIS Plugin Plaza Route mit Routing]{QGIS Plugin Plaza Route mit Routing}
+\caption[QGIS Plugin Plaza Route mit Navigationsanweisung]{QGIS Plugin Plaza Route mit Navigationsanweisung}
 \label{fig:qgis_plugin_plaza_route_routing}
 \end{figure}
 

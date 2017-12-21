@@ -5,7 +5,7 @@
 \subsection{Continuous Integration}
 \label{sub:Continuous Integration}
 
-In unserem Projekt wird \ac{CI} einerseits für das automatische Erstellen dieser Dokumentation mi LaTeX verwendet, und andererseits, um automatische Tests für die Backend-Implementation auszuführen. Beides wird im Folgenden kurz beschrieben.
+In unserem Projekt wird \ac{CI} einerseits für das automatische Erstellen dieser Dokumentation mit LaTeX verwendet, und andererseits, um automatische Tests für die Backend-Implementation auszuführen. Beides wird im Folgenden kurz beschrieben.
 
 \subsubsection{Erstellen der LaTeX-Dokumentation}
 \label{subsub:Erstellen der LaTeX-Dokumentation}
@@ -18,22 +18,22 @@ Für diese Continuous Integration haben wir uns für Travis CI \cite{travis-ci} 
 
 Mit \ac{CI} für das Backend des Prototyps werden bei jedem Commit in das Repository \cite{github:PlazaRoute} alle Tests ausgeführt. So wird sichergestellt, dass die Tests auch auf einem isolierten System mit den definierten Abhängigkeiten korrekt durchlaufen. Für jeden Merge in den Master-Branch des Repositories wird zusätzlich mit Sphinx \cite{sphinx} eine automatische Dokumentation der Python-Pakete generiert. Diese ist unter \cite{PlazaRoute-apidoc} veröffentlicht.
 
-Anders als bei \ref{subsub:Erstellen der LaTeX-Dokumentation} funktioniert hier Travis CI für unseren Fall nicht. Eine Abhängigkeit unserer Implementation ist Pyosmium \cite{pyosmium}, das selbst die \emph{boost} Library für C++-Komponenten verwendet. Leider sind die Python-Bindings dafür in der Umgebung von Travis CI veraltet und wären nur sehr aufwändig selbst zu kompilieren. Stattdessen sind wir auf CircleCI \cite{circleci} ausgewichen, das für einen parallelen \ac{CI}-Job kostenlos ist. Dies reicht für unsere Zwecke völlig aus. CircleCI bietet die Möglichkeit, eigene Docker-Container zu verwenden. So können wir ein eigenes Docker-Image bauen, das \emph{boost} bereits in der neuesten Version vorinstalliert hat, womit es mit den Python-Abhängigkeiten auch keine Probleme mehr gibt.
+Anders als bei \ref{subsub:Erstellen der LaTeX-Dokumentation} funktioniert hier Travis CI für unseren Fall nicht. Eine Abhängigkeit unserer Implementation ist Pyosmium \cite{pyosmium}, das selbst die \emph{boost} Library für C++-Komponenten verwendet. Leider sind die Python-Bindings dafür in der Umgebung von Travis CI veraltet und wären nur sehr aufwändig selbst zu kompilieren. Stattdessen sind wir auf CircleCI \cite{circleci} ausgewichen, das für einen parallelen \ac{CI}-Job kostenlos ist. Dies reicht für unsere Zwecke völlig aus. CircleCI bietet die Möglichkeit, eigene Docker-Container zu verwenden. So können wir ein eigenes Docker-Image bauen, das \emph{boost} bereits in der neuesten Version vorinstalliert hat, womit es mit den Python-Abhängigkeiten keine Probleme mehr gibt.
 
 \subsection{Deployment}
 \label{sub:Deployment}
 
-Um das Deployment möglichst zu vereinfachen, werden für die einzelnen Container von PlazaRoute (siehe \ref{architektur:PlazaRoute Container}) jeweils eigene Docker-Container erstellt. Man beachte die Unterscheidung zwischen einem Container im Sinne des C4-Modells \cite{c4model} und einem Docker-Container. In unserem Fall wird für jeden "C4-Container" genau ein Docker-Container erstellt.
+Um das Deployment möglichst zu vereinfachen, werden für die einzelnen Container von PlazaRoute (siehe \ref{architektur:PlazaRoute Container}) jeweils eigene Docker-Images erstellt.
 
 \subsubsection{Plaza Vorverarbeitung}
 \label{deployment:Plaza Vorverarbeitung}
 
-Die \nameref{impl:Plaza Vorverarbeitung} wird periodisch von Hand oder automatisch ausgeführt. Um die Installation und das Dependency-Management zu vereinfachen, wurde ein Docker Image erstellt und auf Docker Hub \cite{dockerhub:plazaroute} hochgeladen, damit es direkt verwendet werden kann. Die Benutzung ist im Github Repository \cite{github:PlazaRoute} dokumentiert.
+Die \nameref{impl:Plaza Vorverarbeitung} wird periodisch von Hand oder automatisch ausgeführt. Um die Installation und das Dependency-Management zu vereinfachen, wurde ein Docker-Image erstellt und auf Docker Hub \cite{dockerhub:plazaroute} hochgeladen, damit es direkt verwendet werden kann. Die Benutzung ist im Github Repository \cite{github:PlazaRoute} dokumentiert.
 
 \subsubsection{Plaza Routing}
 \label{deployment:Plaza Routing}
 
-Das \nameref{impl:Plaza Routing} stellt das Backend dar und bietet ein API an, die vom QGIS-Plugin benutzt wird. Neben den Online-Diensten braucht es dazu eine lokale Instanz der Routing-Engine, in unserem Fall Graphhopper \cite{graphhopper}.
+Das \nameref{impl:Plaza Routing} stellt das Backend dar und bietet ein API an, die vom QGIS-Plugin benutzt wird. Neben den Fremdsystemen braucht es dazu eine lokale Instanz der Routing-Engine, in unserem Fall Graphhopper \cite{graphhopper}.
 
 Für Plaza Routing und Graphhopper wurde je ein Docker-Image erstellt. Da Flask \cite{flask} nur ein minimaler Applikations-Server mitbringt, wird unsere Flask-Applikation auf einem \emph{uWSGI} \cite{uwsgi} Server gestartet. Als dritter Container benutzen wir \emph{Nginx} \cite{nginx}, der als Reverse Proxy konfiguriert ist und alle Anfragen an den Plaza Routing Container weiterleitet. So ist der Applikations-Server zusätzlich abgeschirmt.
 

@@ -6,7 +6,7 @@
 
 In \ac{OSM} gibt es mehrere Arten, wie Mapper mit Flächen umgehen. So wirken einige Mapper dem Fussgängerrouting-Problem über Flächen mit zusätzlichen eingezeichneten Wegen entgegen, oder aber die Fläche ist ganz von Wegen befreit.
 
-In Abbildung \ref{fig:helvetiaplatz_comparison} und Abbildung \ref{fig:sechselaeutenplatz_comparison} ist ein Vergleich gängiger Routing-Engines abgebildet, welche ein Fussgänger-Profil anbietet. In Abbildung \ref{fig:helvetiaplatz_comparison} sieht man schön, wie es bei \ac{OSM} möglich ist, dass die eingezeichneten Fusswege über den Platz genutzt werden. Diese Route entspricht offensichtlich nicht einem natürlichen Fussgänger-Verhalten, da normalerweise der direkte Weg über den Platz gewählt wird, sofern keine Hindernisse im Weg sind. An dieser Stelle scheitert Google Maps. Der Vergleich von Google Maps und \ac{OSM} hinkt hier natürlich, da nicht beide auf den genau gleichen Datenbestand zurückgreifen. Betrachtet man in Abbildung \ref{fig:sechselaeutenplatz_comparison} hingegen den Sechseläutenplatz, sieht man, dass ohne eingezeichnete Wege alle getesteten Anbieter um den Platz herum führen.
+In Abbildung \ref{fig:helvetiaplatz_comparison} und \ref{fig:sechselaeutenplatz_comparison} ist ein Vergleich gängiger Routing-Engines abgebildet, welche ein Fussgänger-Profil anbieten. In Abbildung \ref{fig:helvetiaplatz_comparison} sieht man schön, wie auf openstreetmap.org die eingezeichneten Fusswege über den Platz genutzt werden. Diese Route entspricht offensichtlich nicht einem natürlichen Fussgänger-Verhalten, da normalerweise der direkte Weg über den Platz gewählt wird, sofern keine Hindernisse im Weg sind. Betrachtet man in Abbildung \ref{fig:sechselaeutenplatz_comparison} hingegen den Sechseläutenplatz, sieht man, dass ohne eingezeichnete Wege alle getesteten Anbieter um den Platz herum führen.
 
 \begin{figure}[ht]
 \centering
@@ -35,7 +35,7 @@ Abschliessend kann man sagen, dass alle getesteten Routing-Engines mit den Fussg
 In den folgenden Unterkapitel werden bestehende Lösungsansätze aus der Literatur diskutiert, die das Problem des Routings über offene Flächen, wie in Kapitel \ref{subsub:Routing bei zwei benachbarten Flächen} beschrieben, lösen sollen. Die beiden vielversprechendsten Ansätze Visibility-Graph und SpiderWeb-Graph werden in Kapitel \ref{sec:Bewertung Routing über offene Flächen} tiefergehend miteinander verglichen.
 
 \paragraph{Visibility-Graph}\label{solution:Visibility-Graph}~\\
-Ein Ansatz zur Verhinderung von Kollisionen auf Flächen wurde in \cite{lozano-perez_visibility_graph} als Visibility-Graph beschrieben. Dabei wird in einem ersten Schritt für jeden Knotenpunkt einer Fläche eine Verbindung zu jedem anderen Knotenpunkt gezeichnet. Für unsere Zwecke werden dabei alle Knotenpunkte eines Polygons, Hindernisse,  sowie Schnittpunkte mit Strassen und Wegen (\glspl{Einstiegspunkt}) beachtet.
+Ein Ansatz zur Verhinderung von Kollisionen auf Flächen wurde in \cite{lozano-perez_visibility_graph} als Visibility-Graph beschrieben. Dabei wird in einem ersten Schritt für jeden Knotenpunkt einer Fläche eine Verbindung zu jedem anderen Knotenpunkt gezeichnet. Für unsere Zwecke werden dabei alle Knotenpunkte eines Polygons, Hindernisse, sowie Schnittpunkte mit Strassen und Wegen (\glspl{Einstiegspunkt}) beachtet.
 
 In einem zweiten Schritt werden alle Verbindungen verworfen, die nicht komplett innerhalb der Fläche liegen oder mit einem Hindernis darauf kollidieren.
 
@@ -63,6 +63,10 @@ Die Arbeit \cite{dzafic_spider_web_graph} befasst sich mit dem Flächenrouting f
 \label{fig:spiderweb}
 \end{figure}
 
+Damit ein Spinnennetz über eine Fläche gezeichnet werden kann, muss eine Bounding-Box berechnet werden. Es handelt sich dabei um ein Rechteck, welches die ganze Fläche überdeckt. 
+
+Vor dem Zeichnen des Spinnennetz ist es möglich, den Abstand zwischen Spalten und den Zeilen (Spacing) zu definieren. Dies hat hohe Auswirkung auf die Anzahl Zeilen und Spalten und somit auf die gezeichneten Pfade über die Fläche, da mit einem kleineren Spacing eine "Glättung" der Pfade möglich ist. Die gezeichneten Pfade widerspiegeln so eher das Verhalten eines Fussgängers. Ein Abstrich des kleiner Spacings ist sofort ersichtlich, wenn man das Spinnennetz in der Abbildung \ref{fig:spiderweb} betrachtet. Man kann annehmen, dass dieses Spinnennetz über eine Fläche von 4*4 cm mit einem Spacing von einem 1 cm gezeichnet wird. Verkleinert man nun das Spacing auf 0.5 cm, steigt die Anzahl der zu zeichnenden Linien von 72 auf 272. Halbiert man ein weiteres Mal, ist man bereits bei 1056 Linien. Damit ein Routing über das Spinnennetz und somit Abzweigungen möglich sind, kann nicht eine Linie pro Zeile oder Spalte genutzt werden.
+
 Auf dem Spinnennetz wird ähnlich wie beim \nameref{solution:Visibility-Graph} zwischen allen \glspl{Einstiegspunkt}n der Shortest-Path berechnet. Für die weitere Verarbeitung werden nur noch diese optimierten Pfade verwendet. Zur Verdeutlichung der Idee ist der Pseudocode in Listing \ref{SpiderWeb Pseudocode} zu betrachten.
 
 \begin{listing}[ht]
@@ -71,13 +75,9 @@ Auf dem Spinnennetz wird ähnlich wie beim \nameref{solution:Visibility-Graph} z
     \label{SpiderWeb Pseudocode}
 \end{listing}
 
-Damit ein Spinnennetz über eine Fläche gezeichnet werden kann, muss eine Bounding-Box berechnet werden. Es handelt sich dabei um ein Rechteck, welches die ganze Fläche überdeckt. 
-
-Vor dem Zeichnen des Spinnennetz ist es möglich, den Abstand zwischen Spalten und den Zeilen (Spacing) zu definieren. Dies hat hohe Auswirkung auf die Anzahl Zeilen und Spalten und somit auf die gezeichneten Pfade über die Fläche, da mit einem kleineren Spacing eine "Glättung" der Pfade möglich ist. Die gezeichneten Pfade widerspiegeln so eher das Verhalten eines Fussgängers. Ein Abstrich des kleiner Spacings ist sofort ersichtlich, wenn man das Spinnennetz in der Abbildung \ref{fig:spiderweb} betrachtet. Man kann annehmen, dass dieses Spinnennetz über eine Fläche von 4*4 cm mit einem Spacing von einem 1 cm gezeichnet wird. Verkleinert man nun das Spacing auf 0.5 cm, steigt die Anzahl der zu zeichnenden Linien von 72 auf 272. Halbiert man ein weiteres Mal, ist man bereits bei 1056 Linien. Damit ein Routing über das Spinnennetz und somit Abzweigungen möglich sind, kann nicht eine Line pro Zeile oder Spalte genutzt werden.
-
 Das Zeichnen des Spinnennetzes hat eine Effizienz von \(O(N\times M)\), wobei N und M die Anzahl Spalten und Zeilen sind. Die Anzahl der Zeilen und Spalten erfahren beim Halbieren des Spacings jeweils ein quadratisches Wachstum. Durch ein kleineres Spacing steigen auch die Anzahl möglicher Pfade über die Fläche an, was Auswirkung auf die Dauer der Generierung des Shortest Paths hat. 
 
-Betrachtet man das Resultat in Abbildung \ref{fig:spiderweb_result}, sieht man in Schwarz den generierten Shortest Path über die Fläche.
+Betrachtet man das Resultat in Abbildung \ref{fig:spiderweb_result}, sieht man in Schwarz den generierten Shortest Path über die Fläche von allen \glspl{Einstiegspunkt}n aus.
 
 \begin{figure}[th]
 \centering
@@ -86,8 +86,7 @@ Betrachtet man das Resultat in Abbildung \ref{fig:spiderweb_result}, sieht man i
 \label{fig:spiderweb_result}
 \end{figure}
 
-
-Es wurde ebenfalls geprüft, ob die Rotation des Spinnennetz auf die Gegebenheit der Fläche eine Auswirkung auf die Shortest Path-Generierung hat. Bei einem Test, welcher in Abbildung \ref{fig:rotation_comparison} ersichtlich ist, wurden keine entscheidenden Vorteile gefunden, warum sich der zusätzliche Aufwand rechtfertigen würde. Das Spinnennetz wurde um 45 und um 90 Grad gedreht. Die berechneten kürzesten Pfade sind fast identisch.
+Es wurde ebenfalls geprüft, ob die Rotation des Spinnennetz auf die Gegebenheit der Fläche eine Auswirkung auf die Shortest Path-Generierung hat. Bei einem Test, welcher in Abbildung \ref{fig:rotation_comparison} ersichtlich ist, wurden keine entscheidenden Vorteile gefunden, warum sich der zusätzliche Aufwand rechtfertigen würde. Das Spinnennetz wurde um 45 beziehungsweise um 90 Grad gedreht. Die berechneten kürzesten Pfade sind fast identisch.
 
 \begin{figure}[th]
 \centering
@@ -97,7 +96,7 @@ Es wurde ebenfalls geprüft, ob die Rotation des Spinnennetz auf die Gegebenheit
 \end{figure}
 
 \paragraph{Straight Skeleton}~\\
-Die Methode vom \emph{Straight Skeleton} wurde erstmals in \cite{aichholzer_skeleton} eingeführt. Dabei werden Schritt für Schritt die Kanten des Polygons zur Mitte zusammen geführt, es entstehen Verbindungen mit scharfen Ecken zu den Eckpunkten des Polygons. In Abbildung \ref{fig:skeleton_example} ist beispielhaft ein Graph aufgezeichnet.
+Die Methode des \emph{Straight Skeleton} wurde erstmals in \cite{aichholzer_skeleton} eingeführt. Dabei werden Schritt für Schritt die Kanten des Polygons zur Mitte zusammen geführt, es entstehen Verbindungen mit scharfen Ecken zu den Eckpunkten des Polygons. In Abbildung \ref{fig:skeleton_example} ist beispielhaft ein Graph aufgezeichnet.
 
 Die Andwendung dieser Methode für Flächenrouting wurde bereits in \cite{graser_visibility_graph} diskutiert. Es stellt sich heraus, dass die \emph{Straight Skeleton} Methode keine natürlichen Routen für Fussgänger ergibt, da sie tendenziell zur Mitte der Fläche gehen und sich dabei scharfe Kurven ergeben. Aus diesen Gründen wird dieser Ansatz nicht weiter behandelt.
 
@@ -112,7 +111,7 @@ Die Andwendung dieser Methode für Flächenrouting wurde bereits in \cite{graser
 \subsubsection{Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 \label{subsub:Routing über über weitere Arten von offenen Flächen (Berge, Strände)}
 
-Wie in \ref{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)} beschrieben, ergeben sich beim Überqueren von offenen Landflächen wie Berge oder Strände andere Fragestellungen. Hier spielt die Unterlage eine grössere Rolle, Faktoren wie Höhe oder Beschaffenheit des Untergrunds sind nun relevant. Für diese Problematik wird ein technischer Lösungsansatz vorgestellt und bewertet.
+Wie in \ref{problem:Routing über über weitere Arten von offenen Flächen (Berge, Strände)} beschrieben, ergeben sich beim Überqueren von offenen Landflächen wie Berge oder Strände andere Fragestellungen. Hier spielt die Unterlage eine grössere Rolle. Faktoren wie Höhe oder Beschaffenheit des Untergrunds sind nun relevant. Für diese Problematik wird ein technischer Lösungsansatz vorgestellt und bewertet.
 
 \paragraph{Technischer Ansatz mit Cost Path Analyse}~\\
 Ein Ansatz für die Berechnung von Routen über offene Flächen ist die Cost Path Analyse \cite{cost_path_analysis}. Dieses Verfahren wird oft angewendet, um in einer Fläche Korridore zu finden, um darin beispielsweise neue Strassen zu erschliessen \cite{gis-wiki:cost-path-analysis}.
@@ -132,13 +131,13 @@ Sobald ein Startpunkt der Route bekannt ist, kann als nächstes ein Cost Distanc
 \paragraph{Bewertung}~\\
 Im Kontext des Fussgänger-Routings gibt es mit dem Ansatz der Cost Path Analyse einige weitere Fragestellungen. Für jede Fläche müsste zuerst eine Cost Surface erstellt werden. Das Cost Distance Raster kann dann erst zur Laufzeit berechnet werden, da Start- und Zielpunkt vorher nicht bekannt sind.
 
-Bei offenen Landflächen in Bergen ist es ausserdem schwierig zu entscheiden, ob ein Fussgänger eine Fläche passieren kann. Solche Flächen sind in \ac{OSM} oft nicht gemappt und es besteht keine Information über den Untergrund. Es kommen auch andere Faktoren wie z.B. die Jahreszeit hinzu. So könnte das Begehen einer Wiese im Sommer problemlos, im Winter aber durch eine Schneedecke zeitweise unmöglich sein. Bei Stränden sieht es wiederum anders aus, diese sind in \ac{OSM} meist als Flächen gemappt. Dort spielt aber auch das Höhenprofil normalerweise keine Rolle, womit ein Ansatz wie unter \ref{solution:Routing über offene Flächen} wieder effizienter sein könnte.
+Bei offenen Landflächen in Bergen ist es ausserdem schwierig zu entscheiden, ob ein Fussgänger eine Fläche passieren kann. Solche Flächen sind in \ac{OSM} oft nicht gemappt und es existieren nicht immer Informationen über den Untergrund. Es kommen auch andere Faktoren wie z.B. die Jahreszeit hinzu. So könnte das Begehen einer Wiese im Sommer problemlos, im Winter aber durch eine Schneedecke zeitweise unmöglich sein. Bei Stränden sieht es wiederum anders aus, diese sind in \ac{OSM} meist als Flächen gemappt. Dort spielt aber auch das Höhenprofil normalerweise keine Rolle, womit ein Ansatz wie unter \ref{solution:Routing über offene Flächen} wieder effizienter sein könnte.
 
 
 \subsubsection{Datenaufbereitung für das Fussgänger-Routing über Strassen}
 \label{subsub:Datenaufbereitung für das Fussgänger-Routing über Strassen}
 
-Damit eine Routing-Engine die Kartendaten für das Routing nutzen kann, müssen diese zuerst zu einem Graphen aufbereitet werden. Für das Fussgänger-Routing ergeben sich dabei andere Herausforderungen als beispielsweise bei motorisiertem Individualverkehr. So muss etwa beim Fussgänger-Routing beachtet werden, wann ein Fussgänger die Strasse überqueren kann. Dafür müssen gewisse Annahmen getroffen werden. Eine kaum befahrene Strasse in einem ländlichen Gebiet kann höchstwahrscheinlich jederzeit überquert werden, während in einem städtischen Gebiet eher Fussgängerstreifen verwendet werden.
+Damit eine Routing-Engine die Kartendaten für das Routing nutzen kann, müssen diese zuerst zu einem Graphen aufbereitet werden. Für das Fussgänger-Routing ergeben sich dabei andere Herausforderungen als für das Routing des motorisierten Individualverkehrs. So muss etwa beim Fussgänger-Routing beachtet werden, wann ein Fussgänger eine Strasse überqueren kann. Dafür müssen gewisse Annahmen getroffen werden. Eine kaum befahrene Strasse in einem ländlichen Gebiet kann höchstwahrscheinlich jederzeit überquert werden, während in einem städtischen Gebiet eher Fussgängerstreifen verwendet werden sollten.
 
 Ein wichtiger Bestandteil der Datenaufbereitung ist der Einbezug von Bürgersteige. Diese werde in OpenStreetMap auf unterschiedliche Weise gemappt \cite{osm_wiki_sidewalks}. Sie können als eigene Wege oder als Eigenschaft der Strasse definiert werden. In \cite{pedestrian_navigation_lang} wurde ein Datenmodell für Fussgänger-Routing entwickelt. Dabei ist die Datenqualität der \ac{OSM}-Daten bei Bürgersteigen weiterhin ein Problem. In den letzten Jahren gab es Bemühungen, die Datenqualität von Bürgersteige \cite{mapbox_sidewalk_improving} und Fussgängerstreifen \cite{crosswalks_aerial_extraction} durch die Analyse von Sattelitenbilder zu verbessern.
 
@@ -149,11 +148,11 @@ Abschliessend kann man sagen, dass die Datenaufbereitung für Fussgänger-Routin
 \label{subsub:Start-/Endpunkt auf der Fläche}
 Ein Spezialfall des Fussgänger-Routings entsteht, wenn der Start- oder Endpunkt auf einer Fussgänger-Fläche liegt. Wie in \ref{problem:Start-/Endpunkt auf der Fläche} beschrieben ist es üblich, dass Routing-Engines eine Mittelsenkrechte zum nächten Punkt auf dem Strassennetz ziehen.
 
-In unserem Prototyp erfolgt die komplette Berechnung der kürzesten Wege durch Fussgänger-Flächen im Voraus, zur Laufzeit (bei einer Anfrage des Benutzers) werden die neu berechneten Fusswege lediglich von der Routing-Engine verwendet. Für unsere Zwecke ergeben sich so zwei mögliche Ansätze:
+In unserem Prototyp erfolgt die komplette Berechnung der kürzesten Wege über Fussgänger-Flächen im Voraus. Zur Laufzeit (bei einer Anfrage des Benutzers) werden die neu berechneten Fusswege lediglich von der Routing-Engine verwendet. Für unsere Zwecke ergeben sich so zwei mögliche Ansätze:
 
 \begin{enumerate}
-    \item Zur Laufzeit wird vom Start-, bzw. Endpunkt auf der Fläche der kürzeste Weg zum Strassennetz in Richtung der Route berechnet, dabei werden Hindernisse umgangen.
-    \item Die von uns berechneten Wege über Flächen reichen aus, die Routing-Engine zieht eine Mittelsenkrechte auf den nächstgelegenen Fussweg auf der Fläche. Zur Laufzeit müssen keine zusätzlichen Berechnungen durchgeführt werden.
+    \item Zur Laufzeit wird durch die Routing-Engine vom Start- bzw. Endpunkt auf der Fläche der kürzeste Weg zum Strassennetz in Richtung der Route berechnet, dabei werden Hindernisse umgangen.
+    \item Die von uns berechneten Wege über Flächen reichen aus, da die Routing-Engine eine Mittelsenkrechte auf den nächstgelegenen Fussweg auf der Fläche zieht. Zur Laufzeit müssen keine zusätzlichen Berechnungen durchgeführt werden.
 \end{enumerate}
 
 \begin{figure}[ht]
