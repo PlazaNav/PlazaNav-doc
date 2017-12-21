@@ -1,8 +1,9 @@
 % Append the following to the XeLaTex command: |makeglossaries %
 
+
 \newglossaryentry{BoundingBox}{
     name={Bouding Box},
-    description={Ein Rechteck, welches durch zwei Längen- und Breitengrade definiert ist und nomalerweise dem Format \emph{min Longitude , min Latitude , max Longitude , max Latitude} folgt.}
+    description={Ein Rechteck, welches durch zwei Längen- und Breitengrade definiert ist und nomalerweise dem Format \emph{min Longitude , min Latitude , max Longitude , max Latitude} folgt. Im Kontext von Geometrien beschreibt eine \emph{minimale Bounding Box} das kleinstmögliche Rechteck, dass alle Punkte einer oder mehrerer Geometrien beinhaltet.}
 }
 
 \newglossaryentry{Einstiegspunkt}{
@@ -13,46 +14,59 @@
 
 \newglossaryentry{Kante}{
     name={Kante}, % same explanation is used in the introduction chapter
-    description={Eine ÖV-Haltestelle kann mehrere Plattformen umfassen. Normalerweise gehören zu einer ÖV-Haltestelle zwei Plattformen, je eine in jede Fahrtrichtung. Eine dieser Plattformen wird allgemein als Kante bezeichnet.},
+    description={Eine ÖV-Haltestelle kann mehrere Plattformen umfassen. Normalerweise gehören zu einer ÖV-Haltestelle zwei Plattformen, je eine in jede Fahrtrichtung. Eine dieser Plattformen wird allgemein als Kante bezeichnet. Nicht zu verwechseln mit einer Kante eines Graphen, die eine Verbindung zwischen zwei Graph-Knoten beschreibt.},
     plural={Kanten}
 }
 
 \newglossaryentry{Shortest-Path}{
     name={Shortest-Path},
-    description={}
+    description={Ein Begriff aus der Graphentheorie. Ein Shortest-Path beschreibt den kürzest möglichen Pfad zwischen zwei Knoten in einem gewichteten Graphen.}
 }
 
 \newglossaryentry{Routing-Engine}{
     name={Routing-Engine},
-    description={}
+    description={Eine Software, die aus Kartendaten einen Graphen aufbereitet und Funktionalitäten anbietet, auf diesem Routen zu berechnen.}
 }
 
 \newglossaryentry{Geocoding}{
     name={Geocoding},
-    description={}
+    description={Der Prozess, einer Postadresse eine Koordinate zuzuordnen. Der umgekehrte Weg, das Bestimmen einer Postadresse aus einer Koordinate, nennt sich \emph{Reverse Geocoding}.}
 }
 
 \newglossaryentry{QGIS}{
     name={QGIS},
-    description={}
+    description={Ein frei verfügbares Geoinformationssystem für den Desktop für die Anzeige, Bearbeitung und Analyse von geografischen Daten.}
 }
 
 \newglossaryentry{Plaza}{
     name={Plaza},
-    description={Wird als Synonym für Fussgänger-Fläche verwendet.}
+    description={Wird in dieser Arbeit als Synonym für Fussgänger-Fläche verwendet.}
 }
 
 \newglossaryentry{Contraction Hierarchies}{
     name={Contraction Hierarchies},
-    description={}
+    description={Ein Ansatz zur Optimierung von Routing, in dem der Routing-Graph hierarchisch erzeugt wird.}
 }
 
 \newglossaryentry{Node}{
     name={OSM Node},
-    description={}
+    description={Ein geografischer Punkt im Modell von OpenStreetMap.},
+    plural={Nodes}
 }
 
 \newglossaryentry{Way}{
     name={OSM Way},
-    description={}
+    description={Eine Linie in OpenStreetMap, die gebildet wird, in dem mehrere Nodes verknüpft werden. Wenn ein Way einen geschlossenen Ring bildet, kann er auch eine Fläche beschreiben.},
+    plural={Ways}
+}
+
+\newglossaryentry{OpenStreetMap}{
+    name={OpenStreetMap},
+    description={Ein Community-Projekt mit dem Ziel, eine frei verfügbare Karte der Erde zu erstellen, die von jedem bearbeitet und ergänzt werden kann.}
+}
+
+\newglossaryentry{Tag}{
+    name={OSM Tag},
+    description={Ein Schlüssel-Wert-Paar, das in OpenStreetMap einem Objekt zugewiesen wird, um dieses zu beschreiben. Tags können z.B. beschreiben, ob es sich bei einer Strasse um eine Haupt- oder Nebenstrasse handelt.},
+    plural={Tags}
 }
