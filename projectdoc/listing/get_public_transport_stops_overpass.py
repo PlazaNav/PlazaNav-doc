@@ -1,14 +1,14 @@
-def get_public_transport_stops(south, west, north, east):
-    api = overpy.Overpass(url=API_URL)
-
-    bbox = parse_bounding_box(south, west, north, east)
-
-    query_str = """f
+def get_public_transport_stops(start_position: tuple) -> dict:
+    
+    bbox = _parse_bounding_box(*start_position, BUFFER)
+    
+    query_str = f"""
         [bbox:{bbox}];
-        (
-          node["public_transport"="stop_position"];
-        );
+        node["public_transport"="stop_position"];node["highway"="bus_stop"];
         out body;
+        rel["type"="public_transport"];
+        out center;
         """
 
-    return api.query(query_str)
+    public_transport_stops = _query(query_str)
+    # ...
