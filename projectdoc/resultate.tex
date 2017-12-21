@@ -6,7 +6,7 @@
 \subsection{Resultate}
 \label{sub:Resultate}
 
-Mit unserer Implementation der Algorithmen zur Flächen-Traversierung kann gezeigt werden, wie ein natürlicheres Routing für Fussgänger, insbesondere über offene Flächen, erreicht werden kann. Mit dem PlazaRouting Backend wurde dabei eine praktische Anwendung umgesetzt, die das Routing mit öffentlichen Transportmitteln zusammen mit optimiertem Fussgänger-Routing ermöglicht. Insbesondere haben wir Ansätze gezeigt, wie für Haltestellen genaue Koordinaten berechnet werden können (Kap. \ref{impl:Plaza Routing Route optimieren}). Die Routen können mit dem QGIS-Plugin berechnet und visualisiert werden.
+Mit unserer Implementation und Optimierung der Algorithmen zur Flächen-Traversierung kann gezeigt werden, wie ein natürlicheres Routing für Fussgänger, insbesondere über offene Flächen im urbanen Raum, erreicht werden kann. Mit dem Plaza Routing Backend wurde dabei eine praktische Anwendung umgesetzt, die das Routing mit öffentlichen Transportmitteln zusammen mit optimiertem Fussgänger-Routing ermöglicht. Insbesondere haben wir Ansätze gezeigt, wie für ÖV-Haltestellen genaue Koordinaten berechnet werden können. Die Routen können mit dem QGIS-Plugin bezogen und visualisiert werden.
 
 \subsection{Möglichkeiten der Weiterentwicklung}
 \label{sub:Möglichkeiten der Weiterentwicklung}
@@ -15,14 +15,14 @@ Mit unserer Implementation der Algorithmen zur Flächen-Traversierung kann gezei
 \subsubsection{Plaza Vorverarbeitung}
 \label{subsub:Weiterentwicklung_Vorverarbeitung}
 
-In Zukunft könnte unsere Implementation der Vorverarbeitung dazu dienen, die Optimierung auf Fussgänger-Routing in die Graphen-Berechnung von bestehenden Routing-Engines einzubinden. Somit würde der sepparate Schritt der Vorverarbeitung von \ac{OSM}-Daten entfallen, was durch den ersparten Aufwand des Lesens und Schreibens von \ac{OSM}-Daten die Effizienz deutlich steigern würde.
+In Zukunft könnte unsere Implementation der Vorverarbeitung dazu dienen, die Optimierung auf Fussgänger-Routing in die Graphen-Berechnung von bestehenden Routing-Engines einzubinden. Somit würde der separate Schritt der Vorverarbeitung von \ac{OSM}-Daten entfallen, was durch den ersparten Aufwand des Lesens und Schreibens von \ac{OSM}-Daten die Effizienz deutlich steigern würde.
 
-In der jetzigen Implementation werden die kürzesten Wege nur zwischen Paaren von \glspl{Einstiegspunkt}n berechnet. Dies hat zur Folge, dass auf einer Fläche mindestens zwei Einstiegspunkte vorhanden sein müssen, um Pfade berechnen zu können. Es gibt aber einige Fussgänger-Flächen, wo keine Strasse oder Weg den Platz angrenzt oder schneidet, wodurch keine Einstiegspunkte gefunden werden. In der Realität wäre der Platz aber mit grosser Wahrscheinlichkeit problemlos begehbar. Eine mögliche Lösung ist in Kap. \ref{subsub:Verbesserung_Einstiegspunkte} beschrieben.
+In der jetzigen Implementation werden die kürzesten Wege nur zwischen Paaren von \glspl{Einstiegspunkt}n berechnet. Dies hat zur Folge, dass auf einer Fläche mindestens zwei Einstiegspunkte vorhanden sein müssen, um Pfade berechnen zu können. Es gibt aber einige Fussgänger-Flächen, wo keine Strasse oder Weg den Platz angrenzt oder schneidet, wodurch keine Einstiegspunkte gefunden werden. In der Realität wäre der Platz aber mit grosser Wahrscheinlichkeit problemlos begehbar. Eine mögliche Lösung ist in Kapitel \ref{subsub:Verbesserung_Einstiegspunkte} beschrieben.
 
-Während der Entwicklung sind noch folgende Ideen und Ansätze aufgekommen:
+Während der Arbeit sind noch folgende Ideen und Ansätze aufgekommen:
 
 \begin{itemize}
-    \item Wenn zwei Fussgänger-Flächen direkt aneinander angrenzen, sollte dies für die Verarbeitung berücksichtigt werden. Lösungsansätze dazu sind in Kap. \ref{subsub:Routing bei zwei benachbarten Flächen} beschrieben.
+    \item Wenn zwei Fussgänger-Flächen direkt aneinander angrenzen, sollte dies für die Verarbeitung berücksichtigt werden. Lösungsansätze dazu sind in Kapitel \ref{subsub:Routing bei zwei benachbarten Flächen} beschrieben.
     \item In der jetzigen Implementation wird die meiste Rechenzeit verwendet, um die \ac{OSM}-Daten für die Vorverarbeitung zu importieren. Es würde sich anbieten, die Daten in einer sepparaten Datenstruktur, z.B. PostGIS, zu halten, damit der Import-Schritt effizienter wird.
     \item Die Verarbeitung der einzelnen Flächen sind grundsätzlich unabhängig voneinander. So würde es sich anbieten, die Vorverarbeitung zu parallelisieren, um Multi-Core Systeme effizienter ausnutzen zu können.
     \item Python eignet sich gut als Sprache für den Prototypen. Für eine performante Verarbeitung würde sich eine Implementation mit einer Sprache wie C++ allerdings besser eignen. Es könnten auch nur Teile des Pythons-Code in C++ implementiert werden.
@@ -31,10 +31,10 @@ Während der Entwicklung sind noch folgende Ideen und Ansätze aufgekommen:
 \subsubsection{Backend und QGIS-Plugin}
 \label{subsub:Weiterentwicklung_Backend_QGIS}
 
-Während der Entwicklung des PlazaRoute Services mit dem entsprechenden QGIS-Plugin sind folgende Verbesserungsmöglichkeiten aufgekommen:
+Während der Entwicklung von Plaza Routing und dem QGIS-Plugin sind folgende Verbesserungsmöglichkeiten aufgekommen:
 
 \begin{itemize}
-    \item Bei der Auswahl der optimalen ÖV-Route werden gewisse Annahmen getroffen über die Gewichtung von Laufwegen und die Wartezeit auf ÖV-Verbindungen. Benutzer haben allerdings unterschiedliche Präferenzen, ob sie lieber etwas länger laufen, anstatt auf eine Verbindung zu warten. Für diese Parameter könnten optimale Durchschnittswerte gefunden werden und es dem Benutzer ermöglichen, diese selbst zu konfigurieren.
+    \item Bei der Auswahl der optimalen ÖV-Route werden gewisse Annahmen über die Gewichtung von Laufwegen und der Wartezeit auf ÖV-Verbindungen getroffen. Benutzer haben allerdings unterschiedliche Präferenzen, beispielsweise dass sie lieber etwas länger laufen, anstatt auf eine Verbindung zu warten. Für diese Parameter könnten optimale Durchschnittswerte gefunden werden. Eine weitere Möglichkeit wäre es, dass der Benutzer seine Präferenzen selber konfigurieren kann.
     \item Vom Startpunkt aus wird in einem fixen Umfeld nach ÖV-Haltestellen gesucht. Pro gefundene ÖV-Haltestelle wird eine Route berechnet. Es wäre unter Umständen sinnvoller, die ÖV-Haltestellen in einem grösseren Umkreis zu suchen, aber nur ÖV-Verbindungen für die am nähesten liegenden ÖV-Haltestellen in Betracht zu ziehen.
     \item Bei ÖV-Verbindungen werden momentan nur die Koordinaten der Zwischenhaltestellen geliefert. In der Visualisierung werden zwischen diesen Koordinaten Geraden gezogen. Für eine genauere Darstellung ist es denkbar, ein separates Routing für ÖV-Verbindungen zu realisieren, das exakt den Strassen und Schienen des öffentlichen Verkehrsmittels folgt.
 \end{itemize}
