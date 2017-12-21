@@ -6,7 +6,7 @@
 \subsection{Vorgehen}
 \label{sub:Vorgehen}
 
-Für die Studienarbeit wurde das agile Vorgehen SCRUM in Kombination mit \ac{RUP} gewählt. Grund für diese Entscheidung ist, dass das agile Vorgehen der noch zu Beginn unklaren Aufgabenstellung entgegenkommt, welche dann iterativ erarbeitet werden konnte. Die wöchentlichen Besprechungen und Reviews mit dem Betreuer ist ein weiterer Grund für diese Entscheidung. Die Kombination mit \ac{RUP} ermöglicht es, dass Projekt in einzelne Phasen aufzuteilen, um so das Ziel und die Zeit nicht aus den Augen zu verlieren.
+Für die Studienarbeit wurde das agile Vorgehen SCRUM in Kombination mit \ac{RUP} gewählt. Gründe für diese Entscheidung sind, dass das agile Vorgehen der noch zu Beginn offenen Aufgabenstellung entgegenkommt, welche dann iterativ finalisiert werden kann und dass die unbekannte Problem-Domäne sowie der theoretische Fokus der Arbeit so besser gehandhabt und schneller reagiert werden kann. Die wöchentlichen Besprechungen und Reviews mit dem Betreuer ist ein weiterer Grund für diese Entscheidung. Die Kombination mit \ac{RUP} ermöglicht es, dass Projekt in einzelne Phasen aufzuteilen, um so das Ziel und die Zeit nicht aus den Augen zu verlieren.
 
 \subsubsection{Entwicklung}
 \label{sub:Entwicklung}
@@ -17,12 +17,12 @@ Der Source-Code der Implementation wie auch diese Arbeit wird mit Git verwaltet 
 \subsection{Zeitplanung}
 \label{sub:Zeitplanung}
 
-Die Arbeitspakte und Zeit wird mithilfe von Jira verwaltet. Für alle Tätigkeiten werden User-Stories im Backlog erfasst, priorisiert und geschätzt. Die Schätzung der User-Stories erfolgte mit Story Points. Die Arbeitszeitverbuchung wurde auf User-Story-Stufe mit Stunden gemacht.
+Die Arbeitspakte und Zeit wird mithilfe von Jira verwaltet. Für alle Tätigkeiten werden User-Stories im Backlog erfasst, priorisiert und geschätzt. Die Schätzung der User-Stories erfolgte mit Story Points. Die Arbeitszeitverbuchung wurde auf Arbeitspaket-Stufe mit Stunden gemacht.
 
 \subsubsection{Phasen / Iterationen und Meilensteine}
 \label{sub:Phasen / Iterationen und Meilensteine}
 
-Die Studienarbeit wird in die \ac{RUP}-Phasen (Inception, Elaboration, Construction, Transition) aufgeteilt. Dabei wird jedoch eine von der gängigen Norm abweichende Aufteilung gewählt. Durch den theoretischen Fokus der Arbeit wird der Elaboration das grösste Zeitbudget zugeordnet. Dies ist auch der Grund warum mit einwöchigen Sprints gearbeitet wird. Es wird zusätzlich vom Standard-\ac{RUP}-Prozess abgewichen. Gegen Ende des Projekts wird nochmals eine zusätzliche Elaboration-Phase durchgeführt. Dieser theoretischer Teil wird nicht in der ersten Elaboration gemacht, damit der wichtigste Use Case \textit{Fussgänger-Routing über offene Flächen} so sicher umgesetzt wird und gegen Ende des Projekts bei idealem Projektverlauf noch Zeit für die Aufbereitung von \textit{Stand Fussgänger-Routing über offene Strassen} und \textit{Stand Flächen-Traversierung über Berge/Strände} bleibt.
+Die Studienarbeit wird in die \ac{RUP}-Phasen (Inception, Elaboration, Construction, Transition) aufgeteilt. Dabei wird jedoch eine von der gängigen Norm abweichende Aufteilung gewählt. Durch den theoretischen Fokus der Arbeit wird der Elaboration das grösste Zeitbudget zugeordnet. Dies ist auch der Grund warum mit einwöchigen Sprints gearbeitet wird. Es wird zusätzlich vom Standard-\ac{RUP}-Prozess abgewichen. Gegen Ende des Projekts wird nochmals eine zusätzliche Elaboration-Phase durchgeführt. Dieser zweite theoretische Teil wird nicht in der ersten Elaboration gemacht, damit der wichtigste Use Case \textit{Fussgänger-Routing über offene Flächen im urbanen Raum} so sicher umgesetzt wird und gegen Ende des Projekts bei idealem Projektverlauf noch Zeit für die theoretische Aufbereitung von \textit{Stand Fussgänger-Routing über offene Strassen} und \textit{Stand Flächen-Traversierung über Berge/Strände} bleibt.
 
 \begin{landscape}
 \begin{longtable}{l p{5.5cm} p{5.5cm} p{5.5cm}} 
@@ -89,12 +89,12 @@ Die Studienarbeit wird in die \ac{RUP}-Phasen (Inception, Elaboration, Construct
                                 & \begin{enumerate}[noitemsep]
                                     \item Evaluation Routing Engines
                                     \item Evaluation Overpass Anbindung
-                                    \item Konzept Platz-Vorverarbeitung erstellen
+                                    \item Konzept Plaza Vorverarbeitung erstellen
                                 \end{enumerate}
                                 & \begin{enumerate}[noitemsep]
                                     \item Architektur Backend
                                     \item Evaluation Search.ch Anbindung
-                                    \item Platz-Vorverarbeitung umsetzen
+                                    \item Plaza Vorverarbeitung umsetzen
                                 \end{enumerate}  \\
         
         
@@ -118,7 +118,7 @@ Die Studienarbeit wird in die \ac{RUP}-Phasen (Inception, Elaboration, Construct
         \textbf{Arbeitspakete}
                                 & \begin{enumerate}[noitemsep]
                                     \item Anbindung Fremdsysteme
-                                    \item Platz-Vorverarbeitung umsetzen
+                                    \item Plaza Vorverarbeitung umsetzen
                                     \item API definieren
                                 \end{enumerate}
                                 & \begin{enumerate}[noitemsep]
@@ -217,7 +217,7 @@ Die Studienarbeit wird in die \ac{RUP}-Phasen (Inception, Elaboration, Construct
     \end{tabular}
 \end{table}
 
-Das Hauptrisiko der Arbeit ist der grosse theoretische Aspekt, welcher viele Unbekannten bieter. So ist nicht klar, ob der aktuelle Stand der Technik genügend Material als Grundlage liefert, um das Problem der Traversierung von Flächen zu beheben. Auch ist nicht bekannt, ob sich Python als Technologie eignet, um grosse Mengen an \ac{OSM}-Daten zu verarbeiten. Die Arbeit mit Fremdsystemen birgt in vieler Hinsicht Risiken. Ob die Fremdsysteme die gewünschten Funktionalität in dem Umfang liefert, welcher benötigt wird, muss zuerst abgeklärt werden. Dass eine Routing-Engine beispielsweise problemlos auf den von uns vorverarbeitenden \ac{OSM} operieren kann, muss zwingend schnellstmöglich sichergestellt werden, da dies massgeblich verantwortlich für den Erfolg der Arbeit ist.
+Das Hauptrisiko der Arbeit ist der grosse theoretische Aspekt, welcher viele Unbekannten bietet. So ist nicht klar, ob der aktuelle Stand der Technik genügend Material als Grundlage liefert, um das Problem der Traversierung von Flächen zu beheben. Auch ist nicht bekannt, ob sich Python als Technologie eignet, um grosse Mengen an \ac{OSM}-Daten zu verarbeiten. Die Arbeit mit Fremdsystemen birgt in vieler Hinsicht Risiken. Ob die Fremdsysteme die gewünschten Funktionalität in dem Umfang liefert, welcher benötigt wird, muss zuerst abgeklärt werden. Dass eine Routing-Engine beispielsweise problemlos auf den von uns vorverarbeitenden \ac{OSM} operieren kann, muss zwingend schnellstmöglich sichergestellt werden, da dies massgeblich verantwortlich für den Erfolg der Arbeit ist.
 
 \begin{figure}[ht]
     \centering
@@ -228,11 +228,11 @@ Das Hauptrisiko der Arbeit ist der grosse theoretische Aspekt, welcher viele Unb
 
 \subsubsection{Umgang mit Risiken}
 \label{Risiken:Umang mit Risiken}
-Um dem Hauptrisiko des Projekts, sprich die Evaluation, Optimierung und Implementation der Flächenverarbeitungsalgorithmen entgegen zu wirken, ist die Elaboration-Phase 4 Sprints lang und die Umsetzung der Algorithmen zu Beginn der Construction-Phase angesiedelt, um so genügend Spielraum zu haben. Treten in der Elaboration-Phase Probleme mit diesem Punkt auf oder man sieht, dass sich Python für diesen Zweck nicht eignet, muss dementsprechend der Scope des Frontends (QGIS Plugin) gekürzt werden. Dies aus dem einfachen Grund, da ohne diese Grundlage auch keine Visualisierung Sinn macht. Nach der Elaboration ist auch bekannt, ob alle Fremdsysteme die Anforderungen erfüllen. Ist dies nicht der Fall, können bei search.ch \cite{search_ch_route_api} Change-Requests beantragt werden. Je nach Priorisierung dieser durch search.ch muss der Zeitplan aktualisiert und der Scope gekürzt werden. Kann die Routing-Engine auf den vorverarbeitenden \ac{OSM}-Daten nicht operieren, so muss weiteren Aufwand in Anpassung der Verarbeitung der \ac{OSM}-Daten gesteckt werden, was ebenfalls eine Kürzung des Scopes zur Folge hat.
+Um dem Hauptrisiko des Projekts, sprich die Evaluation, Optimierung und Implementation der Flächenverarbeitungsalgorithmen entgegen zu wirken, ist die erste Elaboration-Phase 4 Sprints lang und die Umsetzung der Algorithmen zu Beginn der Construction-Phase angesiedelt, um so genügend Spielraum zu haben. Treten in der ersten Elaboration-Phase Probleme mit diesem Punkt auf oder man sieht, dass sich Python für diesen Zweck nicht eignet, muss dementsprechend der Scope des Frontends (QGIS-Plugin) oder der zweite theoretische Teil gekürzt werden. Dies aus dem einfachen Grund, da ohne diese Grundlage auch keine Visualisierung und weitere theoretische Aufbereitung Sinn macht. Nach der Elaboration ist auch bekannt, ob alle Fremdsysteme die Anforderungen erfüllen. Ist dies nicht der Fall, können bei search.ch \cite{search_ch_route_api} Change-Requests beantragt werden. Je nach Priorisierung dieser durch search.ch muss der Zeitplan aktualisiert und der Scope gekürzt werden. Kann die Routing-Engine auf den vorverarbeitenden \ac{OSM}-Daten nicht operieren, so muss weiteren Aufwand in Anpassung der Verarbeitung der \ac{OSM}-Daten gesteckt werden, was ebenfalls eine Kürzung des Scopes zur Folge hat.
 
 \subsubsection{Konsequenz}
 \label{Risiken:Konsequenz}
-Tritt eines der Hauptrisiken (WSK > 9) ein, muss der Prototyp (QGIS-Plugin) aus dem Scope gestrichen werden. Die kleineren Risiken vermindern die Funktionsweise des Prototyps.
+Tritt eines der Hauptrisiken (WSK > 9) ein, muss der Prototyp (QGIS-Plugin) oder die zweite theoretische Aufarbeitung aus dem Scope gestrichen werden. Die kleineren Risiken vermindern die Funktionsweise des Prototyps.
 
 \subsection{Team, Rollen und Verantwortlichkeiten}
 \label{sub:Team, Rollen und Verantwortlichkeiten}
